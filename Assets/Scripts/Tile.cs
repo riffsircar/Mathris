@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-	public enum TileType { Number, Operator }
-
-    public TileType type;
+    public string type;
     public string value;
 }

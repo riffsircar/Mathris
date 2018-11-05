@@ -86,14 +86,22 @@ public class MoveShape : MonoBehaviour {
     {
         transform.Rotate(0, 0, -90);
 
+        foreach(Transform child in transform)
+        {
+            child.transform.Rotate(0, 0, 90);
+        }
+
         if (isValidGridPos())
         {
             UpdateGrid();
         }
-
         else
         {
             transform.Rotate(0, 0, 90);
+            foreach (Transform child in transform)
+            {
+                child.transform.Rotate(0, 0, -90);
+            }
         }
     }
 

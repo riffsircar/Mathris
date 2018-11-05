@@ -13,8 +13,8 @@ public class Spawner : MonoBehaviour {
     static Dictionary<string, int[]> X;
     static Dictionary<string, int[]> Y;
 
-    private const float OP_PROB = 0.4f;
-    private const float FIRST_PROB = 0.2f;
+    private const float OP_PROB = 0.6f;
+    private const float FIRST_PROB = 0.3f;
 
     // Spawn the next blocks onto the game surface
     public void SpawnNext() 

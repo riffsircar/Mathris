@@ -1,11 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
 
 public class Game : MonoBehaviour {
 
     public static int width = 10;
     public static int height = 20;
+    static Text scoreText;
+    static float score = 0.0f;
+
+    void Start()
+    {
+        Debug.Log("Start");
+        scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<Text>();
+        scoreText.text = "SCORE: 0";
+    }
 
     // grid: tracks all position of the grid
     public static Transform[,] grid = new Transform[width, height];
@@ -21,8 +32,8 @@ public class Game : MonoBehaviour {
         return new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
     }
 
-    // InsideBoarder:
-    // check if the block is inside the boarders
+    // InsideBorder:
+    // check if the block is inside the borders
     public static bool InsideBorder(Vector2 position)
     {
         return ((int)position.x >= 0 &&
@@ -92,19 +103,146 @@ public class Game : MonoBehaviour {
 
     public static void PerformOperations()
     {
-        Debug.Log("PERFORM OPS");
         for(int y = 0; y < height; y++)
         {
             for(int x = 1; x < width-1; x++)
             {
-                Debug.Log("X: " + x + "\tY: " + y + "\t" + grid[x, y]);
+                //Debug.Log("X: " + x + "\tY: " + y + "\t" + grid[x, y]);
                 if (grid[x,y] != null)
                 {
-                    Debug.Log("Type: " + grid[x,y].gameObject.GetComponent<Tile>().type + "\tValue: " + grid[x, y].gameObject.GetComponent<Tile>().value);
+                    Tile tile = grid[x, y].gameObject.GetComponent<Tile>();
+                    int val1 = -1;
+                    int val2 = -1;
+                    if(tile.type == "operator")
+                    {
+                        //LR
+                        if(grid[x-1,y] != null && grid[x+1,y] != null)
+                        {
+                            Tile left = grid[x-1, y].gameObject.GetComponent<Tile>();
+                            Tile right = grid[x+1, y].gameObject.GetComponent<Tile>();
+                            if(left.type == "number" && right.type == "number")
+                            {
+                                val1 = int.Parse(left.value);
+                                val2 = int.Parse(right.value);
+                            }
+                        }
+
+                        if(val1 != -1 && val2 != -1)
+                        {
+                            float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
+                            if (result != float.PositiveInfinity)
+                            {
+                                Destroy(grid[x, y].gameObject);
+                                grid[x, y] = null;
+                                Destroy(grid[x - 1, y].gameObject);
+                                grid[x - 1, y] = null;
+                                Destroy(grid[x + 1, y].gameObject);
+                                grid[x + 1, y] = null;
+                                AdjustRows(x, y);
+                                score += result;
+                                scoreText.text = "SCORE: " + score.ToString();
+                            }
+                        }
+                        else
+                        {
+                            //UD
+                            if (y != 0 && y != height - 1)
+                            {
+                                if (grid[x, y-1] != null && grid[x, y+1] != null)
+                                {
+                                    Tile up = grid[x, y+1].gameObject.GetComponent<Tile>();
+                                    Tile down = grid[x, y-1].gameObject.GetComponent<Tile>();
+                                    if (up.type == "number" && down.type == "number")
+                                    {
+                                        val1 = int.Parse(up.value);
+                                        val2 = int.Parse(down.value);
+                                    }
+                                }
+                            }
+                            if (val1 != -1 && val2 != -1)
+                            {
+                                float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
+                                if (result != float.PositiveInfinity)
+                                {
+                                    Destroy(grid[x, y].gameObject);
+                                    grid[x, y] = null;
+                                    Destroy(grid[x, y - 1].gameObject);
+                                    grid[x, y - 1] = null;
+                                    Destroy(grid[x, y + 1].gameObject);
+                                    grid[x, y + 1] = null;
+                                    AdjustColumn(x, y);
+                                    score += result;
+                                    scoreText.text = "SCORE: " + score.ToString();
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
+    static float CalculateResult(int a, int b, string op)
+    {
+        if(op == "add")
+        {
+            return (a + b);
+        }
+        else if(op == "sub")
+        {
+            return (a - b);
+        }
+        else if(op == "mult")
+        {
+            return (a * b);
+        }
+        else
+        {
+            if(b == 0)
+            {
+                return float.PositiveInfinity;
+            }
+            return (a / (float)b);
+        }
+    }
 
+    static void AdjustRows(int col, int row)
+    {
+        for(int y = row+1; y < height; y++)
+        {
+            if (grid[col - 1, y] != null)
+            {
+                grid[col - 1, y - 1] = grid[col - 1, y];
+                grid[col - 1, y].position += new Vector3(0, -1, 0);
+                grid[col - 1, y] = null;
+                
+            }
+            if (grid[col, y] != null)
+            {
+                grid[col, y - 1] = grid[col, y];
+                grid[col, y].position += new Vector3(0, -1, 0);
+                grid[col, y] = null;
+            }
+            if(grid[col+1,y] != null)
+            { 
+                grid[col + 1, y-1] = grid[col+1, y];
+                grid[col + 1, y].position += new Vector3(0, -1, 0);
+                grid[col + 1, y] = null;
+            }
+            
+        }
+    }
+
+    static void AdjustColumn(int col, int row)
+    {
+        for(int y = row+2; y < height; y++)
+        {
+            if(grid[col,y] != null)
+            {
+                grid[col, y - 3] = grid[col, y];
+                grid[col, y].position += new Vector3(0, -3, 0);
+                grid[col, y] = null;
+            }
+        }
+    }
 }
