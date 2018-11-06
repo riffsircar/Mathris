@@ -10,12 +10,15 @@ public class Game : MonoBehaviour {
     public static int height = 20;
     static Text scoreText;
     static float score = 0.0f;
+    public static float fallSpeed = 0.4f;
+    Spawner spawner;
 
     void Start()
     {
         Debug.Log("Start");
         scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<Text>();
-        scoreText.text = "SCORE: 0";
+        scoreText.text = "SCORE: 0.00";
+        spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
     }
 
     // grid: tracks all position of the grid
@@ -139,8 +142,7 @@ public class Game : MonoBehaviour {
                                 Destroy(grid[x + 1, y].gameObject);
                                 grid[x + 1, y] = null;
                                 AdjustRows(x, y);
-                                score += result;
-                                scoreText.text = "SCORE: " + score.ToString();
+                                UpdateScore(result);
                             }
                         }
                         else
@@ -171,8 +173,7 @@ public class Game : MonoBehaviour {
                                     Destroy(grid[x, y + 1].gameObject);
                                     grid[x, y + 1] = null;
                                     AdjustColumn(x, y);
-                                    score += result;
-                                    scoreText.text = "SCORE: " + score.ToString();
+                                    UpdateScore(result);
                                 }
                             }
                         }
@@ -182,8 +183,20 @@ public class Game : MonoBehaviour {
         }
     }
 
+    static void UpdateScore(float res)
+    {
+        score += res;
+        scoreText.text = "SCORE: " + score.ToString("0.00");
+        if(score > 0 && (((int)score) % 100) == 0)
+        {
+            fallSpeed /= (float)2.0;
+            Debug.Log(fallSpeed);
+        }
+    }
+    
     static float CalculateResult(int a, int b, string op)
     {
+        Debug.Log("In Calc Res: " + a + "\t" + b + "\t" + op);
         if(op == "add")
         {
             return (a + b);
@@ -244,5 +257,23 @@ public class Game : MonoBehaviour {
                 grid[col, y] = null;
             }
         }
+    }
+
+    public void Restart()
+    {
+        for(int x = 0; x < width; x++)
+        {
+            for(int y = 0; y < height; y++)
+            {
+                if(grid[x,y] != null)
+                {
+                    Destroy(grid[x, y].gameObject);
+                    grid[x, y] = null;
+                }
+            }
+        }
+        score = 0.0f;
+        scoreText.text = "SCORE: " + score.ToString("0.00");
+        spawner.SpawnNext();
     }
 }

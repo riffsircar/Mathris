@@ -7,6 +7,7 @@ public class MoveShape : MonoBehaviour {
 
     float lastFall = 0;
     Spawner spawner;
+    float fallSpeed = 0.3f;
 
     void Awake()
     {
@@ -43,8 +44,9 @@ public class MoveShape : MonoBehaviour {
         }
 
         // The Fall function will be updated by time
-        if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= 1)
+        if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= Game.fallSpeed)
         {
+            Debug.Log(Game.fallSpeed);
             Fall();
         }
 	}
