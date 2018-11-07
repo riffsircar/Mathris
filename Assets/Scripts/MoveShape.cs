@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MoveShape : MonoBehaviour {
 
@@ -9,22 +10,24 @@ public class MoveShape : MonoBehaviour {
     Spawner spawner;
     float fallSpeed = 0.3f;
 
+    /*
     void Awake()
     {
-        spawner = FindObjectOfType<Spawner>();
+        
     }
-
+    */
 	// Use this for initialization
 	void Start ()
     {
-		// If the default is not valid, that means the blocks have reached the top
+        // If the default is not valid, that means the blocks have reached the top
         // Which means game over
         if (!isValidGridPos())
         {
             Debug.Log("Game Over");
-            Destroy(gameObject);
+            SceneManager.LoadScene("Over");
         }
-	}
+        spawner = FindObjectOfType<Spawner>();
+    }
 
 	void Update ()
     {
@@ -46,7 +49,6 @@ public class MoveShape : MonoBehaviour {
         // The Fall function will be updated by time
         if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= Game.fallSpeed)
         {
-            Debug.Log(Game.fallSpeed);
             Fall();
         }
 	}

@@ -11,14 +11,25 @@ public class Game : MonoBehaviour {
     static Text scoreText;
     static float score = 0.0f;
     public static float fallSpeed = 0.4f;
+    static int thresh = 50;
+    GameObject scoreObj;
+    GameObject spawnerObj;
     Spawner spawner;
 
     void Start()
     {
-        Debug.Log("Start");
-        scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<Text>();
-        scoreText.text = "SCORE: 0.00";
-        spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
+        scoreObj = GameObject.FindGameObjectWithTag("Score");
+        if (scoreObj)
+        {
+            Data.score = 0.0f;
+            scoreText = scoreObj.GetComponent<Text>();
+            scoreText.text = "SCORE: 0.00";
+        }
+        spawnerObj = GameObject.Find("Spawner");
+        if (spawnerObj)
+        {
+            spawner = spawnerObj.GetComponent<Spawner>();
+        }
     }
 
     // grid: tracks all position of the grid
@@ -108,7 +119,7 @@ public class Game : MonoBehaviour {
     {
         for(int y = 0; y < height; y++)
         {
-            for(int x = 1; x < width-1; x++)
+            for(int x = 1; x < width; x++)
             {
                 //Debug.Log("X: " + x + "\tY: " + y + "\t" + grid[x, y]);
                 if (grid[x,y] != null)
@@ -119,14 +130,17 @@ public class Game : MonoBehaviour {
                     if(tile.type == "operator")
                     {
                         //LR
-                        if(grid[x-1,y] != null && grid[x+1,y] != null)
+                        if (x < width - 1)
                         {
-                            Tile left = grid[x-1, y].gameObject.GetComponent<Tile>();
-                            Tile right = grid[x+1, y].gameObject.GetComponent<Tile>();
-                            if(left.type == "number" && right.type == "number")
+                            if (grid[x - 1, y] != null && grid[x + 1, y] != null)
                             {
-                                val1 = int.Parse(left.value);
-                                val2 = int.Parse(right.value);
+                                Tile left = grid[x - 1, y].gameObject.GetComponent<Tile>();
+                                Tile right = grid[x + 1, y].gameObject.GetComponent<Tile>();
+                                if (left.type == "number" && right.type == "number")
+                                {
+                                    val1 = int.Parse(left.value);
+                                    val2 = int.Parse(right.value);
+                                }
                             }
                         }
 
@@ -185,18 +199,19 @@ public class Game : MonoBehaviour {
 
     static void UpdateScore(float res)
     {
-        score += res;
-        scoreText.text = "SCORE: " + score.ToString("0.00");
-        if(score > 0 && (((int)score) % 100) == 0)
+        Data.score += res;
+        scoreText.text = "SCORE: " + Data.score.ToString("0.00");
+        if(Data.score >= thresh)
         {
-            fallSpeed /= (float)2.0;
+            fallSpeed /= 1.25f;
             Debug.Log(fallSpeed);
+            thresh += 50;
+            Debug.Log("FASTER!");
         }
     }
     
     static float CalculateResult(int a, int b, string op)
     {
-        Debug.Log("In Calc Res: " + a + "\t" + b + "\t" + op);
         if(op == "add")
         {
             return (a + b);
@@ -272,7 +287,7 @@ public class Game : MonoBehaviour {
                 }
             }
         }
-        score = 0.0f;
+        Data.score = 0.0f;
         scoreText.text = "SCORE: " + score.ToString("0.00");
         spawner.SpawnNext();
     }

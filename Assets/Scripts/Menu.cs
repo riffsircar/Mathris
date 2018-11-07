@@ -2,10 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Menu : MonoBehaviour {
 
 	// Use this for initialization
+    void Start()
+    {
+        GameObject finalScore = GameObject.Find("FinalScore");
+        if(finalScore)
+        {
+            finalScore.GetComponent<Text>().text = "Score: " + Data.score.ToString("0.00");
+        }
+    }
+
 	public void PlayGame()
     {
         SceneManager.LoadScene("Main");
