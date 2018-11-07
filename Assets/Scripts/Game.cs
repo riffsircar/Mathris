@@ -22,6 +22,7 @@ public class Game : MonoBehaviour {
         if (scoreObj)
         {
             Data.score = 0.0f;
+            Data.fallSpeed = 0.4f;
             scoreText = scoreObj.GetComponent<Text>();
             scoreText.text = "SCORE: 0.00";
         }
@@ -203,8 +204,8 @@ public class Game : MonoBehaviour {
         scoreText.text = "SCORE: " + Data.score.ToString("0.00");
         if(Data.score >= thresh)
         {
-            fallSpeed /= 1.25f;
-            Debug.Log(fallSpeed);
+            Data.fallSpeed /= 1.25f;
+            Debug.Log(Data.fallSpeed);
             thresh += 50;
             Debug.Log("FASTER!");
         }
@@ -288,6 +289,7 @@ public class Game : MonoBehaviour {
             }
         }
         Data.score = 0.0f;
+        Data.fallSpeed = 0.4f;
         scoreText.text = "SCORE: " + score.ToString("0.00");
         spawner.SpawnNext();
     }

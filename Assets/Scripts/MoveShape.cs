@@ -47,7 +47,7 @@ public class MoveShape : MonoBehaviour {
         }
 
         // The Fall function will be updated by time
-        if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= Game.fallSpeed)
+        if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= Data.fallSpeed)
         {
             Fall();
         }
