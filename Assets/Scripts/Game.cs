@@ -120,7 +120,7 @@ public class Game : MonoBehaviour {
     {
         for(int y = 0; y < height; y++)
         {
-            for(int x = 1; x < width; x++)
+            for(int x = 0; x < width; x++)
             {
                 //Debug.Log("X: " + x + "\tY: " + y + "\t" + grid[x, y]);
                 if (grid[x,y] != null)
@@ -131,7 +131,7 @@ public class Game : MonoBehaviour {
                     if(tile.type == "operator")
                     {
                         //LR
-                        if (x < width - 1)
+                        if (x < width - 1 && x != 0)
                         {
                             if (grid[x - 1, y] != null && grid[x + 1, y] != null)
                             {
@@ -273,6 +273,41 @@ public class Game : MonoBehaviour {
                 grid[col, y] = null;
             }
         }
+
+        /*
+        for(int x = 0; x < width; x++)
+        {
+            Debug.Log("in 2nd loop");
+            for(int y = row+2; y < height; y++)
+            {
+                if(grid[x,y] != null)
+                {
+                    int r = y;
+                    while (grid[x,r-1] == null)
+                    {
+                        grid[x, r - 1] = grid[x, r];
+                        grid[x, r].position += new Vector3(0, -1, 0);
+                        r--;
+                    }
+                }
+            }
+            
+        }
+
+        
+        for(int y = row+2; y < height; y++)
+        {
+            Debug.Log("In 2nd loop");
+            for(int x = 0; x < width; x++)
+            {
+                if(grid[x,y-1] == null && grid[x,y] != null)
+                {
+                    grid[x, y - 1] = grid[x, y];
+                    grid[x, y].position += new Vector3(0, -1, 0);
+                }
+            }
+        }
+        */
     }
 
     public void Restart()
