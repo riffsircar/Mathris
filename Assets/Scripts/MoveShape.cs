@@ -46,12 +46,24 @@ public class MoveShape : MonoBehaviour {
             Rotation();
         }
 
-        // The Fall function will be updated by time
-        if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= Data.fallSpeed)
+        if (Time.time - lastFall >= Data.fallSpeed)
         {
             Fall();
         }
+
+        // The Fall function will be updated by time
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            StartCoroutine(FastFall());
+        }
 	}
+
+    IEnumerator FastFall()
+    {
+        Fall();
+        yield return new WaitForEndOfFrame();
+        Fall();
+    }
 
     // LeftMove:
     // Use keyboard to control the block move to left

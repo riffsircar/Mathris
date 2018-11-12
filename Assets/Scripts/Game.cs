@@ -9,10 +9,12 @@ public class Game : MonoBehaviour {
     public static int width = 10;
     public static int height = 20;
     static Text scoreText;
+    static Text timeText;
     static float score = 0.0f;
     public static float fallSpeed = 0.4f;
     static int thresh = 50;
     GameObject scoreObj;
+    GameObject timeObj;
     GameObject spawnerObj;
     Spawner spawner;
 
@@ -26,6 +28,7 @@ public class Game : MonoBehaviour {
             scoreText = scoreObj.GetComponent<Text>();
             scoreText.text = "SCORE: 0.00";
         }
+        
         spawnerObj = GameObject.Find("Spawner");
         if (spawnerObj)
         {
@@ -210,7 +213,7 @@ public class Game : MonoBehaviour {
             Debug.Log("FASTER!");
         }
     }
-    
+
     static float CalculateResult(int a, int b, string op)
     {
         if(op == "add")
@@ -325,6 +328,7 @@ public class Game : MonoBehaviour {
         }
         Data.score = 0.0f;
         Data.fallSpeed = 0.4f;
+        Data.timeBySec = 5.0f;
         scoreText.text = "SCORE: " + score.ToString("0.00");
         spawner.SpawnNext();
     }
