@@ -14,8 +14,9 @@ public class Spawner : MonoBehaviour {
     static Dictionary<string, int[]> X;
     static Dictionary<string, int[]> Y;
 
-    private const float OP_PROB = 0.7f;
-    private const float FIRST_PROB = 0.5f;
+    [SerializeField] float OP_PROB = 0.9f;
+    [SerializeField] float FIRST_PROB = 0.5f;
+    [SerializeField] float NUM_PROB = 0.6f;
 
     // Spawn the next blocks onto the game surface
     public void SpawnNext() 
@@ -53,7 +54,6 @@ public class Spawner : MonoBehaviour {
         Y.Add("O", new int[] { 1, 1, 0, 0 });
         Y.Add("T", new int[] { 1, 1, 0, 1 });
         Y.Add("Z", new int[] { 1, 1, 0, 0 });
-
     }
 
     void BuildNextShape(string shape)
@@ -66,8 +66,9 @@ public class Spawner : MonoBehaviour {
         block.AddComponent<MoveShape>();
         
         float op = Random.Range(0.0f, 1.0f);
+        float np = Random.Range(0.0f, 1.0f);
 
-        for(int i=0; i < 4; i++)
+        for (int i=0; i < 4; i++)
         {
             int num = Random.Range(0, 10);
             GameObject tile;
@@ -75,10 +76,15 @@ public class Spawner : MonoBehaviour {
             {
                 tile = Instantiate(operators[Random.Range(0, 4)]);
             }
-            else
+            else if (np <= NUM_PROB && (i == 1 || i == 2))
             {
                 tile = Instantiate(numbers[num]);
             }
+            else
+            {
+                tile = Instantiate(emptyTile);
+            }
+            
             tile.transform.parent = block.transform;
             tile.transform.localPosition = new Vector3(x[i], y[i], 0);
         }

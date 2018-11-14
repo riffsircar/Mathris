@@ -154,10 +154,9 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114687622768374858, guid: 408138f4c2547004ea0f7661469e5abc,
         type: 2}
-      propertyPath: emptyTile
-      value: 
-      objectReference: {fileID: 1309633618245908, guid: 5a926bdb0901d43d8b7dfade7b93305a,
-        type: 2}
+      propertyPath: NUM_PROB
+      value: 0.8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 408138f4c2547004ea0f7661469e5abc, type: 2}
   m_IsPrefabAsset: 0
