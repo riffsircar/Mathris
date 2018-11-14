@@ -40,11 +40,11 @@ public class Game : MonoBehaviour {
     public static Transform[,] grid = new Transform[width, height];
 
     // RoundPosition:
-       /* 
-        During the rotation of a block, the position might not stay at an integer
-        coordinate, so we need this fucntion to keep all the coordinates in 
-        integer.
-       */
+    /* 
+     During the rotation of a block, the position might not stay at an integer
+     coordinate, so we need this fucntion to keep all the coordinates in 
+     integer.
+    */
     public static Vector2 RoundPosition(Vector2 position)
     {
         return new Vector2(Mathf.Round(position.x), Mathf.Round(position.y));
@@ -77,6 +77,7 @@ public class Game : MonoBehaviour {
         {
             Destroy(grid[x, y].gameObject);
             grid[x, y] = null;
+            
         }
     }
 
@@ -103,7 +104,6 @@ public class Game : MonoBehaviour {
             {
                 grid[x, y - 1] = grid[x, y]; // why not grid[x, y] = grid[x, y - 1]
                 grid[x, y] = null;
-
                 // Update Block position
                 grid[x, y - 1].position += new Vector3(0, -1, 0);
             }
@@ -159,6 +159,7 @@ public class Game : MonoBehaviour {
                                 grid[x - 1, y] = null;
                                 Destroy(grid[x + 1, y].gameObject);
                                 grid[x + 1, y] = null;
+
                                 AdjustRows(x, y);
                                 UpdateScore(result);
                             }
@@ -190,6 +191,7 @@ public class Game : MonoBehaviour {
                                     grid[x, y - 1] = null;
                                     Destroy(grid[x, y + 1].gameObject);
                                     grid[x, y + 1] = null;
+
                                     AdjustColumn(x, y);
                                     UpdateScore(result);
                                 }
@@ -247,19 +249,22 @@ public class Game : MonoBehaviour {
                 grid[col - 1, y - 1] = grid[col - 1, y];
                 grid[col - 1, y].position += new Vector3(0, -1, 0);
                 grid[col - 1, y] = null;
-                
+
             }
             if (grid[col, y] != null)
             {
                 grid[col, y - 1] = grid[col, y];
                 grid[col, y].position += new Vector3(0, -1, 0);
                 grid[col, y] = null;
+
+                
             }
             if(grid[col+1,y] != null)
             { 
                 grid[col + 1, y-1] = grid[col+1, y];
                 grid[col + 1, y].position += new Vector3(0, -1, 0);
                 grid[col + 1, y] = null;
+
             }
             
         }
@@ -274,6 +279,7 @@ public class Game : MonoBehaviour {
                 grid[col, y - 3] = grid[col, y];
                 grid[col, y].position += new Vector3(0, -3, 0);
                 grid[col, y] = null;
+
             }
         }
 

@@ -9,6 +9,7 @@ public class MoveShape : MonoBehaviour {
     float lastFall = 0;
     Spawner spawner;
     float fallSpeed = 0.3f;
+    public static bool isLanded = false;
 
     /*
     void Awake()
@@ -54,16 +55,15 @@ public class MoveShape : MonoBehaviour {
         // The Fall function will be updated by time
         if (Input.GetKeyDown(KeyCode.S))
         {
-            StartCoroutine(FastFall());
+            FastFall();
+        }
+
+        if (isLanded == true)
+        {
+            PerformCalAndSpawn();
+            isLanded = false;
         }
 	}
-
-    IEnumerator FastFall()
-    {
-        Fall();
-        yield return new WaitForEndOfFrame();
-        Fall();
-    }
 
     // LeftMove:
     // Use keyboard to control the block move to left
@@ -126,7 +126,6 @@ public class MoveShape : MonoBehaviour {
         // Move downwards
         transform.position += new Vector3(0, -1, 0);
 
-
         if (isValidGridPos())
         {
             UpdateGrid();
@@ -135,19 +134,51 @@ public class MoveShape : MonoBehaviour {
         else
         {
             transform.position += new Vector3(0, 1, 0);
-
-            Game.PerformOperations();
-            // Clean the full rows
-            Game.DeleteFullRows();
-
-            // Spawn next shape
-            //FindObjectOfType<Spawner>().SpawnNext();
-            spawner.SpawnNext();
-
-            // Disable the script of the obj, since it needs to be stop from controlling
             enabled = false;
+            isLanded = true;
         }
         lastFall = Time.time;
+    }
+
+    void FastFall()
+    {
+        transform.position += new Vector3(0, -1, 0);
+        if (isValidGridPos())
+        {
+            UpdateGrid();
+            transform.position += new Vector3(0, -1, 0);
+            if (isValidGridPos())
+            {
+                UpdateGrid();
+            }
+            else
+            {
+                transform.position += new Vector3(0, 1, 0);
+                enabled = false;
+                isLanded = true;
+            }
+        }
+        else
+        {
+            transform.position += new Vector3(0, 1, 0);
+            enabled = false;
+            isLanded = true;
+        }
+        lastFall = Time.time;
+    }
+
+    private void PerformCalAndSpawn()
+    {
+        Game.PerformOperations();
+        // Clean the full rows
+        Game.DeleteFullRows();
+
+        // Spawn next shape
+        //FindObjectOfType<Spawner>().SpawnNext();
+        spawner.SpawnNext();
+
+        // Disable the script of the obj, since it needs to be stop from controlling
+        // enabled = false;
     }
 
     public bool isValidGridPos()
@@ -198,6 +229,30 @@ public class MoveShape : MonoBehaviour {
         {
             Vector2 pos = Game.RoundPosition(child.position);
             Game.grid[(int)pos.x, (int)pos.y] = child;
+
         }
     }
+    /*
+    void PutInStackedGroups ()
+    {
+        foreach (Transform child in transform)
+        {
+            Vector2 pos = Game.RoundPosition(child.position);
+            Game.stackGroup[(int)pos.x, (int)pos.y] = child;
+        }
+    }
+
+    bool IsInStackedGroup()
+    {
+        foreach (Transform child in transform)
+        {
+            Vector2 pos = Game.RoundPosition(child.position);
+            if (Game.stackGroup[(int)pos.x, (int)pos.y] == null)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    */
 }

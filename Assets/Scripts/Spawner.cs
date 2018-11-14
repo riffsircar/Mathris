@@ -14,8 +14,8 @@ public class Spawner : MonoBehaviour {
     static Dictionary<string, int[]> X;
     static Dictionary<string, int[]> Y;
 
-    private const float OP_PROB = 0.6f;
-    private const float FIRST_PROB = 0.3f;
+    private const float OP_PROB = 0.7f;
+    private const float FIRST_PROB = 0.5f;
 
     // Spawn the next blocks onto the game surface
     public void SpawnNext() 
@@ -72,10 +72,13 @@ public class Spawner : MonoBehaviour {
             int num = Random.Range(0, 10);
             GameObject tile;
             if ((op <= FIRST_PROB && i == 0) || (op > FIRST_PROB && op <= OP_PROB && i == 3))
+            {
                 tile = Instantiate(operators[Random.Range(0, 4)]);
+            }
             else
+            {
                 tile = Instantiate(numbers[num]);
-
+            }
             tile.transform.parent = block.transform;
             tile.transform.localPosition = new Vector3(x[i], y[i], 0);
         }
