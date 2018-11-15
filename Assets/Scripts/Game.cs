@@ -249,15 +249,12 @@ public class Game : MonoBehaviour {
                 grid[col - 1, y - 1] = grid[col - 1, y];
                 grid[col - 1, y].position += new Vector3(0, -1, 0);
                 grid[col - 1, y] = null;
-
             }
             if (grid[col, y] != null)
             {
                 grid[col, y - 1] = grid[col, y];
                 grid[col, y].position += new Vector3(0, -1, 0);
-                grid[col, y] = null;
-
-                
+                grid[col, y] = null;  
             }
             if(grid[col+1,y] != null)
             { 
@@ -281,6 +278,7 @@ public class Game : MonoBehaviour {
                 grid[col, y] = null;
 
             }
+              
         }
 
         /*
@@ -317,6 +315,26 @@ public class Game : MonoBehaviour {
             }
         }
         */
+    }
+
+    /* 
+    >>> AdjustRow + AdjustColumn needs to be changed:
+        Modify how to adjust the tiles position above the calculation:
+        Decrease all the adjacent tiles above!
+
+       Propose Solution:
+       AdjustTest:
+       Use BFS or DFS to search through all the tiles that connected above the
+       calculation and decrease all tiles' row in the connected tiles above.
+
+       col, row: x,y coordinates of the root tile.
+                col and row changed bases on the calculation happened:
+                - Horizontal 
+                - Vertical
+    */
+    static void AdjustTest (int col, int row)
+    {
+        
     }
 
     public void Restart()
