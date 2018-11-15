@@ -160,7 +160,7 @@ public class Game : MonoBehaviour {
                                 Destroy(grid[x + 1, y].gameObject);
                                 grid[x + 1, y] = null;
 
-                                AdjustRows(x, y);
+                                AdjustRows(x, y + 1);
                                 UpdateScore(result);
                             }
                         }
@@ -192,7 +192,8 @@ public class Game : MonoBehaviour {
                                     Destroy(grid[x, y + 1].gameObject);
                                     grid[x, y + 1] = null;
 
-                                    AdjustColumn(x, y);
+                                    AdjustTest(x, y + 2);
+                                    //AdjustColumn(x, y);
                                     UpdateScore(result);
                                 }
                             }
@@ -327,14 +328,125 @@ public class Game : MonoBehaviour {
        Use BFS or DFS to search through all the tiles that connected above the
        calculation and decrease all tiles' row in the connected tiles above.
 
-       col, row: x,y coordinates of the root tile.
+       col, row: x,y coordinates of the root tile, the root tile is the tile right above the calculation.
                 col and row changed bases on the calculation happened:
-                - Horizontal 
-                - Vertical
+                - Horizontal (root.col = x, root.row = y + 1)
+                - Vertical  (root.col = x, root.row = y + 1)
     */
     static void AdjustTest (int col, int row)
     {
-        
+        // Track all the tiles that has been visited
+        Dictionary<Transform, bool> visited = new Dictionary<Transform, bool>();
+        // initiate
+        foreach (Transform child in grid)
+        {
+            visited[child] = false;
+        }
+
+        Queue<Transform> queue = new Queue<Transform>();
+
+        queue.Enqueue(grid[col, row]);
+        visited[grid[col, row]] = true;
+
+        while (queue.Count != 0)
+        {
+            // pop the queue
+            Transform s = queue.Dequeue();
+            Debug.Log(s.position);
+
+            // check the adjacent tiles to four direction
+            Transform leftTile = grid[col - 1, row];
+            Transform rightTile = grid[col + 1, row];
+            Transform upperTile = grid[col, row + 1];
+            Transform lowerTile = grid[col, row - 1];
+
+            if (leftTile != null)
+            {
+                if (visited[leftTile] == false)
+                {
+                    queue.Enqueue(leftTile);
+                    visited[leftTile] = true;
+                }
+            }
+            if (rightTile != null)
+            {
+                if (visited[rightTile] == false)
+                {
+                    queue.Enqueue(rightTile);
+                    visited[rightTile] = true;
+                }
+            }
+            if (upperTile != null)
+            {
+                if (visited[upperTile] == false)
+                {
+                    queue.Enqueue(upperTile);
+                    visited[upperTile] = true;
+                }
+            }
+            if (lowerTile != null)
+            {
+                if (visited[lowerTile] == false)
+                {
+                    queue.Enqueue(lowerTile);
+                    visited[lowerTile] = true;
+                }
+            }
+        }
+
+        // The lowest tile in the adjacent tile group
+        List<Transform> noBaseTile = new List<Transform>();
+
+         
+        // Find all tiles in visited that has no tile under it
+        foreach (Transform child in visited.Keys)
+        {
+            if (visited[child] == true)
+            {
+                Vector2 underChild = new Vector2(child.position.x, child.position.y - 1);
+                Transform underTile = grid[(int)underChild.x, (int)underChild.y];
+                if (underChild == null)
+                {
+                    noBaseTile.Add(child);
+                }
+            }
+        }
+
+        // After we find the tiles that don't have a tile under them. 
+        // Calculate the minimal distance that all tiles that need to fall
+        int lowestFallDistance = 999;
+
+        foreach (Transform child in noBaseTile)
+        {
+            int measureY = (int)child.position.y - 1;
+            int fallingDistance = 0;
+            while (!grid[(int)child.position.x, measureY])
+            {
+                measureY -= 1;
+                fallingDistance += 1;
+            }
+
+            if (lowestFallDistance > fallingDistance)
+            {
+                lowestFallDistance = fallingDistance;
+            }
+        }
+
+        // Performing fall
+        while (lowestFallDistance > 0) {
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; x < width; y++)
+                {
+                    if (visited.ContainsKey(grid[x,y]))
+                    {
+                        grid[x, y - 1] = grid[x, y];
+                        grid[x, y].position += new Vector3(0, -1, 0);
+                        grid[x, y] = null;
+                    }
+                }
+            }
+        }
     }
 
     public void Restart()

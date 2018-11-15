@@ -78,4 +78,4 @@ MonoBehaviour:
   emptyTile: {fileID: 1309633618245908, guid: 5a926bdb0901d43d8b7dfade7b93305a, type: 2}
   OP_PROB: 0.9
   FIRST_PROB: 0.5
-  NUM_PROB: 0.7
+  NUM_PROB: 0.8
