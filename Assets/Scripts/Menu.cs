@@ -18,6 +18,8 @@ public class Menu : MonoBehaviour {
 
 	public void PlayGame()
     {
+        Timer.timeRemain = 60f;
+
         SceneManager.LoadScene("Main");
     }   
 

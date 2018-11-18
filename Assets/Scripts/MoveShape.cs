@@ -167,6 +167,7 @@ public class MoveShape : MonoBehaviour {
         lastFall = Time.time;
     }
 
+    // perform calculation and spawn
     private void PerformCalAndSpawn()
     {
         Game.PerformOperations();
@@ -232,27 +233,5 @@ public class MoveShape : MonoBehaviour {
 
         }
     }
-    /*
-    void PutInStackedGroups ()
-    {
-        foreach (Transform child in transform)
-        {
-            Vector2 pos = Game.RoundPosition(child.position);
-            Game.stackGroup[(int)pos.x, (int)pos.y] = child;
-        }
-    }
-
-    bool IsInStackedGroup()
-    {
-        foreach (Transform child in transform)
-        {
-            Vector2 pos = Game.RoundPosition(child.position);
-            if (Game.stackGroup[(int)pos.x, (int)pos.y] == null)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-    */
+    
 }

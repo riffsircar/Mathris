@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Score
   - Time
+  - Goal
   layers:
   - Default
   - TransparentFX

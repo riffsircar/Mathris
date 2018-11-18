@@ -76,7 +76,7 @@ public class Spawner : MonoBehaviour {
             {
                 tile = Instantiate(operators[Random.Range(0, 4)]);
             }
-            else if (np <= NUM_PROB && (i == 1 || i == 2))
+            else if (np <= NUM_PROB)
             {
                 tile = Instantiate(numbers[num]);
             }

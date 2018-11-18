@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour {
 
-    public float timeRemain = Data.timeBySec;
+    public static float timeRemain = Data.timeBySec;
 
     static GameObject time;
     static Text timeText;

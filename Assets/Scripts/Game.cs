@@ -3,30 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour {
 
     public static int width = 10;
     public static int height = 20;
     static Text scoreText;
-    static Text timeText;
+    static Text goalText;
     static float score = 0.0f;
     public static float fallSpeed = 0.4f;
     static int thresh = 50;
     GameObject scoreObj;
-    GameObject timeObj;
+    GameObject goalObj;
     GameObject spawnerObj;
     Spawner spawner;
 
     void Start()
     {
         scoreObj = GameObject.FindGameObjectWithTag("Score");
+        goalObj = GameObject.FindGameObjectWithTag("Goal");
         if (scoreObj)
         {
             Data.score = 0.0f;
             Data.fallSpeed = 0.4f;
+            Data.initGoal = 20;
             scoreText = scoreObj.GetComponent<Text>();
             scoreText.text = "SCORE: 0.00";
+            goalText = goalObj.GetComponent<Text>();
+            goalText.text = "GOAL: " + Data.initGoal.ToString();
         }
         
         spawnerObj = GameObject.Find("Spawner");
@@ -133,7 +138,7 @@ public class Game : MonoBehaviour {
                     int val2 = -1;
                     if(tile.type == "operator")
                     {
-                        //LR
+                        //Left and Right calculation
                         if (x < width - 1 && x != 0)
                         {
                             if (grid[x - 1, y] != null && grid[x + 1, y] != null)
@@ -150,7 +155,8 @@ public class Game : MonoBehaviour {
 
                         if(val1 != -1 && val2 != -1)
                         {
-                            float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
+                            //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
+                            float result = CalculateResult(val1, val2, tile.value);
                             if (result != float.PositiveInfinity)
                             {
                                 Destroy(grid[x, y].gameObject);
@@ -160,13 +166,14 @@ public class Game : MonoBehaviour {
                                 Destroy(grid[x + 1, y].gameObject);
                                 grid[x + 1, y] = null;
 
-                                AdjustRows(x, y + 1);
+                                AdjustRows(x, y);
+                                //AdjustTest(x, y + 1);
                                 UpdateScore(result);
                             }
                         }
                         else
                         {
-                            //UD
+                            //Up and Down calculation
                             if (y != 0 && y != height - 1)
                             {
                                 if (grid[x, y-1] != null && grid[x, y+1] != null)
@@ -182,7 +189,8 @@ public class Game : MonoBehaviour {
                             }
                             if (val1 != -1 && val2 != -1)
                             {
-                                float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
+                                //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
+                                float result = CalculateResult(val1, val2, tile.value);
                                 if (result != float.PositiveInfinity)
                                 {
                                     Destroy(grid[x, y].gameObject);
@@ -192,8 +200,8 @@ public class Game : MonoBehaviour {
                                     Destroy(grid[x, y + 1].gameObject);
                                     grid[x, y + 1] = null;
 
-                                    AdjustTest(x, y + 2);
-                                    //AdjustColumn(x, y);
+                                    //AdjustTest(x, y + 2);
+                                    AdjustColumn(x, y);
                                     UpdateScore(result);
                                 }
                             }
@@ -208,12 +216,18 @@ public class Game : MonoBehaviour {
     {
         Data.score += res;
         scoreText.text = "SCORE: " + Data.score.ToString("0.00");
-        if(Data.score >= thresh)
+        // When player reach the goal
+        if(Data.score >= Data.initGoal)
         {
-            Data.fallSpeed /= 1.25f;
+            // Change the speed
+            Data.fallSpeed /= 1.05f;
             Debug.Log(Data.fallSpeed);
-            thresh += 50;
             Debug.Log("FASTER!");
+
+            // Change the goal and time
+            Data.initGoal += 20;
+            goalText.text = "GOAL: " + Data.initGoal.ToString();
+            Timer.timeRemain += 30f;
         }
     }
 
@@ -235,7 +249,8 @@ public class Game : MonoBehaviour {
         {
             if(b == 0)
             {
-                return float.PositiveInfinity;
+                //return float.PositiveInfinity;
+                SceneManager.LoadScene("Over");
             }
             return (a / (float)b);
         }
@@ -337,11 +352,14 @@ public class Game : MonoBehaviour {
     {
         // Track all the tiles that has been visited
         Dictionary<Transform, bool> visited = new Dictionary<Transform, bool>();
-        // initiate
+        // initiate dict
         foreach (Transform child in grid)
         {
+            Debug.Log("The new entry is: " + child.name);
             visited[child] = false;
         }
+
+        Debug.Log(visited);
 
         Queue<Transform> queue = new Queue<Transform>();
 
@@ -394,7 +412,10 @@ public class Game : MonoBehaviour {
             }
         }
 
-        // The lowest tile in the adjacent tile group
+        Debug.Log("-------------------------------------------------------");
+        Debug.Log(visited);
+        Debug.Log("=======================================================");
+        // The lowest tile in the adjacent tiles group
         List<Transform> noBaseTile = new List<Transform>();
 
          
@@ -405,7 +426,7 @@ public class Game : MonoBehaviour {
             {
                 Vector2 underChild = new Vector2(child.position.x, child.position.y - 1);
                 Transform underTile = grid[(int)underChild.x, (int)underChild.y];
-                if (underChild == null)
+                if (underTile == null)
                 {
                     noBaseTile.Add(child);
                 }
@@ -438,8 +459,9 @@ public class Game : MonoBehaviour {
             {
                 for (int y = 0; x < width; y++)
                 {
-                    if (visited.ContainsKey(grid[x,y]))
+                    if (visited.ContainsKey(grid[x,y]) && !grid[x,y-1]) // And if the gird could fall.
                     {
+                        lowestFallDistance -= 1;
                         grid[x, y - 1] = grid[x, y];
                         grid[x, y].position += new Vector3(0, -1, 0);
                         grid[x, y] = null;
@@ -465,7 +487,10 @@ public class Game : MonoBehaviour {
         Data.score = 0.0f;
         Data.fallSpeed = 0.4f;
         Data.timeBySec = 5.0f;
+        Data.initGoal = 20;
         scoreText.text = "SCORE: " + score.ToString("0.00");
-        spawner.SpawnNext();
+        Timer.timeRemain = 60f;
+        SceneManager.LoadScene("Main");
+        //spawner.SpawnNext();
     }
 }
