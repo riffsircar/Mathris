@@ -133,30 +133,46 @@ public class Game : MonoBehaviour {
                 //Debug.Log("X: " + x + "\tY: " + y + "\t" + grid[x, y]);
                 if (grid[x,y] != null)
                 {
+
                     Tile tile = grid[x, y].gameObject.GetComponent<Tile>();
+                    // val3 and val4 for four direction calculations
                     int val1 = -1;
                     int val2 = -1;
-                    if(tile.type == "operator")
+                    int val3 = -1;
+                    int val4 = -1;
+
+                    if (tile.type == "operator")
                     {
-                        //Left and Right calculation
-                        if (x < width - 1 && x != 0)
+                        // four directions calculation
+                        if (x < width - 1 && x != 0 && y != 0 && y != height - 1)
                         {
-                            if (grid[x - 1, y] != null && grid[x + 1, y] != null)
+                            if (grid[x - 1, y] != null && grid[x + 1, y] != null &&
+                                grid[x, y - 1] != null && grid[x, y + 1] != null)
                             {
                                 Tile left = grid[x - 1, y].gameObject.GetComponent<Tile>();
                                 Tile right = grid[x + 1, y].gameObject.GetComponent<Tile>();
-                                if (left.type == "number" && right.type == "number")
+                                Tile up = grid[x, y + 1].gameObject.GetComponent<Tile>();
+                                Tile down = grid[x, y - 1].gameObject.GetComponent<Tile>();
+
+                                if (left.type == "number" && right.type == "number" &&
+                                    up.type == "number" && down.type == "number")
                                 {
                                     val1 = int.Parse(left.value);
                                     val2 = int.Parse(right.value);
+                                    val3 = int.Parse(up.value);
+                                    val4 = int.Parse(down.value);
                                 }
                             }
                         }
 
-                        if(val1 != -1 && val2 != -1)
+                        if (val1 != -1 && val2 != -1 && val3 != -1 && val4 != -1)
                         {
-                            //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
-                            float result = CalculateResult(val1, val2, tile.value);
+                            // result of left to right calculation
+                            float resultLR = CalculateResult(val1, val2, tile.value);
+                            // result of up to down calculation
+                            float resultUD = CalculateResult(val3, val4, tile.value);
+                            float result = resultLR + resultUD;
+
                             if (result != float.PositiveInfinity)
                             {
                                 Destroy(grid[x, y].gameObject);
@@ -166,27 +182,35 @@ public class Game : MonoBehaviour {
                                 Destroy(grid[x + 1, y].gameObject);
                                 grid[x + 1, y] = null;
 
+                                //Destroy(grid[x, y].gameObject);
+                                //grid[x, y] = null;
+                                Destroy(grid[x, y - 1].gameObject);
+                                grid[x, y - 1] = null;
+                                Destroy(grid[x, y + 1].gameObject);
+                                grid[x, y + 1] = null;
+
                                 AdjustRows(x, y);
-                                //AdjustTest(x, y + 1);
+                                AdjustColumn(x, y);
                                 UpdateScore(result);
                             }
                         }
                         else
                         {
-                            //Up and Down calculation
-                            if (y != 0 && y != height - 1)
+                            //Left and Right calculation
+                            if (x < width - 1 && x != 0)
                             {
-                                if (grid[x, y-1] != null && grid[x, y+1] != null)
+                                if (grid[x - 1, y] != null && grid[x + 1, y] != null)
                                 {
-                                    Tile up = grid[x, y+1].gameObject.GetComponent<Tile>();
-                                    Tile down = grid[x, y-1].gameObject.GetComponent<Tile>();
-                                    if (up.type == "number" && down.type == "number")
+                                    Tile left = grid[x - 1, y].gameObject.GetComponent<Tile>();
+                                    Tile right = grid[x + 1, y].gameObject.GetComponent<Tile>();
+                                    if (left.type == "number" && right.type == "number")
                                     {
-                                        val1 = int.Parse(up.value);
-                                        val2 = int.Parse(down.value);
+                                        val1 = int.Parse(left.value);
+                                        val2 = int.Parse(right.value);
                                     }
                                 }
                             }
+
                             if (val1 != -1 && val2 != -1)
                             {
                                 //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
@@ -195,14 +219,49 @@ public class Game : MonoBehaviour {
                                 {
                                     Destroy(grid[x, y].gameObject);
                                     grid[x, y] = null;
-                                    Destroy(grid[x, y - 1].gameObject);
-                                    grid[x, y - 1] = null;
-                                    Destroy(grid[x, y + 1].gameObject);
-                                    grid[x, y + 1] = null;
+                                    Destroy(grid[x - 1, y].gameObject);
+                                    grid[x - 1, y] = null;
+                                    Destroy(grid[x + 1, y].gameObject);
+                                    grid[x + 1, y] = null;
 
-                                    //AdjustTest(x, y + 2);
-                                    AdjustColumn(x, y);
+                                    AdjustRows(x, y);
+                                    //AdjustTest(x, y + 1);
                                     UpdateScore(result);
+                                }
+                            }
+                            else
+                            {
+                                //Up and Down calculation
+                                if (y != 0 && y != height - 1)
+                                {
+                                    if (grid[x, y - 1] != null && grid[x, y + 1] != null)
+                                    {
+                                        Tile up = grid[x, y + 1].gameObject.GetComponent<Tile>();
+                                        Tile down = grid[x, y - 1].gameObject.GetComponent<Tile>();
+                                        if (up.type == "number" && down.type == "number")
+                                        {
+                                            val1 = int.Parse(up.value);
+                                            val2 = int.Parse(down.value);
+                                        }
+                                    }
+                                }
+                                if (val1 != -1 && val2 != -1)
+                                {
+                                    //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
+                                    float result = CalculateResult(val1, val2, tile.value);
+                                    if (result != float.PositiveInfinity)
+                                    {
+                                        Destroy(grid[x, y].gameObject);
+                                        grid[x, y] = null;
+                                        Destroy(grid[x, y - 1].gameObject);
+                                        grid[x, y - 1] = null;
+                                        Destroy(grid[x, y + 1].gameObject);
+                                        grid[x, y + 1] = null;
+
+                                        //AdjustTest(x, y + 2);
+                                        AdjustColumn(x, y);
+                                        UpdateScore(result);
+                                    }
                                 }
                             }
                         }

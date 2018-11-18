@@ -9,7 +9,7 @@ public class Spawner : MonoBehaviour {
     public GameObject[] numbers;
     public GameObject[] operators;
     public GameObject emptyTile;
-    string[] shape = { "I", "J", "L", "O", "S", "T", "Z" };
+    string[] shape = { "I", "J", "L", "O", "S", "T", "Z" , "Y"};
     
     static Dictionary<string, int[]> X;
     static Dictionary<string, int[]> Y;
@@ -18,12 +18,14 @@ public class Spawner : MonoBehaviour {
     [SerializeField] float FIRST_PROB = 0.5f;
     [SerializeField] float NUM_PROB = 0.6f;
 
+    
     // Spawn the next blocks onto the game surface
     public void SpawnNext() 
     {
         int randomIndex = Random.Range(0, shape.Length);
 
         string nextShape = shape[randomIndex];
+
         BuildNextShape(nextShape);
         //Instantiate(shapes[randomIndex], transform.position, Quaternion.identity);
      //   Instantiate(nextShapeObj, transform.position, Quaternion.identity);
@@ -31,6 +33,7 @@ public class Spawner : MonoBehaviour {
 
     void Start()
     {
+        //Instantiate(test, transform.position, Quaternion.identity);
         InitXY();
         SpawnNext();
     }
@@ -54,6 +57,10 @@ public class Spawner : MonoBehaviour {
         Y.Add("O", new int[] { 1, 1, 0, 0 });
         Y.Add("T", new int[] { 1, 1, 0, 1 });
         Y.Add("Z", new int[] { 1, 1, 0, 0 });
+
+        // test shape Y: for testing 4 direction calculation
+        X.Add("Y", new int[] { 0, 1, 1, 2 });
+        Y.Add("Y", new int[] { 2, 0, 1, 2 });
     }
 
     void BuildNextShape(string shape)
@@ -65,29 +72,43 @@ public class Spawner : MonoBehaviour {
         block.transform.position = this.transform.position;
         block.AddComponent<MoveShape>();
         
-        float op = Random.Range(0.0f, 1.0f);
-        float np = Random.Range(0.0f, 1.0f);
-
-        for (int i=0; i < 4; i++)
+        // testing fo
+        if (shape == "Y")
         {
-            int num = Random.Range(0, 10);
-            GameObject tile;
-            if ((op <= FIRST_PROB && i == 0) || (op > FIRST_PROB && op <= OP_PROB && i == 3))
+            for (int i = 0; i < 4; i++)
             {
-                tile = Instantiate(operators[Random.Range(0, 4)]);
+                GameObject tile;
+                tile = tile = Instantiate(numbers[1]);
+                tile.transform.parent = block.transform;
+                tile.transform.localPosition = new Vector3(x[i], y[i], 0);
             }
-            else if (np <= NUM_PROB)
-            {
-                tile = Instantiate(numbers[num]);
-            }
-            else
-            {
-                tile = Instantiate(emptyTile);
-            }
-            
-            tile.transform.parent = block.transform;
-            tile.transform.localPosition = new Vector3(x[i], y[i], 0);
         }
-        
+
+        else
+        {
+            float op = Random.Range(0.0f, 1.0f);
+            float np = Random.Range(0.0f, 1.0f);
+
+            for (int i = 0; i < 4; i++)
+            {
+                int num = Random.Range(0, 10);
+                GameObject tile;
+                if ((op <= FIRST_PROB && i == 0) || (op > FIRST_PROB && op <= OP_PROB && i == 3))
+                {
+                    tile = Instantiate(operators[Random.Range(0, 4)]);
+                }
+                else if (np <= NUM_PROB)
+                {
+                    tile = Instantiate(numbers[num]);
+                }
+                else
+                {
+                    tile = Instantiate(emptyTile);
+                }
+
+                tile.transform.parent = block.transform;
+                tile.transform.localPosition = new Vector3(x[i], y[i], 0);
+            }
+        }
     }
 }
