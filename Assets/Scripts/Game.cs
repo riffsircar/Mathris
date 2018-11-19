@@ -143,7 +143,7 @@ public class Game : MonoBehaviour {
 
                     if (tile.type == "operator")
                     {
-                        // four directions calculation
+                        // Four directions calculation
                         if (x < width - 1 && x != 0 && y != 0 && y != height - 1)
                         {
                             if (grid[x - 1, y] != null && grid[x + 1, y] != null &&
