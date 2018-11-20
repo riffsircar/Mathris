@@ -530,6 +530,21 @@ public class Game : MonoBehaviour {
         }
     }
 
+    /* 
+     >>> DelayEffect: delay any cancelation for certain seconds.
+    */
+
+    public void DelayEffect(string text, float time)
+    {
+        Debug.Log(text);
+        StartCoroutine(DelayForSecond(time));
+    }
+
+    IEnumerator DelayForSecond(float time)
+    {
+        yield return new WaitForSeconds(time);
+    }
+
     public void Restart()
     {
         for(int x = 0; x < width; x++)

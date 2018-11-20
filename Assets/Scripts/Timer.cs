@@ -25,7 +25,7 @@ public class Timer : MonoBehaviour {
         if (timeRemain < 0)
         {
             timeRemain = 0;
-            Debug.Log("Time!");
+            // Debug.Log("Time!");
             SceneManager.LoadScene("Over");
         }
 	}
