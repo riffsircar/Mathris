@@ -82,7 +82,6 @@ public class Game : MonoBehaviour {
         {
             Destroy(grid[x, y].gameObject);
             grid[x, y] = null;
-            
         }
     }
 
@@ -114,8 +113,7 @@ public class Game : MonoBehaviour {
             }
         }
     }
-
-    // 
+ 
     public static void DecreaseRowsAbove(int y)
     {
         for (int i = y; i < height; ++i)
@@ -532,6 +530,7 @@ public class Game : MonoBehaviour {
 
     /* 
      >>> DelayEffect: delay any cancelation for certain seconds.
+     Issue remain: static does not accept non static inside.
     */
 
     public void DelayEffect(string text, float time)

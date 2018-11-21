@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-
     // Different shapes of blocks
     public GameObject[] shapes;
     public GameObject[] numbers;
