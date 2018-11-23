@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: operator
-  value: mult
+  value: '*'
 --- !u!212 &212878573672750128
 SpriteRenderer:
   m_ObjectHideFlags: 1

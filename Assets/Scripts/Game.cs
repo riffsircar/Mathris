@@ -10,19 +10,23 @@ public class Game : MonoBehaviour {
     public static int width = 10;
     public static int height = 20;
     static Text scoreText;
+    static Text opText;
     static Text goalText;
     static float score = 0.0f;
     public static float fallSpeed = 0.4f;
     static int thresh = 50;
     GameObject scoreObj;
     GameObject goalObj;
+    GameObject opObj;
     GameObject spawnerObj;
     Spawner spawner;
+    static string operationText;
 
     void Start()
     {
         scoreObj = GameObject.FindGameObjectWithTag("Score");
         goalObj = GameObject.FindGameObjectWithTag("Goal");
+        opObj = GameObject.FindGameObjectWithTag("Operation");
         if (scoreObj)
         {
             Data.score = 0.0f;
@@ -32,6 +36,7 @@ public class Game : MonoBehaviour {
             scoreText.text = "SCORE: 0.00";
             goalText = goalObj.GetComponent<Text>();
             goalText.text = "GOAL: " + Data.goal.ToString();
+            opText = opObj.GetComponent<Text>();
         }
         
         spawnerObj = GameObject.Find("Spawner");
@@ -133,11 +138,10 @@ public class Game : MonoBehaviour {
                 {
 
                     Tile tile = grid[x, y].gameObject.GetComponent<Tile>();
-                    // val3 and val4 for four direction calculations
-                    int val1 = -1;
-                    int val2 = -1;
-                    int val3 = -1;
-                    int val4 = -1;
+                    int val_l = -1;
+                    int val_r = -1;
+                    int val_u = -1;
+                    int val_d = -1;
 
                     if (tile.type == "operator")
                     {
@@ -147,6 +151,7 @@ public class Game : MonoBehaviour {
                             if (grid[x - 1, y] != null && grid[x + 1, y] != null &&
                                 grid[x, y - 1] != null && grid[x, y + 1] != null)
                             {
+                                //Debug.Log("BOTH DIRS");
                                 Tile left = grid[x - 1, y].gameObject.GetComponent<Tile>();
                                 Tile right = grid[x + 1, y].gameObject.GetComponent<Tile>();
                                 Tile up = grid[x, y + 1].gameObject.GetComponent<Tile>();
@@ -155,24 +160,27 @@ public class Game : MonoBehaviour {
                                 if (left.type == "number" && right.type == "number" &&
                                     up.type == "number" && down.type == "number")
                                 {
-                                    val1 = int.Parse(left.value);
-                                    val2 = int.Parse(right.value);
-                                    val3 = int.Parse(up.value);
-                                    val4 = int.Parse(down.value);
+                                    val_l = int.Parse(left.value);
+                                    val_r = int.Parse(right.value);
+                                    val_u = int.Parse(up.value);
+                                    val_d = int.Parse(down.value);
                                 }
                             }
                         }
 
-                        if (val1 != -1 && val2 != -1 && val3 != -1 && val4 != -1)
+                        if (val_l != -1 && val_r != -1 && val_u != -1 && val_d != -1)
                         {
-                            // result of left to right calculation
-                            float resultLR = CalculateResult(val1, val2, tile.value);
-                            // result of up to down calculation
-                            float resultUD = CalculateResult(val3, val4, tile.value);
-                            float result = resultLR + resultUD;
+                            
+                            float resultLR = CalculateResult(val_l, val_r, tile.value);
+                            float resultUD = CalculateResult(val_u, val_d, tile.value);
 
+                            float result = (resultLR + resultUD); //doubling the result
+                            
                             if (result != float.PositiveInfinity)
                             {
+                                operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") + (" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ")\n = " + result.ToString();
+                                opText.text = "OPERATION: \n" + operationText;
+                                //Debug.Log("OP: " + operationText);
                                 Destroy(grid[x, y].gameObject);
                                 grid[x, y] = null;
                                 Destroy(grid[x - 1, y].gameObject);
@@ -194,6 +202,7 @@ public class Game : MonoBehaviour {
                         }
                         else
                         {
+                            //Debug.Log("LEFT RIGHT");
                             //Left and Right calculation
                             if (x < width - 1 && x != 0)
                             {
@@ -203,18 +212,23 @@ public class Game : MonoBehaviour {
                                     Tile right = grid[x + 1, y].gameObject.GetComponent<Tile>();
                                     if (left.type == "number" && right.type == "number")
                                     {
-                                        val1 = int.Parse(left.value);
-                                        val2 = int.Parse(right.value);
+                                        val_l = int.Parse(left.value);
+                                        val_r = int.Parse(right.value);
                                     }
                                 }
                             }
 
-                            if (val1 != -1 && val2 != -1)
+                            if (val_l != -1 && val_r != -1)
                             {
+                                
+                                
                                 //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
-                                float result = CalculateResult(val1, val2, tile.value);
+                                float result = CalculateResult(val_l, val_r, tile.value);
                                 if (result != float.PositiveInfinity)
                                 {
+                                    operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") = " + result.ToString();
+                                    //Debug.Log("OP: " + operationText);
+                                    opText.text = "OPERATION: \n" + operationText;
                                     Destroy(grid[x, y].gameObject);
                                     grid[x, y] = null;
                                     Destroy(grid[x - 1, y].gameObject);
@@ -231,6 +245,8 @@ public class Game : MonoBehaviour {
                             else
                             {
                                 //Up and Down calculation
+                                //Debug.Log("UP DOWN");
+
                                 if (y != 0 && y != height - 1)
                                 {
                                     if (grid[x, y - 1] != null && grid[x, y + 1] != null)
@@ -239,17 +255,21 @@ public class Game : MonoBehaviour {
                                         Tile down = grid[x, y - 1].gameObject.GetComponent<Tile>();
                                         if (up.type == "number" && down.type == "number")
                                         {
-                                            val1 = int.Parse(up.value);
-                                            val2 = int.Parse(down.value);
+                                            val_u = int.Parse(up.value);
+                                            val_d = int.Parse(down.value);
                                         }
                                     }
                                 }
-                                if (val1 != -1 && val2 != -1)
+                                if (val_u != -1 && val_d != -1)
                                 {
+                                    
                                     //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
-                                    float result = CalculateResult(val1, val2, tile.value);
+                                    float result = CalculateResult(val_u, val_d, tile.value);
                                     if (result != float.PositiveInfinity)
                                     {
+                                        operationText = "(" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ") = " + result.ToString();
+                                        //Debug.Log("OP: " + operationText);
+                                        opText.text = "OPERATION: \n" + operationText;
                                         Destroy(grid[x, y].gameObject);
                                         grid[x, y] = null;
                                         Destroy(grid[x, y - 1].gameObject);
@@ -291,15 +311,15 @@ public class Game : MonoBehaviour {
 
     static float CalculateResult(int a, int b, string op)
     {
-        if(op == "add")
+        if(op == "+")
         {
             return (a + b);
         }
-        else if(op == "sub")
+        else if(op == "-")
         {
             return (a - b);
         }
-        else if(op == "mult")
+        else if(op == "*")
         {
             return (a * b);
         }
@@ -351,21 +371,21 @@ public class Game : MonoBehaviour {
             
             int x = (int)Math.Round(child.position.x);
             int y = (int)Math.Round(child.position.y);
-                Debug.Log("X: " + child.position.x + "\t" + "Y: " + child.position.y);
+            //Debug.Log("X: " + child.position.x + "\t" + "Y: " + child.position.y);
                 xs.Add(x);
                 ys.Add(y);
         }
-        Debug.Log("count: " + ys.Count);
+        //Debug.Log("count: " + ys.Count);
         ys.Sort();
         int r = ys[0];
         int r_max = ys[ys.Count - 1];
-        Debug.Log("R: " + r);
+        //Debug.Log("R: " + r);
         foreach(int x in xs)
         {
-            Debug.Log("X: " + x);
+            //Debug.Log("X: " + x);
             for (int j = r; j <= r_max; j++)
             {
-                Debug.Log("J: " + j);
+                //Debug.Log("J: " + j);
                 if (grid[x, j] != null)
                 {
                     int temp_j = j;

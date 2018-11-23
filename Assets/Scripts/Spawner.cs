@@ -23,7 +23,7 @@ public class Spawner : MonoBehaviour
     float FIRST_PROB = 0.25f;
     float LAST_PROB = 0.4f;
 
-    float OP_PROB = 0.4f;
+    float OP_PROB = 0.5f;
     float NUM_PROB = 0.9f;
 
 
