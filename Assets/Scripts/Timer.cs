@@ -22,7 +22,7 @@ public class Timer : MonoBehaviour {
     {
         timeRemain -= Time.deltaTime;
         timeText.text = "TIME: " + timeRemain.ToString("0.00");
-        if (timeRemain < 0)
+        if (timeRemain <= 0)
         {
             timeRemain = 0;
             // Debug.Log("Time!");

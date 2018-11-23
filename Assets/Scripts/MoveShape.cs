@@ -60,7 +60,7 @@ public class MoveShape : MonoBehaviour {
 
         if (isLanded == true)
         {
-            PerformCalAndSpawn();
+            PerformCalAndSpawn(transform);
             isLanded = false;
         }
 	}
@@ -168,9 +168,9 @@ public class MoveShape : MonoBehaviour {
     }
 
     // perform calculation and spawn
-    private void PerformCalAndSpawn()
+    private void PerformCalAndSpawn(Transform t)
     {
-        Game.PerformOperations();
+        Game.PerformOperations(t);
         // Clean the full rows
         Game.DeleteFullRows();
 

@@ -27,11 +27,11 @@ public class Game : MonoBehaviour {
         {
             Data.score = 0.0f;
             Data.fallSpeed = 0.4f;
-            Data.initGoal = 20;
+            Data.goal = 20;
             scoreText = scoreObj.GetComponent<Text>();
             scoreText.text = "SCORE: 0.00";
             goalText = goalObj.GetComponent<Text>();
-            goalText.text = "GOAL: " + Data.initGoal.ToString();
+            goalText.text = "GOAL: " + Data.goal.ToString();
         }
         
         spawnerObj = GameObject.Find("Spawner");
@@ -122,7 +122,7 @@ public class Game : MonoBehaviour {
         }
     }
 
-    public static void PerformOperations()
+    public static void PerformOperations(Transform t)
     {
         for(int y = 0; y < height; y++)
         {
@@ -188,7 +188,7 @@ public class Game : MonoBehaviour {
                                 grid[x, y + 1] = null;
 
                                 AdjustRows(x, y);
-                                AdjustColumn(x, y);
+                                Fix(x, y, t);
                                 UpdateScore(result);
                             }
                         }
@@ -223,6 +223,7 @@ public class Game : MonoBehaviour {
                                     grid[x + 1, y] = null;
 
                                     AdjustRows(x, y);
+                                    Fix(x, y, t);
                                     //AdjustTest(x, y + 1);
                                     UpdateScore(result);
                                 }
@@ -257,7 +258,7 @@ public class Game : MonoBehaviour {
                                         grid[x, y + 1] = null;
 
                                         //AdjustTest(x, y + 2);
-                                        AdjustColumn(x, y);
+                                        Fix(x, y, t);
                                         UpdateScore(result);
                                     }
                                 }
@@ -274,7 +275,7 @@ public class Game : MonoBehaviour {
         Data.score += res;
         scoreText.text = "SCORE: " + Data.score.ToString("0.00");
         // When player reach the goal
-        if(Data.score >= Data.initGoal)
+        if(Data.score >= Data.goal)
         {
             // Change the speed
             Data.fallSpeed /= 1.05f;
@@ -282,9 +283,9 @@ public class Game : MonoBehaviour {
             Debug.Log("FASTER!");
 
             // Change the goal and time
-            Data.initGoal += 20;
-            goalText.text = "GOAL: " + Data.initGoal.ToString();
-            Timer.timeRemain += 30f;
+            Data.goal = (int)Data.score + 20;
+            goalText.text = "GOAL: " + Data.goal.ToString();
+            Timer.timeRemain += 60f;
         }
     }
 
@@ -340,8 +341,68 @@ public class Game : MonoBehaviour {
         }
     }
 
-    static void AdjustColumn(int col, int row)
+    static void Fix(int col, int row, Transform t)
     {
+        List<int> xs = new List<int>();
+        List<int> ys = new List<int>();
+
+        foreach(Transform child in t)
+        {
+            
+            int x = (int)Math.Round(child.position.x);
+            int y = (int)Math.Round(child.position.y);
+                Debug.Log("X: " + child.position.x + "\t" + "Y: " + child.position.y);
+                xs.Add(x);
+                ys.Add(y);
+        }
+        Debug.Log("count: " + ys.Count);
+        ys.Sort();
+        int r = ys[0];
+        int r_max = ys[ys.Count - 1];
+        Debug.Log("R: " + r);
+        foreach(int x in xs)
+        {
+            Debug.Log("X: " + x);
+            for (int j = r; j <= r_max; j++)
+            {
+                Debug.Log("J: " + j);
+                if (grid[x, j] != null)
+                {
+                    int temp_j = j;
+                    while (temp_j > 0 && grid[x, temp_j - 1] == null)
+                    {
+                        grid[x, temp_j - 1] = grid[x, temp_j];
+                        grid[x, temp_j].position += new Vector3(0, -1, 0);
+                        grid[x, temp_j] = null;
+                        temp_j--;
+                    }
+                }
+            }
+        }
+        /*
+        foreach(Transform child in t)
+        {
+            Debug.Log("X: " + child.position.x + "\t" + "Y: " + child.position.y);
+            x = (int)child.position.x;
+            y = (int)child.position.y;
+            if (grid[x, y] != null)
+            {
+                for(int j = y-1; j > 0; j--)
+                {
+                    int temp_j = j;
+                    while (temp_j > 0 && grid[x, temp_j - 1] == null)
+                    {
+                        Debug.Log("I: " + x + "\tTJ: " + temp_j);
+                        grid[x, temp_j - 1] = grid[x, temp_j];
+                        grid[x, temp_j].position += new Vector3(0, -1, 0);
+                        grid[x, temp_j] = null;
+                        temp_j--;
+                    }
+                }
+            }
+        }
+
+        /*
         for(int y = row+2; y < height; y++)
         {
             if(grid[col,y] != null)
@@ -352,6 +413,28 @@ public class Game : MonoBehaviour {
 
             }
               
+        }
+        int i = (col - 3) >= 0 ? (col - 3) : 0;
+        int j = (row - 3) >= 0 ? (row - 3) : 0;
+        int i_max = (col + 3) < width ? (col + 3) : width - 1;
+        int j_max = (row + 3) < height ? (row + 3) : height - 1;
+        for (; i <= i_max; i++)
+        {
+            for(j = 1; j <= j_max; j++)
+            {
+                if(grid[i,j] != null)
+                {
+                    int temp_j = j;
+                    while(temp_j > 0 && grid[i,temp_j-1] == null)
+                    {
+                        Debug.Log("I: " + i + "\tTJ: " + temp_j);
+                        grid[i, temp_j - 1] = grid[i, temp_j];
+                        grid[i, temp_j].position += new Vector3(0, -1, 0);
+                        grid[i, temp_j] = null;
+                        temp_j--;
+                    }
+                }
+            }
         }
 
         /*
@@ -560,9 +643,9 @@ public class Game : MonoBehaviour {
         Data.score = 0.0f;
         Data.fallSpeed = 0.4f;
         Data.timeBySec = 5.0f;
-        Data.initGoal = 20;
+        Data.goal = 20;
         scoreText.text = "SCORE: " + score.ToString("0.00");
-        Timer.timeRemain = 60f;
+        Timer.timeRemain = 120f;
         SceneManager.LoadScene("Main");
         //spawner.SpawnNext();
     }

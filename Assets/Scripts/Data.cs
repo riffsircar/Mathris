@@ -6,6 +6,6 @@ public static class Data
 {
     public static float score = 0.0f;
     public static float fallSpeed = 0.4f;
-    public static float timeBySec = 60.0f;
-    public static int initGoal = 20;
+    public static float timeBySec = 120.0f;
+    public static int goal = 20;
 }

@@ -14,9 +14,17 @@ public class Spawner : MonoBehaviour
     static Dictionary<string, int[]> X;
     static Dictionary<string, int[]> Y;
 
+    /*
     [SerializeField] float OP_PROB = 0.9f;
     [SerializeField] float FIRST_PROB = 0.5f;
     [SerializeField] float NUM_PROB = 0.6f;
+    */
+    float EMPTY_PROB = 0.1f;
+    float FIRST_PROB = 0.25f;
+    float LAST_PROB = 0.4f;
+
+    float OP_PROB = 0.4f;
+    float NUM_PROB = 0.9f;
 
 
     // Spawn the next blocks onto the game surface
@@ -72,28 +80,53 @@ public class Spawner : MonoBehaviour
         block.transform.position = this.transform.position;
         block.AddComponent<MoveShape>();
 
+        
         float op = Random.Range(0.0f, 1.0f);
-        float np = Random.Range(0.0f, 1.0f);
+        bool hasOp = false;
 
         for (int i = 0; i < 4; i++)
         {
             int num = Random.Range(0, 10);
             GameObject tile;
-            if ((op <= FIRST_PROB && i == 0) || (op > FIRST_PROB && op <= OP_PROB && i == 3))
+            if ((i == 0 || i == 3) && !hasOp && op <= OP_PROB)
             {
-                tile = Instantiate(operators[Random.Range(0, 4)]);
-            }
-            else if (np <= NUM_PROB)
-            {
-                tile = Instantiate(numbers[num]);
+                    tile = Instantiate(operators[Random.Range(0, 4)]);
+                    hasOp = true;
             }
             else
             {
-                tile = Instantiate(emptyTile);
+                float tp = Random.Range(0.0f, 1.0f);
+                if(tp <= NUM_PROB)
+                    tile = Instantiate(numbers[num]);
+                else
+                    tile = Instantiate(emptyTile);
             }
+            
 
-            tile.transform.parent = block.transform;
-            tile.transform.localPosition = new Vector3(x[i], y[i], 0);
+            /*
+            if (op <= EMPTY_PROB)
+                tile = Instantiate(emptyTile);
+            else if ((op <= FIRST_PROB && i == 0) || (op > FIRST_PROB && op <= LAST_PROB && i == 3))
+                tile = Instantiate(operators[Random.Range(0, 4)]);
+            else
+                tile = Instantiate(numbers[num]);
+        /*
+        if ((op <= FIRST_PROB && i == 0) || (op > FIRST_PROB && op <= OP_PROB && i == 3))
+        {
+            tile = Instantiate(operators[Random.Range(0, 4)]);
+        }
+        else if (np <= NUM_PROB)
+        {
+            tile = Instantiate(numbers[num]);
+        }
+        else
+        {
+            tile = Instantiate(emptyTile);
+        }
+        */
+
+        tile.transform.parent = block.transform;
+        tile.transform.localPosition = new Vector3(x[i], y[i], 0);
         }
     }
 }
