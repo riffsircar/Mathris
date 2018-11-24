@@ -25,6 +25,7 @@ public class MoveShape : MonoBehaviour {
         if (!isValidGridPos())
         {
             Debug.Log("Game Over");
+            Data.cod = "OVERFLOW!";
             SceneManager.LoadScene("Over");
         }
         spawner = FindObjectOfType<Spawner>();

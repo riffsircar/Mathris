@@ -34,6 +34,7 @@ public class Timer : MonoBehaviour {
         {
             timeRemain = 0;
             // Debug.Log("Time!");
+            Data.cod = "RAN OUT OF TIME!";
             SceneManager.LoadScene("Over");
         }
 	}

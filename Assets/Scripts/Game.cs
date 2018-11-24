@@ -33,9 +33,9 @@ public class Game : MonoBehaviour {
             Data.fallSpeed = 0.4f;
             Data.goal = 20;
             scoreText = scoreObj.GetComponent<Text>();
-            scoreText.text = "SCORE: 0.00";
+            scoreText.text = "SCORE:\n0.00";
             goalText = goalObj.GetComponent<Text>();
-            goalText.text = "GOAL: " + Data.goal.ToString();
+            goalText.text = "NEXT GOAL:\n" + Data.goal.ToString();
             opText = opObj.GetComponent<Text>();
         }
         
@@ -92,6 +92,7 @@ public class Game : MonoBehaviour {
 
     public static void DeleteFullRows()
     {
+        int lines = 0;
         for (int y = 0; y < height; ++y)
         {
             if(IsRowFull(y))
@@ -100,8 +101,10 @@ public class Game : MonoBehaviour {
                 DecreaseRowsAbove(y + 1);
                 // reset the y after delete the ro in order to keep the index right
                 --y;
+                lines++;
             }
         }
+        UpdateScore(lines * 5.0f);
     }
 
     public static void DecreaseRow(int y)
@@ -178,7 +181,7 @@ public class Game : MonoBehaviour {
                             
                             if (result != float.PositiveInfinity)
                             {
-                                operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") + (" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ")\n = " + result.ToString();
+                                operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") + (" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ")\n = " + result.ToString("0.00") + "\nDOUBLE OP!";
                                 opText.text = "OPERATION: \n" + operationText;
                                 //Debug.Log("OP: " + operationText);
                                 Destroy(grid[x, y].gameObject);
@@ -197,7 +200,7 @@ public class Game : MonoBehaviour {
 
                                 AdjustRows(x, y);
                                 Fix(x, y, t);
-                                UpdateScore(result);
+                                UpdateScore(result*2.0f);
                             }
                         }
                         else
@@ -226,7 +229,7 @@ public class Game : MonoBehaviour {
                                 float result = CalculateResult(val_l, val_r, tile.value);
                                 if (result != float.PositiveInfinity)
                                 {
-                                    operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") = " + result.ToString();
+                                    operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") = " + result.ToString("0.00");
                                     //Debug.Log("OP: " + operationText);
                                     opText.text = "OPERATION: \n" + operationText;
                                     Destroy(grid[x, y].gameObject);
@@ -267,7 +270,7 @@ public class Game : MonoBehaviour {
                                     float result = CalculateResult(val_u, val_d, tile.value);
                                     if (result != float.PositiveInfinity)
                                     {
-                                        operationText = "(" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ") = " + result.ToString();
+                                        operationText = "(" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ") = " + result.ToString("0.00");
                                         //Debug.Log("OP: " + operationText);
                                         opText.text = "OPERATION: \n" + operationText;
                                         Destroy(grid[x, y].gameObject);
@@ -293,7 +296,7 @@ public class Game : MonoBehaviour {
     static void UpdateScore(float res)
     {
         Data.score += res;
-        scoreText.text = "SCORE: " + Data.score.ToString("0.00");
+        scoreText.text = "SCORE:\n" + Data.score.ToString("0.00");
         // When player reach the goal
         if(Data.score >= Data.goal)
         {
@@ -304,7 +307,7 @@ public class Game : MonoBehaviour {
 
             // Change the goal and time
             Data.goal = (int)Data.score + 20;
-            goalText.text = "GOAL: " + Data.goal.ToString();
+            goalText.text = "NEXT GOAL:\n" + Data.goal.ToString();
             Timer.timeRemain += 60f;
         }
     }
@@ -328,6 +331,7 @@ public class Game : MonoBehaviour {
             if(b == 0)
             {
                 //return float.PositiveInfinity;
+                Data.cod = "DIVIDE BY ZERO!";
                 SceneManager.LoadScene("Over");
             }
             return (a / (float)b);
@@ -664,7 +668,7 @@ public class Game : MonoBehaviour {
         Data.fallSpeed = 0.4f;
         Data.timeBySec = 5.0f;
         Data.goal = 20;
-        scoreText.text = "SCORE: " + score.ToString("0.00");
+        scoreText.text = "SCORE:\n" + score.ToString("0.00");
         Timer.timeRemain = 120f;
         SceneManager.LoadScene("Main");
         //spawner.SpawnNext();

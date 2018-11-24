@@ -10,10 +10,16 @@ public class Menu : MonoBehaviour {
     void Start()
     {
         GameObject finalScore = GameObject.Find("FinalScore");
+        GameObject cod = GameObject.Find("COD");
         if(finalScore)
         {
             finalScore.GetComponent<Text>().text = "Score: " + Data.score.ToString("0.00");
         }
+        if(cod)
+        {
+            cod.GetComponent<Text>().text = "Cause of Death: " + Data.cod;
+        }
+        Debug.Log(Data.score + "\t" + Data.cod);
     }
 
 	public void PlayGame()
