@@ -223,8 +223,6 @@ public class Game : MonoBehaviour {
 
                             if (val_l != -1 && val_r != -1)
                             {
-                                
-                                
                                 //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
                                 float result = CalculateResult(val_l, val_r, tile.value);
                                 if (result != float.PositiveInfinity)
