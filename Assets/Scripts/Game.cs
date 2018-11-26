@@ -178,7 +178,7 @@ public class Game : MonoBehaviour {
                             float resultUD = CalculateResult(val_u, val_d, tile.value);
 
                             float result = (resultLR + resultUD); //doubling the result
-                            
+                            Debug.Log("RESULT: " + result);
                             if (result != float.PositiveInfinity)
                             {
                                 operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") + (" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ")\n = " + result.ToString("0.00") + "\nDOUBLE OP!";
@@ -201,6 +201,11 @@ public class Game : MonoBehaviour {
                                 AdjustRows(x, y);
                                 Fix(x, y, t);
                                 UpdateScore(result*2.0f);
+                            }
+                            else
+                            {
+                                Data.cod = "DIVIDE BY ZERO!";
+                                SceneManager.LoadScene("Over");
                             }
                         }
                         else
@@ -225,6 +230,7 @@ public class Game : MonoBehaviour {
                             {
                                 //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
                                 float result = CalculateResult(val_l, val_r, tile.value);
+                                Debug.Log("RESULT: " + result);
                                 if (result != float.PositiveInfinity)
                                 {
                                     operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") = " + result.ToString("0.00");
@@ -241,6 +247,11 @@ public class Game : MonoBehaviour {
                                     Fix(x, y, t);
                                     //AdjustTest(x, y + 1);
                                     UpdateScore(result);
+                                }
+                                else
+                                {
+                                    Data.cod = "DIVIDE BY ZERO!";
+                                    SceneManager.LoadScene("Over");
                                 }
                             }
                             else
@@ -266,6 +277,7 @@ public class Game : MonoBehaviour {
                                     
                                     //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
                                     float result = CalculateResult(val_u, val_d, tile.value);
+                                    Debug.Log("RESULT: " + result);
                                     if (result != float.PositiveInfinity)
                                     {
                                         operationText = "(" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ") = " + result.ToString("0.00");
@@ -282,6 +294,11 @@ public class Game : MonoBehaviour {
                                         Fix(x, y, t);
                                         UpdateScore(result);
                                     }
+                                    else
+                                    {
+                                        Data.cod = "DIVIDE BY ZERO!";
+                                        SceneManager.LoadScene("Over");
+                                    }
                                 }
                             }
                         }
@@ -293,7 +310,9 @@ public class Game : MonoBehaviour {
 
     static void UpdateScore(float res)
     {
+        Debug.Log("Before: " + score.ToString("0.00") + "\tRes: " + res.ToString("0.00"));
         Data.score += res;
+        Debug.Log("After: " + score.ToString("0.00") + "\tRes: " + res.ToString("0.00"));
         scoreText.text = "SCORE:\n" + Data.score.ToString("0.00");
         // When player reach the goal
         if(Data.score >= Data.goal)
@@ -328,9 +347,8 @@ public class Game : MonoBehaviour {
         {
             if(b == 0)
             {
-                //return float.PositiveInfinity;
-                Data.cod = "DIVIDE BY ZERO!";
-                SceneManager.LoadScene("Over");
+                return float.PositiveInfinity;
+                
             }
             return (a / (float)b);
         }
