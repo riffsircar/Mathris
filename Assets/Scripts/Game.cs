@@ -379,6 +379,7 @@ public class Game : MonoBehaviour {
                 xs.Add(x);
                 ys.Add(y);
         }
+        // Sort y in order to let tiles fall at bottom first.
         //Debug.Log("count: " + ys.Count);
         ys.Sort();
         int r = ys[0];
