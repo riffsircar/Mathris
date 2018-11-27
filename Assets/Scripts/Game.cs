@@ -621,6 +621,6 @@ public class Game : MonoBehaviour {
         mulCount = 0;
         divCount = 0;
         Debug.Log(plusCount + "\t" + subCount + "\t" + mulCount + "\t" + divCount);
-        Spawner.unlocked.GetRange(0, 2);
+     //   Spawner.unlocked.GetRange(0, 2);
     }
 }
