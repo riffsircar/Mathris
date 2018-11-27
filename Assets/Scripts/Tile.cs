@@ -6,4 +6,5 @@ public class Tile : MonoBehaviour
 {
     public string type;
     public string value;
+    public GameObject particleEffect;
 }

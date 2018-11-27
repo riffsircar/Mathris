@@ -190,6 +190,7 @@ public class Game : MonoBehaviour {
                                 opText.text = "OPERATION: \n" + operationText;
                                 //Debug.Log("OP: " + operationText);
                                 Destroy(grid[x, y].gameObject);
+                                DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
                                 grid[x, y] = null;
                                 Destroy(grid[x - 1, y].gameObject);
                                 grid[x - 1, y] = null;
@@ -242,6 +243,7 @@ public class Game : MonoBehaviour {
                                     //Debug.Log("OP: " + operationText);
                                     opText.text = "OPERATION: \n" + operationText;
                                     Destroy(grid[x, y].gameObject);
+                                    DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
                                     grid[x, y] = null;
                                     Destroy(grid[x - 1, y].gameObject);
                                     grid[x - 1, y] = null;
@@ -289,6 +291,7 @@ public class Game : MonoBehaviour {
                                         //Debug.Log("OP: " + operationText);
                                         opText.text = "OPERATION: \n" + operationText;
                                         Destroy(grid[x, y].gameObject);
+                                        DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
                                         grid[x, y] = null;
                                         Destroy(grid[x, y - 1].gameObject);
                                         grid[x, y - 1] = null;
@@ -366,7 +369,16 @@ public class Game : MonoBehaviour {
         Spawner.UpdateUnlockedOperators();
         return result;
     }
-    
+
+    static void DestroyWithParticleEffect(Vector3 tilePosition, GameObject particleEffect)
+    {
+        //Destroy(tile.gameObject);
+        Vector3 adjust = new Vector3(0, 0, -15);
+        GameObject particleSystem = Instantiate
+            (particleEffect, tilePosition + adjust, Quaternion.identity);
+        Destroy(particleSystem, 1f);
+    }
+
     static void AdjustRows(int col, int row)
     {
         for(int y = row+1; y < height; y++)

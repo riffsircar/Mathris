@@ -54,6 +54,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: operator
   value: '*'
+  particleEffect: {fileID: 1827026498353632, guid: 30a6dc147d86e614aa734f4735d9164c,
+    type: 2}
 --- !u!212 &212878573672750128
 SpriteRenderer:
   m_ObjectHideFlags: 1
