@@ -153,7 +153,6 @@ public class Spawner : MonoBehaviour
         float op = Random.Range(0.0f, 1.0f);
         bool hasOp = false;
         int unlockedCount = unlocked.Count;
-        Debug.Log("Unlocked Count: " + unlockedCount);
         for (int i = 0; i < 4; i++)
         {
             int num = Random.Range(0, 10);

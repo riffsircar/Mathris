@@ -183,7 +183,6 @@ public class Game : MonoBehaviour {
                             float resultUD = CalculateResult(val_u, val_d, tile.value);
 
                             float result = (resultLR + resultUD); //doubling the result
-                            Debug.Log("RESULT: " + result);
                             if (result != float.PositiveInfinity)
                             {
                                 operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") + (" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ")\n = " + result.ToString("0.00") + "\nDOUBLE OP!";
@@ -236,7 +235,6 @@ public class Game : MonoBehaviour {
                             {
                                 //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
                                 float result = CalculateResult(val_l, val_r, tile.value);
-                                Debug.Log("RESULT: " + result);
                                 if (result != float.PositiveInfinity)
                                 {
                                     operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") = " + result.ToString("0.00");
@@ -284,7 +282,6 @@ public class Game : MonoBehaviour {
                                     
                                     //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
                                     float result = CalculateResult(val_u, val_d, tile.value);
-                                    Debug.Log("RESULT: " + result);
                                     if (result != float.PositiveInfinity)
                                     {
                                         operationText = "(" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ") = " + result.ToString("0.00");
@@ -324,14 +321,14 @@ public class Game : MonoBehaviour {
         if(Data.score >= Data.goal)
         {
             // Change the speed
-            Data.fallSpeed /= 1.05f;
+            Data.fallSpeed /= 1.025f;
             Debug.Log(Data.fallSpeed);
             Debug.Log("FASTER!");
 
             // Change the goal and time
             Data.goal = (int)Data.score + 20;
             goalText.text = "NEXT GOAL:\n" + Data.goal.ToString();
-            Timer.timeRemain += 60f;
+            Timer.timeRemain += 90f;
         }
     }
 
