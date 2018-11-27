@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawner : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Spawner : MonoBehaviour
     public GameObject[] operators;
     public GameObject emptyTile;
     string[] shape = { "I", "J", "L", "O", "S", "T", "Z" };
+    static Dictionary<string, GameObject> opDict;
+    public static List<GameObject> unlocked;
 
     static Dictionary<string, int[]> X;
     static Dictionary<string, int[]> Y;
@@ -25,6 +28,14 @@ public class Spawner : MonoBehaviour
 
     float OP_PROB = 0.6f;
     float NUM_PROB = 0.9f;
+
+    static GameObject mult;
+    static GameObject div;
+    public static GameObject addCount;
+    public static GameObject subCount;
+    public static GameObject divCount;
+    public static GameObject mulCount;
+
 
 
     // Spawn the next blocks onto the game surface
@@ -42,8 +53,66 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         //Instantiate(test, transform.position, Quaternion.identity);
+        unlocked = new List<GameObject>();
+        opDict = new Dictionary<string, GameObject>();
+        foreach (GameObject go in operators)
+        {
+            opDict.Add(go.name, go);
+        }
+
+        unlocked.Add(opDict["add"]);
+        unlocked.Add(opDict["subtract"]);
+
+        mult = GameObject.Find("Mult");
+        mult.active = false;
+        div = GameObject.Find("Div");
+        div.active = false;
+
+        addCount = GameObject.Find("AddCount");
+        mulCount = GameObject.Find("MulCount");
+        subCount = GameObject.Find("SubCount");
+        divCount = GameObject.Find("DivCount");
+        mulCount.active = false;
+        divCount.active = false;
+        addCount.GetComponent<Text>().text = "0";
+        subCount.GetComponent<Text>().text = "0";
+
         InitXY();
         SpawnNext();
+    }
+
+    public static void UpdateUnlockedOperators()
+    {
+        addCount.GetComponent<Text>().text = Game.plusCount.ToString();
+        subCount.GetComponent<Text>().text = Game.subCount.ToString();
+
+        if(divCount)
+            divCount.GetComponent<Text>().text = Game.divCount.ToString();
+        if(mulCount)
+            mulCount.GetComponent<Text>().text = Game.mulCount.ToString();
+
+        if (Game.plusCount == 5)
+        {
+            if (!mult.active)
+            {
+                Debug.Log("MULTIPLICATION UNLOCKED!");
+                unlocked.Add(opDict["multiply"]);
+                mult.active = true;
+                mulCount.active = true;
+                mulCount.GetComponent<Text>().text = "0";
+            }
+        }
+        if (Game.subCount == 5)
+        {
+            if (!div.active)
+            {
+                Debug.Log("DIVISION UNLOCKED!");
+                unlocked.Add(opDict["divide"]);
+                div.active = true;
+                divCount.active = true;
+                divCount.GetComponent<Text>().text = "0";
+            }
+        }
     }
 
     static void InitXY()
@@ -83,14 +152,15 @@ public class Spawner : MonoBehaviour
         
         float op = Random.Range(0.0f, 1.0f);
         bool hasOp = false;
-
+        int unlockedCount = unlocked.Count;
+        Debug.Log("Unlocked Count: " + unlockedCount);
         for (int i = 0; i < 4; i++)
         {
             int num = Random.Range(0, 10);
             GameObject tile;
             if ((i == 0 || i == 3) && !hasOp && op <= OP_PROB)
             {
-                    tile = Instantiate(operators[Random.Range(0, 4)]);
+                    tile = Instantiate(unlocked[Random.Range(0, unlockedCount)]);
                     hasOp = true;
             }
             else
@@ -102,29 +172,6 @@ public class Spawner : MonoBehaviour
                     tile = Instantiate(emptyTile);
             }
             
-
-            /*
-            if (op <= EMPTY_PROB)
-                tile = Instantiate(emptyTile);
-            else if ((op <= FIRST_PROB && i == 0) || (op > FIRST_PROB && op <= LAST_PROB && i == 3))
-                tile = Instantiate(operators[Random.Range(0, 4)]);
-            else
-                tile = Instantiate(numbers[num]);
-        /*
-        if ((op <= FIRST_PROB && i == 0) || (op > FIRST_PROB && op <= OP_PROB && i == 3))
-        {
-            tile = Instantiate(operators[Random.Range(0, 4)]);
-        }
-        else if (np <= NUM_PROB)
-        {
-            tile = Instantiate(numbers[num]);
-        }
-        else
-        {
-            tile = Instantiate(emptyTile);
-        }
-        */
-
         tile.transform.parent = block.transform;
         tile.transform.localPosition = new Vector3(x[i], y[i], 0);
         }

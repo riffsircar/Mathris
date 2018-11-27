@@ -21,6 +21,10 @@ public class Game : MonoBehaviour {
     GameObject spawnerObj;
     Spawner spawner;
     static string operationText;
+    public static int plusCount = 0;
+    public static int subCount = 0;
+    public static int mulCount = 0;
+    public static int divCount = 0;
 
     void Start()
     {
@@ -31,7 +35,7 @@ public class Game : MonoBehaviour {
         {
             Data.score = 0.0f;
             Data.fallSpeed = 0.4f;
-            Data.goal = 20;
+            Data.goal = 10;
             scoreText = scoreObj.GetComponent<Text>();
             scoreText.text = "SCORE:\n0.00";
             goalText = goalObj.GetComponent<Text>();
@@ -44,6 +48,7 @@ public class Game : MonoBehaviour {
         {
             spawner = spawnerObj.GetComponent<Spawner>();
         }
+        Reset();
     }
 
     // grid: tracks all position of the grid
@@ -66,7 +71,7 @@ public class Game : MonoBehaviour {
     {
         return ((int)position.x >= 0 &&
                 (int)position.x < width &&
-                (int)position.y >= 0);
+                (int)position.y >= 0) ;
     }
 
     public static bool IsRowFull(int y)
@@ -310,9 +315,7 @@ public class Game : MonoBehaviour {
 
     static void UpdateScore(float res)
     {
-        Debug.Log("Before: " + score.ToString("0.00") + "\tRes: " + res.ToString("0.00"));
         Data.score += res;
-        Debug.Log("After: " + score.ToString("0.00") + "\tRes: " + res.ToString("0.00"));
         scoreText.text = "SCORE:\n" + Data.score.ToString("0.00");
         // When player reach the goal
         if(Data.score >= Data.goal)
@@ -331,29 +334,39 @@ public class Game : MonoBehaviour {
 
     static float CalculateResult(int a, int b, string op)
     {
+        float result;
         if(op == "+")
         {
-            return (a + b);
+            plusCount++;
+            result = (a + b);
         }
         else if(op == "-")
         {
-            return (a - b);
+            subCount++;
+            result = (a - b);
         }
         else if(op == "*")
         {
-            return (a * b);
+            mulCount++;
+            result = (a * b);
         }
         else
         {
-            if(b == 0)
+            if (b == 0)
             {
-                return float.PositiveInfinity;
-                
+                result = float.PositiveInfinity;
             }
-            return (a / (float)b);
+            else
+            {
+                divCount++;
+                result = (a / (float)b);
+            }
         }
+        Debug.Log(plusCount + "\t" + subCount + "\t" + mulCount + "\t" + divCount);
+        Spawner.UpdateUnlockedOperators();
+        return result;
     }
-
+    
     static void AdjustRows(int col, int row)
     {
         for(int y = row+1; y < height; y++)
@@ -420,98 +433,6 @@ public class Game : MonoBehaviour {
                 }
             }
         }
-        /*
-        foreach(Transform child in t)
-        {
-            Debug.Log("X: " + child.position.x + "\t" + "Y: " + child.position.y);
-            x = (int)child.position.x;
-            y = (int)child.position.y;
-            if (grid[x, y] != null)
-            {
-                for(int j = y-1; j > 0; j--)
-                {
-                    int temp_j = j;
-                    while (temp_j > 0 && grid[x, temp_j - 1] == null)
-                    {
-                        Debug.Log("I: " + x + "\tTJ: " + temp_j);
-                        grid[x, temp_j - 1] = grid[x, temp_j];
-                        grid[x, temp_j].position += new Vector3(0, -1, 0);
-                        grid[x, temp_j] = null;
-                        temp_j--;
-                    }
-                }
-            }
-        }
-
-        /*
-        for(int y = row+2; y < height; y++)
-        {
-            if(grid[col,y] != null)
-            {
-                grid[col, y - 3] = grid[col, y];
-                grid[col, y].position += new Vector3(0, -3, 0);
-                grid[col, y] = null;
-
-            }
-              
-        }
-        int i = (col - 3) >= 0 ? (col - 3) : 0;
-        int j = (row - 3) >= 0 ? (row - 3) : 0;
-        int i_max = (col + 3) < width ? (col + 3) : width - 1;
-        int j_max = (row + 3) < height ? (row + 3) : height - 1;
-        for (; i <= i_max; i++)
-        {
-            for(j = 1; j <= j_max; j++)
-            {
-                if(grid[i,j] != null)
-                {
-                    int temp_j = j;
-                    while(temp_j > 0 && grid[i,temp_j-1] == null)
-                    {
-                        Debug.Log("I: " + i + "\tTJ: " + temp_j);
-                        grid[i, temp_j - 1] = grid[i, temp_j];
-                        grid[i, temp_j].position += new Vector3(0, -1, 0);
-                        grid[i, temp_j] = null;
-                        temp_j--;
-                    }
-                }
-            }
-        }
-
-        /*
-        for(int x = 0; x < width; x++)
-        {
-            Debug.Log("in 2nd loop");
-            for(int y = row+2; y < height; y++)
-            {
-                if(grid[x,y] != null)
-                {
-                    int r = y;
-                    while (grid[x,r-1] == null)
-                    {
-                        grid[x, r - 1] = grid[x, r];
-                        grid[x, r].position += new Vector3(0, -1, 0);
-                        r--;
-                    }
-                }
-            }
-            
-        }
-
-        
-        for(int y = row+2; y < height; y++)
-        {
-            Debug.Log("In 2nd loop");
-            for(int x = 0; x < width; x++)
-            {
-                if(grid[x,y-1] == null && grid[x,y] != null)
-                {
-                    grid[x, y - 1] = grid[x, y];
-                    grid[x, y].position += new Vector3(0, -1, 0);
-                }
-            }
-        }
-        */
     }
 
     /* 
@@ -670,24 +591,36 @@ public class Game : MonoBehaviour {
 
     public void Restart()
     {
-        for(int x = 0; x < width; x++)
+        Reset();  
+        SceneManager.LoadScene("Main");
+        //spawner.SpawnNext();
+    }
+
+    public static void Reset()
+    {
+        Debug.Log("Resetting");
+        for (int x = 0; x < width; x++)
         {
-            for(int y = 0; y < height; y++)
+            for (int y = 0; y < height; y++)
             {
-                if(grid[x,y] != null)
+                if (grid[x, y] != null)
                 {
                     Destroy(grid[x, y].gameObject);
                     grid[x, y] = null;
                 }
             }
         }
-        Data.score = 0.0f;
+        //Data.score = 0.0f;
         Data.fallSpeed = 0.4f;
         Data.timeBySec = 5.0f;
-        Data.goal = 20;
-        scoreText.text = "SCORE:\n" + score.ToString("0.00");
+        Data.goal = 10;
+        //scoreText.text = "SCORE:\n" + score.ToString("0.00");
         Timer.timeRemain = 120f;
-        SceneManager.LoadScene("Main");
-        //spawner.SpawnNext();
+        plusCount = 0;
+        subCount = 0;
+        mulCount = 0;
+        divCount = 0;
+        Debug.Log(plusCount + "\t" + subCount + "\t" + mulCount + "\t" + divCount);
+        Spawner.unlocked.GetRange(0, 2);
     }
 }

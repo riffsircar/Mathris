@@ -19,6 +19,7 @@ public class Menu : MonoBehaviour {
         {
             cod.GetComponent<Text>().text = "Cause of Death: " + Data.cod;
         }
+        Game.Reset();
         Debug.Log(Data.score + "\t" + Data.cod);
     }
 

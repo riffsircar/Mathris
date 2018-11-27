@@ -20,6 +20,7 @@ public class MoveShape : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+     //   Debug.Log("Inside MoveShape start");
         // If the default is not valid, that means the blocks have reached the top
         // Which means game over
         if (!isValidGridPos())
@@ -29,6 +30,7 @@ public class MoveShape : MonoBehaviour {
             SceneManager.LoadScene("Over");
         }
         spawner = FindObjectOfType<Spawner>();
+        //Debug.Log("Exiting MoveShape start");
     }
 
 	void Update ()
@@ -185,6 +187,7 @@ public class MoveShape : MonoBehaviour {
 
     public bool isValidGridPos()
     {
+        //Debug.Log("Inside isValidGridPos");
         foreach (Transform child in transform)
         {
             Vector2 pos = Game.RoundPosition(child.position);
@@ -192,6 +195,7 @@ public class MoveShape : MonoBehaviour {
             // detect if the block is inside border or not
             if (!Game.InsideBorder(pos))
             {
+                Debug.Log("1st valid if");
                 return false;
             }
 
@@ -200,11 +204,13 @@ public class MoveShape : MonoBehaviour {
             if (Game.grid[(int)pos.x, (int)pos.y] != null &&
                 Game.grid[(int)pos.x, (int)pos.y].parent != transform)
             {
+                Debug.Log("2nd valid if");
                 return false;
             }
 
             // Add if the 
         }
+        //Debug.Log("Exiting isValidGridPos");
         return true;
     }
     
