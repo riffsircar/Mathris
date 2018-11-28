@@ -27,7 +27,12 @@ public class Menu : MonoBehaviour {
     {
         Timer.timeRemain = 120f;
         SceneManager.LoadScene("Main");
-    }   
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("Instructions");
+    }
 
     public void QuitGame()
     {
