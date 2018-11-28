@@ -25,6 +25,7 @@ public class Game : MonoBehaviour {
     public static int subCount = 0;
     public static int mulCount = 0;
     public static int divCount = 0;
+    public static int scoreIncrement = 10;
 
     void Start()
     {
@@ -326,7 +327,7 @@ public class Game : MonoBehaviour {
             Debug.Log("FASTER!");
 
             // Change the goal and time
-            Data.goal = (int)Data.score + 20;
+            Data.goal = (int)Data.score + scoreIncrement;
             goalText.text = "NEXT GOAL:\n" + Data.goal.ToString();
             Timer.timeRemain += 90f;
         }
