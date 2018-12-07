@@ -606,6 +606,12 @@ public class Game : MonoBehaviour {
         //spawner.SpawnNext();
     }
 
+    public void Quit()
+    {
+        Reset();
+        SceneManager.LoadScene("Start");
+    }
+
     public static void Reset()
     {
         Debug.Log("Resetting");

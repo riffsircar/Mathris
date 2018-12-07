@@ -29,9 +29,20 @@ public class Menu : MonoBehaviour {
         SceneManager.LoadScene("Main");
     }
 
+    public void Play2P()
+    {
+        Timer.timeRemain = 120f;
+        SceneManager.LoadScene("TwoPlayer");
+    }
+
     public void StartGame()
     {
         SceneManager.LoadScene("Instructions");
+    }
+
+    public void Start2P()
+    {
+        SceneManager.LoadScene("Instructions2P");
     }
 
     public void QuitGame()
