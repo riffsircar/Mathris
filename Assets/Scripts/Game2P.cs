@@ -5,55 +5,74 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
 
-public class Game : MonoBehaviour {
+public class Game2P : MonoBehaviour {
 
     public static int width = 10;
     public static int height = 20;
-    static Text scoreText;
-    static Text opText;
-    static Text goalText;
-    static float score = 0.0f;
+    static Text scoreText1;
+    static Text scoreText2;
+    static Text opText1;
+    static Text opText2;
+    static float score1 = 0.0f;
+    static float score2 = 0.0f;
     public static float fallSpeed = 0.4f;
     static int thresh = 50;
-    GameObject scoreObj;
-    GameObject goalObj;
-    GameObject opObj;
-    GameObject spawnerObj;
-    Spawner spawner;
+    GameObject scoreObj1;
+    GameObject scoreObj2;
+    GameObject opObj1;
+    GameObject opObj2;
+    GameObject spawnerObj1;
+    GameObject spawnerObj2;
+    Spawner spawner1;
     Spawner spawner2;
-    static string operationText;
-    public static int plusCount = 0;
-    public static int subCount = 0;
-    public static int mulCount = 0;
-    public static int divCount = 0;
+    static string operationText1;
+    static string operationText2;
+    public static int plusCountP1 = 0;
+    public static int subCountP1 = 0;
+    public static int mulCountP1 = 0;
+    public static int divCountP1 = 0;
+    public static int plusCountP2 = 0;
+    public static int subCountP2 = 0;
+    public static int mulCountP2 = 0;
+    public static int divCountP2 = 0;
     public static int scoreIncrement = 10;
 
     void Start()
     {
-        scoreObj = GameObject.FindGameObjectWithTag("Score");
-        goalObj = GameObject.FindGameObjectWithTag("Goal");
-        opObj = GameObject.FindGameObjectWithTag("Operation");
-        if (scoreObj)
+        scoreObj1 = GameObject.FindGameObjectWithTag("ScoreP1");
+        scoreObj2 = GameObject.FindGameObjectWithTag("ScoreP2");
+        opObj1 = GameObject.FindGameObjectWithTag("OperationP1");
+        opObj2 = GameObject.FindGameObjectWithTag("OperationP2");
+        if (scoreObj1 && scoreObj2)
         {
             Data.score = 0.0f;
             Data.fallSpeed = 0.4f;
             Data.goal = 10;
-            scoreText = scoreObj.GetComponent<Text>();
-            scoreText.text = "SCORE:\n0.00";
-            goalText = goalObj.GetComponent<Text>();
-            goalText.text = "NEXT GOAL:\n" + Data.goal.ToString();
-            opText = opObj.GetComponent<Text>();
+            scoreText1 = scoreObj1.GetComponent<Text>();
+            scoreText1.text = "SCORE:\n0.00";
+            scoreText2 = scoreObj2.GetComponent<Text>();
+            scoreText2.text = "SCORE:\n0.00";
+            opText1 = opObj1.GetComponent<Text>();
+            opText1 = opObj2.GetComponent<Text>();
         }
-            spawnerObj = GameObject.Find("Spawner");
-                if (spawnerObj)
+        
+        spawnerObj1 = GameObject.Find("SpawnerP1");
+        spawnerObj2 = GameObject.Find("SpawnerP2");
+        if (spawnerObj1)
         {
-            spawner = spawnerObj.GetComponent<Spawner>();
+            spawner1 = spawnerObj1.GetComponent<Spawner>();
+        }
+        if (spawnerObj2)
+        {
+            spawner2 = spawnerObj2.GetComponent<Spawner>();
         }
         Reset();
     }
 
     // grid: tracks all position of the grid
     public static Transform[,] grid = new Transform[width, height];
+    public static Transform[,] grid1 = new Transform[width, height];
+    public static Transform[,] grid2 = new Transform[width, height];
 
     // RoundPosition:
     /* 
@@ -70,10 +89,10 @@ public class Game : MonoBehaviour {
     // check if the block is inside the borders
     public static bool InsideBorder(Vector2 position)
     {
-        return ((int)position.x >= 0 &&
+        return true;
+            return ((int)position.x >= 0 &&
                     (int)position.x < width &&
                     (int)position.y >= 0);
-        
     }
 
     public static bool IsRowFull(int y)
@@ -187,8 +206,8 @@ public class Game : MonoBehaviour {
                             float result = (resultLR + resultUD); //doubling the result
                             if (result != float.PositiveInfinity)
                             {
-                                operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") + (" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ")\n = " + result.ToString("0.00") + "\nDOUBLE OP!";
-                                opText.text = "OPERATION: \n" + operationText;
+                                operationText1 = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") + (" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ")\n = " + result.ToString("0.00") + "\nDOUBLE OP!";
+                                opText1.text = "OPERATION: \n" + operationText1;
                                 //Debug.Log("OP: " + operationText);
                                 Destroy(grid[x, y].gameObject);
                                 DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
@@ -239,9 +258,9 @@ public class Game : MonoBehaviour {
                                 float result = CalculateResult(val_l, val_r, tile.value);
                                 if (result != float.PositiveInfinity)
                                 {
-                                    operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") = " + result.ToString("0.00");
+                                    operationText1 = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") = " + result.ToString("0.00");
                                     //Debug.Log("OP: " + operationText);
-                                    opText.text = "OPERATION: \n" + operationText;
+                                    opText1.text = "OPERATION: \n" + operationText1;
                                     Destroy(grid[x, y].gameObject);
                                     DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
                                     grid[x, y] = null;
@@ -286,9 +305,9 @@ public class Game : MonoBehaviour {
                                     float result = CalculateResult(val_u, val_d, tile.value);
                                     if (result != float.PositiveInfinity)
                                     {
-                                        operationText = "(" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ") = " + result.ToString("0.00");
+                                        operationText1 = "(" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ") = " + result.ToString("0.00");
                                         //Debug.Log("OP: " + operationText);
-                                        opText.text = "OPERATION: \n" + operationText;
+                                        opText1.text = "OPERATION: \n" + operationText1;
                                         Destroy(grid[x, y].gameObject);
                                         DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
                                         grid[x, y] = null;
@@ -318,7 +337,7 @@ public class Game : MonoBehaviour {
     static void UpdateScore(float res)
     {
         Data.score += res;
-        scoreText.text = "SCORE:\n" + Data.score.ToString("0.00");
+        scoreText1.text = "SCORE:\n" + Data.score.ToString("0.00");
         // When player reach the goal
         if(Data.score >= Data.goal)
         {
@@ -328,14 +347,15 @@ public class Game : MonoBehaviour {
             Debug.Log("FASTER!");
 
             // Change the goal and time
-            Data.goal = (int)Data.score + scoreIncrement;
-            goalText.text = "NEXT GOAL:\n" + Data.goal.ToString();
+            //Data.goal = (int)Data.score + scoreIncrement;
+            //goalText.text = "NEXT GOAL:\n" + Data.goal.ToString();
             Timer.timeRemain += 90f;
         }
     }
 
     static float CalculateResult(int a, int b, string op)
     {
+        /*
         float result;
         if(op == "+")
         {
@@ -367,6 +387,8 @@ public class Game : MonoBehaviour {
         Debug.Log(plusCount + "\t" + subCount + "\t" + mulCount + "\t" + divCount);
         Spawner.UpdateUnlockedOperators();
         return result;
+        */
+        return 0;
     }
 
     static void DestroyWithParticleEffect(Vector3 tilePosition, GameObject particleEffect)
@@ -633,11 +655,11 @@ public class Game : MonoBehaviour {
         Data.goal = 10;
         //scoreText.text = "SCORE:\n" + score.ToString("0.00");
         Timer.timeRemain = 120f;
-        plusCount = 0;
-        subCount = 0;
-        mulCount = 0;
-        divCount = 0;
-        Debug.Log(plusCount + "\t" + subCount + "\t" + mulCount + "\t" + divCount);
+        plusCountP1 = 0;
+        subCountP1 = 0;
+        mulCountP1 = 0;
+        divCountP1 = 0;
+        //Debug.Log(plusCount + "\t" + subCount + "\t" + mulCount + "\t" + divCount);
      //   Spawner.unlocked.GetRange(0, 2);
     }
 }

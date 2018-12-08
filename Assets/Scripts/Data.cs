@@ -9,4 +9,5 @@ public static class Data
     public static float timeBySec = 120.0f;
     public static int goal = 10;
     public static string cod = "";
+    public static int mode = 2; // 1 - 1P, 2 - 2P
 }

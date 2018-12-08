@@ -9,6 +9,12 @@ TagManager:
   - Goal
   - Operation
   - Unlocked
+  - OperationP1
+  - OperationP2
+  - ScoreP1
+  - ScoreP2
+  - UnlockedP1
+  - UnlockedP2
   layers:
   - Default
   - TransparentFX

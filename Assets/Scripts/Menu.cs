@@ -37,11 +37,13 @@ public class Menu : MonoBehaviour {
 
     public void StartGame()
     {
+        Data.mode = 1;
         SceneManager.LoadScene("Instructions");
     }
 
     public void Start2P()
     {
+        Data.mode = 2;
         SceneManager.LoadScene("Instructions2P");
     }
 

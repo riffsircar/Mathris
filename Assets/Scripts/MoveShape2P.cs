@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MoveShape : MonoBehaviour {
+public class MoveShape2P : MonoBehaviour {
 
     float lastFall = 0;
     Spawner spawner;
@@ -20,57 +20,51 @@ public class MoveShape : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        //   Debug.Log("Inside MoveShape start");
+     //   Debug.Log("Inside MoveShape start");
         // If the default is not valid, that means the blocks have reached the top
         // Which means game over
-        if (Data.mode == 1)
+        if (!isValidGridPos())
         {
-            if (!isValidGridPos())
-            {
-                Debug.Log("Game Over");
-                Data.cod = "OVERFLOW!";
-                SceneManager.LoadScene("Over");
-            }
-            spawner = FindObjectOfType<Spawner>();
+            Debug.Log("Game Over");
+            Data.cod = "OVERFLOW!";
+            SceneManager.LoadScene("Over");
         }
+        spawner = FindObjectOfType<Spawner>();
         //Debug.Log("Exiting MoveShape start");
     }
 
 	void Update ()
     {
-        if (Data.mode == 1)
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                LeftMove();
-            }
+            LeftMove();
+        }
 
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                RightMove();
-            }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            RightMove();
+        }
 
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                Rotation();
-            }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Rotation();
+        }
 
-            if (Time.time - lastFall >= Data.fallSpeed)
-            {
-                Fall();
-            }
+        if (Time.time - lastFall >= Data.fallSpeed)
+        {
+            Fall();
+        }
 
-            // The Fall function will be updated by time
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                FastFall();
-            }
+        // The Fall function will be updated by time
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            FastFall();
+        }
 
-            if (isLanded == true)
-            {
-                PerformCalAndSpawn(transform);
-                isLanded = false;
-            }
+        if (isLanded == true)
+        {
+            PerformCalAndSpawn(transform);
+            isLanded = false;
         }
 	}
 
@@ -132,45 +126,33 @@ public class MoveShape : MonoBehaviour {
 
     private void Fall()
     {
-        if (Data.mode == 1)
+        // Move downwards
+        transform.position += new Vector3(0, -1, 0);
+
+        if (isValidGridPos())
         {
-            // Move downwards
-            transform.position += new Vector3(0, -1, 0);
-
-            if (isValidGridPos())
-            {
-                UpdateGrid();
-            }
-
-            else
-            {
-                transform.position += new Vector3(0, 1, 0);
-                enabled = false;
-                isLanded = true;
-            }
-            lastFall = Time.time;
+            UpdateGrid();
         }
+
+        else
+        {
+            transform.position += new Vector3(0, 1, 0);
+            enabled = false;
+            isLanded = true;
+        }
+        lastFall = Time.time;
     }
 
     void FastFall()
     {
-        if (Data.mode == 1)
+        transform.position += new Vector3(0, -1, 0);
+        if (isValidGridPos())
         {
+            UpdateGrid();
             transform.position += new Vector3(0, -1, 0);
             if (isValidGridPos())
             {
                 UpdateGrid();
-                transform.position += new Vector3(0, -1, 0);
-                if (isValidGridPos())
-                {
-                    UpdateGrid();
-                }
-                else
-                {
-                    transform.position += new Vector3(0, 1, 0);
-                    enabled = false;
-                    isLanded = true;
-                }
             }
             else
             {
@@ -178,37 +160,40 @@ public class MoveShape : MonoBehaviour {
                 enabled = false;
                 isLanded = true;
             }
-            lastFall = Time.time;
         }
+        else
+        {
+            transform.position += new Vector3(0, 1, 0);
+            enabled = false;
+            isLanded = true;
+        }
+        lastFall = Time.time;
     }
 
     // perform calculation and spawn
     private void PerformCalAndSpawn(Transform t)
     {
-        if (Data.mode == 1)
-        {
-            Game.PerformOperations(t);
-            // Clean the full rows
-            Game.DeleteFullRows();
+        Game.PerformOperations(t);
+        // Clean the full rows
+        Game.DeleteFullRows();
 
-            // Spawn next shape
-            //FindObjectOfType<Spawner>().SpawnNext();
-            spawner.SpawnNext();
+        // Spawn next shape
+        //FindObjectOfType<Spawner>().SpawnNext();
+        spawner.SpawnNext();
 
-            // Disable the script of the obj, since it needs to be stop from controlling
-            // enabled = false;
-        }
+        // Disable the script of the obj, since it needs to be stop from controlling
+        // enabled = false;
     }
 
     public bool isValidGridPos()
     {
-        if (Data.mode == 1)
+        //Debug.Log("Inside isValidGridPos");
+        foreach (Transform child in transform)
         {
-            //Debug.Log("Inside isValidGridPos");
-            foreach (Transform child in transform)
-            {
-                Vector2 pos = Game.RoundPosition(child.position);
+            Vector2 pos = Game.RoundPosition(child.position);
 
+            if (Data.mode == 1)
+            {
                 // detect if the block is inside border or not
                 if (!Game.InsideBorder(pos))
                 {
@@ -224,6 +209,14 @@ public class MoveShape : MonoBehaviour {
                     Debug.Log("2nd valid if");
                     return false;
                 }
+            }
+            else
+            {
+                if (!Game2P.InsideBorder(pos))
+                {
+                    Debug.Log("1st valid if");
+                    return false;
+                }
 
                 /*
                 // Used in rotation: find the block that is in the position already.
@@ -235,42 +228,38 @@ public class MoveShape : MonoBehaviour {
                     return false;
                 }
                 */
-
-                // Add if the 
             }
-            //Debug.Log("Exiting isValidGridPos");
-            return true;
+            // Add if the 
         }
+        //Debug.Log("Exiting isValidGridPos");
         return true;
     }
-
+    
     // update all grids that belongs to a certain shape.
-    void UpdateGrid()
+    void UpdateGrid() 
     {
-        if (Data.mode == 1)
+        // Remove old children from grid
+        for (int x = 0; x < Game.width; ++x)
         {
-            // Remove old children from grid
-            for (int x = 0; x < Game.width; ++x)
+            for (int y = 0; y < Game.height; ++y)
             {
-                for (int y = 0; y < Game.height; ++y)
+                if (Game.grid[x, y] != null) // if has a grid
                 {
-                    if (Game.grid[x, y] != null) // if has a grid
+                    if (Game.grid[x, y].parent == transform) // if the parent is the shape
                     {
-                        if (Game.grid[x, y].parent == transform) // if the parent is the shape
-                        {
-                            Game.grid[x, y] = null;
-                        }
+                        Game.grid[x, y] = null;
                     }
                 }
             }
+        }
 
-            // put new block in the position
-            foreach (Transform child in transform)
-            {
-                Vector2 pos = Game.RoundPosition(child.position);
-                Game.grid[(int)pos.x, (int)pos.y] = child;
+        // put new block in the position
+        foreach (Transform child in transform)
+        {
+            Vector2 pos = Game.RoundPosition(child.position);
+            Game.grid[(int)pos.x, (int)pos.y] = child;
 
-            }
         }
     }
+    
 }
