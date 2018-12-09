@@ -100,7 +100,7 @@ public class Spawner : MonoBehaviour
                 mult.active = true;
                 mulCount.active = true;
                 mulCount.GetComponent<Text>().text = "0";
-                Game.scoreIncrement = 20;
+                Game.scoreIncrement *= 2;
             }
         }
         if (Game.subCount == 5)

@@ -37,6 +37,11 @@ public class Game2P : MonoBehaviour {
     public static int divCountP2 = 0;
     public static int scoreIncrement = 10;
 
+    // grid: tracks all position of the grid
+    public static Transform[,] grid = new Transform[width, height];
+    public static Transform[,] grid1 = new Transform[width, height];
+    public static Transform[,] grid2 = new Transform[width, height];
+
     void Start()
     {
         scoreObj1 = GameObject.FindGameObjectWithTag("ScoreP1");
@@ -69,10 +74,6 @@ public class Game2P : MonoBehaviour {
         Reset();
     }
 
-    // grid: tracks all position of the grid
-    public static Transform[,] grid = new Transform[width, height];
-    public static Transform[,] grid1 = new Transform[width, height];
-    public static Transform[,] grid2 = new Transform[width, height];
 
     // RoundPosition:
     /* 
@@ -637,7 +638,7 @@ public class Game2P : MonoBehaviour {
 
     public static void Reset()
     {
-        Debug.Log("Resetting");
+        //Debug.Log("Resetting");
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -651,7 +652,6 @@ public class Game2P : MonoBehaviour {
         }
         //Data.score = 0.0f;
         Data.fallSpeed = 0.4f;
-        Data.timeBySec = 5.0f;
         Data.goal = 10;
         //scoreText.text = "SCORE:\n" + score.ToString("0.00");
         Timer.timeRemain = 120f;

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MoveShape2P : MonoBehaviour {
 
     float lastFall = 0;
-    Spawner spawner;
+    Spawner2P spawner;
     float fallSpeed = 0.3f;
     public static bool isLanded = false;
 
@@ -29,23 +29,23 @@ public class MoveShape2P : MonoBehaviour {
             Data.cod = "OVERFLOW!";
             SceneManager.LoadScene("Over");
         }
-        spawner = FindObjectOfType<Spawner>();
+        spawner = FindObjectOfType<Spawner2P>();
         //Debug.Log("Exiting MoveShape start");
     }
 
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             LeftMove();
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             RightMove();
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             Rotation();
         }
@@ -56,7 +56,7 @@ public class MoveShape2P : MonoBehaviour {
         }
 
         // The Fall function will be updated by time
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             FastFall();
         }

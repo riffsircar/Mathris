@@ -12,7 +12,8 @@ public class Game : MonoBehaviour {
     static Text scoreText;
     static Text opText;
     static Text goalText;
-    static float score = 0.0f;
+    public static float score = 0.0f;
+    public static float goal;
     public static float fallSpeed = 0.4f;
     static int thresh = 50;
     GameObject scoreObj;
@@ -26,7 +27,7 @@ public class Game : MonoBehaviour {
     public static int subCount = 0;
     public static int mulCount = 0;
     public static int divCount = 0;
-    public static int scoreIncrement = 10;
+    public static int scoreIncrement = 50;
 
     void Start()
     {
@@ -36,12 +37,14 @@ public class Game : MonoBehaviour {
         if (scoreObj)
         {
             Data.score = 0.0f;
+            score = 0.0f;
             Data.fallSpeed = 0.4f;
-            Data.goal = 10;
+            goal = Data.goal;
+            //Data.goal = 50;
             scoreText = scoreObj.GetComponent<Text>();
             scoreText.text = "SCORE:\n0.00";
             goalText = goalObj.GetComponent<Text>();
-            goalText.text = "NEXT GOAL:\n" + Data.goal.ToString();
+            goalText.text = "NEXT GOAL:\n" + goal.ToString();
             opText = opObj.GetComponent<Text>();
         }
             spawnerObj = GameObject.Find("Spawner");
@@ -318,18 +321,21 @@ public class Game : MonoBehaviour {
     static void UpdateScore(float res)
     {
         Data.score += res;
-        scoreText.text = "SCORE:\n" + Data.score.ToString("0.00");
+        score += res;
+        //scoreText.text = "SCORE:\n" + Data.score.ToString("0.00");
+        scoreText.text = "SCORE:\n" + score.ToString("0.00");
         // When player reach the goal
-        if(Data.score >= Data.goal)
+        //if (Data.score >= Data.goal)
+        if(score >= goal) 
         {
             // Change the speed
-            Data.fallSpeed /= 1.025f;
+            Data.fallSpeed /= 1.0125f;
             Debug.Log(Data.fallSpeed);
             Debug.Log("FASTER!");
 
             // Change the goal and time
-            Data.goal = (int)Data.score + scoreIncrement;
-            goalText.text = "NEXT GOAL:\n" + Data.goal.ToString();
+            goal += scoreIncrement;
+            goalText.text = "NEXT GOAL:\n" + goal.ToString();
             Timer.timeRemain += 90f;
         }
     }
@@ -629,10 +635,9 @@ public class Game : MonoBehaviour {
         }
         //Data.score = 0.0f;
         Data.fallSpeed = 0.4f;
-        Data.timeBySec = 5.0f;
-        Data.goal = 10;
+        goal = Data.goal;
         //scoreText.text = "SCORE:\n" + score.ToString("0.00");
-        Timer.timeRemain = 120f;
+        Timer.timeRemain = Data.initTime;
         plusCount = 0;
         subCount = 0;
         mulCount = 0;

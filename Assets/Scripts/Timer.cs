@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour {
 
-    public static float timeRemain = Data.timeBySec;
+    public static float timeRemain = Data.initTime;
 
     static GameObject time;
     static Text timeText;
@@ -21,7 +21,7 @@ public class Timer : MonoBehaviour {
     void Update ()
     {
         timeRemain -= Time.deltaTime;
-        timeText.text = "TIME: " + timeRemain.ToString("0.00");
+        timeText.text = "TIME: " + timeRemain.ToString("0");
         if(timeRemain <= 10f)
         {
             timeText.color = Color.red;

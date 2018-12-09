@@ -8,8 +8,11 @@ public class MoveShape : MonoBehaviour {
 
     float lastFall = 0;
     Spawner spawner;
+    Spawner2P spawner2P;
     float fallSpeed = 0.3f;
     public static bool isLanded = false;
+    public static bool isLandedP1 = false;
+    public static bool isLandedP2 = false;
 
     /*
     void Awake()
@@ -17,8 +20,8 @@ public class MoveShape : MonoBehaviour {
         
     }
     */
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         //   Debug.Log("Inside MoveShape start");
         // If the default is not valid, that means the blocks have reached the top
@@ -32,6 +35,16 @@ public class MoveShape : MonoBehaviour {
                 SceneManager.LoadScene("Over");
             }
             spawner = FindObjectOfType<Spawner>();
+        }
+        else
+        {
+            if (!isValidGridPos())
+            {
+                Debug.Log("Game Over");
+                Data.cod = "OVERFLOW!";
+                SceneManager.LoadScene("Over");
+            }
+            spawner2P = FindObjectOfType<Spawner2P>();
         }
         //Debug.Log("Exiting MoveShape start");
     }
@@ -71,6 +84,76 @@ public class MoveShape : MonoBehaviour {
                 PerformCalAndSpawn(transform);
                 isLanded = false;
             }
+        }
+        else
+        {
+            /*
+            //Player 1
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                LeftMoveP1();
+            }
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                RightMoveP1();
+            }
+
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                RotationP1();
+            }
+
+            if (Time.time - lastFall >= Data.fallSpeed)
+            {
+                FallP1();
+            }
+
+            // The Fall function will be updated by time
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                FastFallP1();
+            }
+            if (isLandedP1 == true)
+            {
+                PerformCalAndSpawn(transform);
+                isLandedP1 = false;
+            }
+
+
+            //Player 2
+            if (Input.GetKeyDown(KeyCode.Left))
+            {
+                LeftMoveP2();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Right))
+            {
+                RightMoveP2();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Up))
+            {
+                RotationP2();
+            }
+
+            if (Time.time - lastFall >= Data.fallSpeed)
+            {
+                FallP2();
+            }
+
+            // The Fall function will be updated by time
+            if (Input.GetKeyDown(KeyCode.Down))
+            {
+                FastFallP2();
+            }
+
+            if (isLandedP2 == true)
+            {
+                PerformCalAndSpawn(transform);
+                isLandedP2 = false;
+            }
+            */
         }
 	}
 

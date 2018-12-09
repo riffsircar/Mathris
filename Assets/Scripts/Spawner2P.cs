@@ -71,21 +71,27 @@ public class Spawner2P : MonoBehaviour
         unlocked.Add(opDict["subtract"]);
 
         mult1 = GameObject.Find("Mult");
-        mult1.active = false;
+        if(mult1)
+            mult1.active = false;
         div1 = GameObject.Find("Div");
-        div1.active = false;
+        if(div1)
+            div1.active = false;
 
         mult2 = GameObject.Find("MultP2");
-        mult2.active = false;
+        if(mult2)
+            mult2.active = false;
         div2 = GameObject.Find("DivP2");
-        div2.active = false;
+        if(div2)
+            div2.active = false;
 
         addCountP1 = GameObject.Find("AddCountP1");
         mulCountP1 = GameObject.Find("MulCountP1");
         subCountP1 = GameObject.Find("SubCountP1");
         divCountP1 = GameObject.Find("DivCountP1");
-        mulCountP1.active = false;
-        divCountP1.active = false;
+        if(mulCountP1)
+            mulCountP1.active = false;
+        if(divCountP1)
+            divCountP1.active = false;
         addCountP1.GetComponent<Text>().text = "0";
         subCountP1.GetComponent<Text>().text = "0";
 
@@ -93,8 +99,10 @@ public class Spawner2P : MonoBehaviour
         mulCountP2 = GameObject.Find("MulCountP2");
         subCountP2 = GameObject.Find("SubCountP2");
         divCountP2 = GameObject.Find("DivCountP2");
-        mulCountP2.active = false;
-        divCountP2.active = false;
+        if(mulCountP2)
+            mulCountP2.active = false;
+        if(divCountP2)
+            divCountP2.active = false;
         addCountP2.GetComponent<Text>().text = "0";
         subCountP2.GetComponent<Text>().text = "0";
 
@@ -171,7 +179,11 @@ public class Spawner2P : MonoBehaviour
 
         GameObject block = new GameObject(shape);
         block.transform.position = this.transform.position;
-        block.AddComponent<MoveShape>();
+        Debug.Log("GOB NAME: " + gameObject.name);
+        if (gameObject.name == "SpawnerP1")
+            block.AddComponent<MoveShape>();
+        else
+            block.AddComponent<MoveShape2P>();
 
         
         float op = Random.Range(0.0f, 1.0f);
