@@ -20,7 +20,10 @@ public class Menu : MonoBehaviour {
         }
         if(cod)
         {
-            cod.GetComponent<Text>().text = "Cause of Death: " + Data.cod;
+            if (Data.mode == 1)
+                cod.GetComponent<Text>().text = "Cause of Death: " + Data.cod;
+            else
+                cod.GetComponent<Text>().text = Data.cod;
         }
         if(winner)
         {

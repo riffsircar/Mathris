@@ -47,6 +47,7 @@ public class Timer : MonoBehaviour {
                     Game2P.winner = 1;
                 else
                     Game2P.winner = 2;
+                Data.cod = "";
                 SceneManager.LoadScene("Over2P");
             }
         }

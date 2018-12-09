@@ -353,7 +353,11 @@ public class Game2P : MonoBehaviour {
                             else
                             {
                                 Data.cod = "DIVIDE BY ZERO!";
-                                SceneManager.LoadScene("Over");
+                                if (player == 1)
+                                    Game2P.winner = 2;
+                                else
+                                    Game2P.winner = 1;
+                                SceneManager.LoadScene("Over2P");
                             }
                         }
                         else
@@ -405,7 +409,11 @@ public class Game2P : MonoBehaviour {
                                 else
                                 {
                                     Data.cod = "DIVIDE BY ZERO!";
-                                    SceneManager.LoadScene("Over");
+                                    if (player == 1)
+                                        Game2P.winner = 2;
+                                    else
+                                        Game2P.winner = 1;
+                                    SceneManager.LoadScene("Over2P");
                                 }
                             }
                             else
@@ -457,7 +465,11 @@ public class Game2P : MonoBehaviour {
                                     else
                                     {
                                         Data.cod = "DIVIDE BY ZERO!";
-                                        SceneManager.LoadScene("Over");
+                                        if (player == 1)
+                                            Game2P.winner = 2;
+                                        else
+                                            Game2P.winner = 1;
+                                        SceneManager.LoadScene("Over2P");
                                     }
                                 }
                             }

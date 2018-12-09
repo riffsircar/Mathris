@@ -347,7 +347,7 @@ public class Game : MonoBehaviour {
             goalText.text = goal.ToString();
             scoreSlider.minValue = score;
             scoreSlider.maxValue = goal;
-            Timer.timeRemain += 90f;
+            Timer.timeRemain += 60f;
         }
     }
 
