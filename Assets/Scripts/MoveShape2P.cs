@@ -20,6 +20,7 @@ public class MoveShape2P : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        Debug.Log("moveshape2p start");
      //   Debug.Log("Inside MoveShape start");
         // If the default is not valid, that means the blocks have reached the top
         // Which means game over
@@ -29,7 +30,11 @@ public class MoveShape2P : MonoBehaviour {
             Data.cod = "OVERFLOW!";
             SceneManager.LoadScene("Over");
         }
-        spawner = FindObjectOfType<Spawner2P>();
+        spawner = GameObject.Find("SpawnerP2").GetComponent<Spawner2P>();
+        if (GameObject.Find("SpawnerP2"))
+            Debug.Log("SpawnerP2 found");
+        else
+            Debug.Log("SpawnerP2 not found");
         //Debug.Log("Exiting MoveShape start");
     }
 
@@ -63,6 +68,11 @@ public class MoveShape2P : MonoBehaviour {
 
         if (isLanded == true)
         {
+            Debug.Log("2P landed");
+            if (spawner)
+                Debug.Log("Spawner2P still around");
+            else
+                Debug.Log("lost spawner2p");
             PerformCalAndSpawn(transform);
             isLanded = false;
         }
@@ -173,9 +183,9 @@ public class MoveShape2P : MonoBehaviour {
     // perform calculation and spawn
     private void PerformCalAndSpawn(Transform t)
     {
-        Game.PerformOperations(t);
+        //Game.PerformOperations(t);
         // Clean the full rows
-        Game.DeleteFullRows();
+        //Game.DeleteFullRows();
 
         // Spawn next shape
         //FindObjectOfType<Spawner>().SpawnNext();
@@ -187,49 +197,27 @@ public class MoveShape2P : MonoBehaviour {
 
     public bool isValidGridPos()
     {
-        //Debug.Log("Inside isValidGridPos");
+        Debug.Log("Inside isValidGridPos 2P");
         foreach (Transform child in transform)
         {
-            Vector2 pos = Game.RoundPosition(child.position);
-
-            if (Data.mode == 1)
-            {
+            Vector2 pos = Game2P.RoundPosition(child.position);
                 // detect if the block is inside border or not
-                if (!Game.InsideBorder(pos))
+                if (!Game2P.InsideGridTwoBorder(pos))
                 {
-                    Debug.Log("1st valid if");
+                    Debug.Log("1st valid if grid 2");
                     return false;
                 }
 
-                // Used in rotation: find the block that is in the position already.
-                // If there is a block that at the position, return false.
-                if (Game.grid[(int)pos.x, (int)pos.y] != null &&
-                    Game.grid[(int)pos.x, (int)pos.y].parent != transform)
+            // Used in rotation: find the block that is in the position already.
+            // If there is a block that at the position, return false.
+            Debug.Log((int)(pos.x-14) + " " + (int)pos.y);
+                if (Game2P.grid2[(int)(pos.x - 14), (int)pos.y] != null &&
+                    Game2P.grid2[(int)(pos.x - 14), (int)pos.y].parent != transform)
                 {
                     Debug.Log("2nd valid if");
                     return false;
                 }
-            }
-            else
-            {
-                if (!Game2P.InsideBorder(pos))
-                {
-                    Debug.Log("1st valid if");
-                    return false;
-                }
-
-                /*
-                // Used in rotation: find the block that is in the position already.
-                // If there is a block that at the position, return false.
-                if (Game.grid[(int)pos.x, (int)pos.y] != null &&
-                    Game.grid[(int)pos.x, (int)pos.y].parent != transform)
-                {
-                    Debug.Log("2nd valid if");
-                    return false;
-                }
-                */
-            }
-            // Add if the 
+            
         }
         //Debug.Log("Exiting isValidGridPos");
         return true;
@@ -239,15 +227,15 @@ public class MoveShape2P : MonoBehaviour {
     void UpdateGrid() 
     {
         // Remove old children from grid
-        for (int x = 0; x < Game.width; ++x)
+        for (int x = 0; x < Game2P.width; ++x)
         {
-            for (int y = 0; y < Game.height; ++y)
+            for (int y = 0; y < Game2P.height; ++y)
             {
-                if (Game.grid[x, y] != null) // if has a grid
+                if (Game2P.grid2[x, y] != null) // if has a grid
                 {
-                    if (Game.grid[x, y].parent == transform) // if the parent is the shape
+                    if (Game2P.grid2[x, y].parent == transform) // if the parent is the shape
                     {
-                        Game.grid[x, y] = null;
+                        Game2P.grid2[x, y] = null;
                     }
                 }
             }
@@ -256,8 +244,9 @@ public class MoveShape2P : MonoBehaviour {
         // put new block in the position
         foreach (Transform child in transform)
         {
-            Vector2 pos = Game.RoundPosition(child.position);
-            Game.grid[(int)pos.x, (int)pos.y] = child;
+            Vector2 pos = Game2P.RoundPosition(child.position);
+            Debug.Log(pos.x + " " + pos.y);
+            Game2P.grid2[(int)(pos.x-14), (int)pos.y] = child;
 
         }
     }

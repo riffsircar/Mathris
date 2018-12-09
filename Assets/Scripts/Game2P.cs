@@ -96,6 +96,24 @@ public class Game2P : MonoBehaviour {
                     (int)position.y >= 0);
     }
 
+    public static bool InsideGridOneBorder(Vector2 position)
+    {
+        Debug.Log("Grid1 bord");
+        //Debug.Log(position.x + " " + position.y);
+        return ((int)position.x >= 0 &&
+                (int)position.x < width &&
+                (int)position.y >= 0);
+    }
+
+    public static bool InsideGridTwoBorder(Vector2 position)
+    {
+        Debug.Log("Grid2 bord");
+        //Debug.Log(position.x + " " +  position.y);
+        return ((int)position.x >= 14 &&
+                (int)position.x < (14+width) &&
+                (int)position.y >= 0);
+    }
+
     public static bool IsRowFull(int y)
     {
         for (int x = 0; x < width; ++x)
