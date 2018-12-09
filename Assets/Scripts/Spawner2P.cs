@@ -60,6 +60,7 @@ public class Spawner2P : MonoBehaviour
     void Start()
     {
         //Instantiate(test, transform.position, Quaternion.identity);
+        /*
         unlocked = new List<GameObject>();
         opDict = new Dictionary<string, GameObject>();
         foreach (GameObject go in operators)
@@ -67,9 +68,17 @@ public class Spawner2P : MonoBehaviour
             opDict.Add(go.name, go);
         }
 
-        unlocked.Add(opDict["add"]);
-        unlocked.Add(opDict["subtract"]);
+//        unlocked.Add(opDict["add"]);
+  //      unlocked.Add(opDict["subtract"]);
 
+        /*
+        if (Game2P.unlocked1)
+        {
+            unlocked1.Add(opDict["add"]);
+            unlocked1.Add(opDict["subtract"]);
+        }
+        */
+        /*
         mult1 = GameObject.Find("Mult");
         if(mult1)
             mult1.active = false;
@@ -105,12 +114,13 @@ public class Spawner2P : MonoBehaviour
             divCountP2.active = false;
         addCountP2.GetComponent<Text>().text = "0";
         subCountP2.GetComponent<Text>().text = "0";
-
+        */
         InitXY();
         SpawnNext();
     }
 
-    public static void UpdateUnlockedOperators()
+    /*
+    public static void UpdateUnlockedOperators(int player)
     {
         /*
         addCount.GetComponent<Text>().text = Game.plusCount.ToString();
@@ -144,8 +154,8 @@ public class Spawner2P : MonoBehaviour
                 divCount.GetComponent<Text>().text = "0";
             }
         }
-        */
     }
+    */
 
     static void InitXY()
     {
@@ -180,15 +190,24 @@ public class Spawner2P : MonoBehaviour
         GameObject block = new GameObject(shape);
         block.transform.position = this.transform.position;
         Debug.Log("GOB NAME: " + gameObject.name);
+        int unlockedCount;
+        List<GameObject> unlocked;
         if (gameObject.name == "SpawnerP1")
+        {
             block.AddComponent<MoveShape>();
+            unlockedCount = Game2P.unlockedP1Count ;
+            unlocked = Game2P.unlockedP1;
+        }
         else
+        {
             block.AddComponent<MoveShape2P>();
-
+            unlockedCount = Game2P.unlockedP2Count;
+            unlocked = Game2P.unlockedP2;
+        }
         
         float op = Random.Range(0.0f, 1.0f);
         bool hasOp = false;
-        int unlockedCount = unlocked.Count;
+        //int unlockedCount = unlocked.Count;
         for (int i = 0; i < 4; i++)
         {
             int num = Random.Range(0, 10);

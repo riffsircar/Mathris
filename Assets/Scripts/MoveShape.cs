@@ -46,8 +46,7 @@ public class MoveShape : MonoBehaviour {
                 SceneManager.LoadScene("Over");
             }
             spawner2P = GameObject.Find("SpawnerP1").GetComponent<Spawner2P>();
-            if (spawner2P)
-                Debug.Log("spawner p1 found");
+            
         }
         //Debug.Log("Exiting MoveShape start");
     }
@@ -206,8 +205,8 @@ public class MoveShape : MonoBehaviour {
         }
         else
         {
-         //   Game2P.PerformOperations(t, 1);
-           // Game2P.DeleteFullRows();
+            Game2P.PerformOperations(t, Game2P.grid1,1);
+           Game2P.DeleteFullRows(1);
             spawner2P.SpawnNext();
         }
     }
@@ -255,7 +254,6 @@ public class MoveShape : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Inside isValidGridOnePos");
             foreach (Transform child in transform)
             {
                 Vector2 pos = Game2P.RoundPosition(child.position);
@@ -269,7 +267,6 @@ public class MoveShape : MonoBehaviour {
 
                 // Used in rotation: find the block that is in the position already.
                 // If there is a block that at the position, return false.
-                Debug.Log(pos);
                 if (Game2P.grid1[(int)pos.x, (int)pos.y] != null &&
                     Game2P.grid1[(int)pos.x, (int)pos.y].parent != transform)
                 {

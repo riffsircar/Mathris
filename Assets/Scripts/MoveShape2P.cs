@@ -183,9 +183,9 @@ public class MoveShape2P : MonoBehaviour {
     // perform calculation and spawn
     private void PerformCalAndSpawn(Transform t)
     {
-        //Game.PerformOperations(t);
+        Game2P.PerformOperations(t,Game2P.grid2,2);
         // Clean the full rows
-        //Game.DeleteFullRows();
+        Game2P.DeleteFullRows(2);
 
         // Spawn next shape
         //FindObjectOfType<Spawner>().SpawnNext();
@@ -210,7 +210,6 @@ public class MoveShape2P : MonoBehaviour {
 
             // Used in rotation: find the block that is in the position already.
             // If there is a block that at the position, return false.
-            Debug.Log((int)(pos.x-14) + " " + (int)pos.y);
                 if (Game2P.grid2[(int)(pos.x - 14), (int)pos.y] != null &&
                     Game2P.grid2[(int)(pos.x - 14), (int)pos.y].parent != transform)
                 {
