@@ -28,7 +28,8 @@ public class MoveShape2P : MonoBehaviour {
         {
             Debug.Log("Game Over");
             Data.cod = "OVERFLOW!";
-            SceneManager.LoadScene("Over");
+            Game2P.winner = 1;
+            SceneManager.LoadScene("Over2P");
         }
         spawner = GameObject.Find("SpawnerP2").GetComponent<Spawner2P>();
         if (GameObject.Find("SpawnerP2"))

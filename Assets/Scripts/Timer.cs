@@ -32,10 +32,23 @@ public class Timer : MonoBehaviour {
         }
         if (timeRemain <= 0)
         {
-            timeRemain = 0;
-            // Debug.Log("Time!");
-            Data.cod = "RAN OUT OF TIME!";
-            SceneManager.LoadScene("Over");
+            if (Data.mode == 1)
+            {
+                timeRemain = 0;
+                // Debug.Log("Time!");
+                Data.cod = "RAN OUT OF TIME!";
+                SceneManager.LoadScene("Over");
+            }
+            else
+            {
+                if (Game2P.score1 == Game2P.score2)
+                    Game2P.winner = 0;
+                else if (Game2P.score1 > Game2P.score2)
+                    Game2P.winner = 1;
+                else
+                    Game2P.winner = 2;
+                SceneManager.LoadScene("Over2P");
+            }
         }
 	}
 }

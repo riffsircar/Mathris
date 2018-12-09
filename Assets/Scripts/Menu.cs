@@ -11,7 +11,10 @@ public class Menu : MonoBehaviour {
     {
         GameObject finalScore = GameObject.Find("FinalScore");
         GameObject cod = GameObject.Find("COD");
-        if(finalScore)
+        GameObject winner = GameObject.Find("Winner");
+        GameObject p1 = GameObject.Find("P1");
+        GameObject p2 = GameObject.Find("P2");
+        if (finalScore)
         {
             finalScore.GetComponent<Text>().text = "Score: " + Data.score.ToString("0.00");
         }
@@ -19,8 +22,18 @@ public class Menu : MonoBehaviour {
         {
             cod.GetComponent<Text>().text = "Cause of Death: " + Data.cod;
         }
-        Game.Reset();
-        Debug.Log(Data.score + "\t" + Data.cod);
+        if(winner)
+        {
+            string w = Game2P.winner == 1 ? "Player 1" : "Player 2";
+            winner.GetComponent<Text>().text = w + "  wins!";
+        }
+        if(p1 && p2)
+        {
+            p1.GetComponent<Text>().text = "Player 1: " + Game2P.score1;
+            p2.GetComponent<Text>().text = "Player 2: " + Game2P.score2;
+        }
+        Game2P.Reset();
+        //Debug.Log(Data.score + "\t" + Data.cod);
     }
 
 	public void PlayGame()

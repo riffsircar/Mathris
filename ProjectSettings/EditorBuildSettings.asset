@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Over.unity
     guid: 45e432b81ec78144299109e115da3b48
+  - enabled: 1
+    path: Assets/Scenes/Over2P.unity
+    guid: 48f0c8c67c3ef0d49baf064de790f0a1
   m_configObjects: {}

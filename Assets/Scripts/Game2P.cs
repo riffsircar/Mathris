@@ -13,8 +13,8 @@ public class Game2P : MonoBehaviour {
     static Text scoreText2;
     static Text opText1;
     static Text opText2;
-    static float score1 = 0.0f;
-    static float score2 = 0.0f;
+    public static float score1 = 0.0f;
+    public static float score2 = 0.0f;
     public static float fallSpeed = 0.4f;
     static int thresh = 50;
     GameObject scoreObj1;
@@ -41,6 +41,7 @@ public class Game2P : MonoBehaviour {
     static Dictionary<string, GameObject> opDict;
     public static int unlockedP1Count = 2;
     public static int unlockedP2Count = 2;
+    public static int winner = 0;
 
     static GameObject mult1;
     static GameObject div1;
@@ -76,17 +77,13 @@ public class Game2P : MonoBehaviour {
         unlockedP2 = new List<GameObject>();
         if (scoreObj1 && scoreObj2)
         {
-            Data.score = 0.0f;
             Data.fallSpeed = 0.4f;
-            Data.goal = 10;
             scoreText1 = scoreObj1.GetComponent<Text>();
             scoreText1.text = "SCORE:\n0.00";
             scoreText2 = scoreObj2.GetComponent<Text>();
             scoreText2.text = "SCORE:\n0.00";
             opText1 = opObj1.GetComponent<Text>();
             opText2 = opObj2.GetComponent<Text>();
-
-            
         }
         
         spawnerObj1 = GameObject.Find("SpawnerP1");
@@ -164,7 +161,6 @@ public class Game2P : MonoBehaviour {
     // check if the block is inside the borders
     public static bool InsideBorder(Vector2 position)
     {
-        return true;
             return ((int)position.x >= 0 &&
                     (int)position.x < width &&
                     (int)position.y >= 0);
@@ -703,7 +699,7 @@ public class Game2P : MonoBehaviour {
     public void Restart()
     {
         Reset();  
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("TwoPlayer");
         //spawner.SpawnNext();
     }
 
@@ -720,23 +716,36 @@ public class Game2P : MonoBehaviour {
         {
             for (int y = 0; y < height; y++)
             {
-                if (grid[x, y] != null)
+                if (grid1[x, y] != null)
                 {
-                    Destroy(grid[x, y].gameObject);
-                    grid[x, y] = null;
+                    Destroy(grid1[x, y].gameObject);
+                    grid1[x, y] = null;
+                }
+
+                if (grid2[x, y] != null)
+                {
+                    Destroy(grid2[x, y].gameObject);
+                    grid2[x, y] = null;
                 }
             }
         }
         //Data.score = 0.0f;
         Data.fallSpeed = 0.4f;
-        Data.goal = 10;
         //scoreText.text = "SCORE:\n" + score.ToString("0.00");
         Timer.timeRemain = 120f;
         plusCountP1 = 0;
         subCountP1 = 0;
         mulCountP1 = 0;
         divCountP1 = 0;
+
+        plusCountP2 = 0;
+        subCountP2 = 0;
+        mulCountP2 = 0;
+        divCountP2 = 0;
+
+        score1 = 0f;
+        score2 = 0f;
         //Debug.Log(plusCount + "\t" + subCount + "\t" + mulCount + "\t" + divCount);
-     //   Spawner.unlocked.GetRange(0, 2);
+        //   Spawner.unlocked.GetRange(0, 2);
     }
 }

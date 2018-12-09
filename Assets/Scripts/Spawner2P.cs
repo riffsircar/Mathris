@@ -119,44 +119,6 @@ public class Spawner2P : MonoBehaviour
         SpawnNext();
     }
 
-    /*
-    public static void UpdateUnlockedOperators(int player)
-    {
-        /*
-        addCount.GetComponent<Text>().text = Game.plusCount.ToString();
-        subCount.GetComponent<Text>().text = Game.subCount.ToString();
-
-        if(divCount)
-            divCount.GetComponent<Text>().text = Game.divCount.ToString();
-        if(mulCount)
-            mulCount.GetComponent<Text>().text = Game.mulCount.ToString();
-
-        if (Game.plusCount == 5)
-        {
-            if (!mult.active)
-            {
-                Debug.Log("MULTIPLICATION UNLOCKED!");
-                unlocked.Add(opDict["multiply"]);
-                mult.active = true;
-                mulCount.active = true;
-                mulCount.GetComponent<Text>().text = "0";
-                Game.scoreIncrement = 20;
-            }
-        }
-        if (Game.subCount == 5)
-        {
-            if (!div.active)
-            {
-                Debug.Log("DIVISION UNLOCKED!");
-                unlocked.Add(opDict["divide"]);
-                div.active = true;
-                divCount.active = true;
-                divCount.GetComponent<Text>().text = "0";
-            }
-        }
-    }
-    */
-
     static void InitXY()
     {
         X = new Dictionary<string, int[]>();

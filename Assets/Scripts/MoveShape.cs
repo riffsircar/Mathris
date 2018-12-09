@@ -27,26 +27,27 @@ public class MoveShape : MonoBehaviour {
         //   Debug.Log("Inside MoveShape start");
         // If the default is not valid, that means the blocks have reached the top
         // Which means game over
+        if (!isValidGridPos())
+        {
+            Debug.Log("Game Over");
+            Data.cod = "OVERFLOW!";
+            if(Data.mode == 1)
+                SceneManager.LoadScene("Over");
+            else
+            {
+                Game2P.winner = 2;
+                SceneManager.LoadScene("Over2P");
+            }
+        }
+
         if (Data.mode == 1)
         {
-            if (!isValidGridPos())
-            {
-                Debug.Log("Game Over");
-                Data.cod = "OVERFLOW!";
-                SceneManager.LoadScene("Over");
-            }
+           
             spawner = FindObjectOfType<Spawner>();
         }
         else
         {
-            if (!isValidGridPos())
-            {
-                Debug.Log("Game Over");
-                Data.cod = "OVERFLOW!";
-                SceneManager.LoadScene("Over");
-            }
             spawner2P = GameObject.Find("SpawnerP1").GetComponent<Spawner2P>();
-            
         }
         //Debug.Log("Exiting MoveShape start");
     }
