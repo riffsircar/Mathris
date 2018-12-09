@@ -20,6 +20,7 @@ public class Game : MonoBehaviour {
     GameObject goalObj;
     GameObject opObj;
     GameObject spawnerObj;
+    GameObject sliderObj;
     Spawner spawner;
     Spawner spawner2;
     static string operationText;
@@ -29,22 +30,29 @@ public class Game : MonoBehaviour {
     public static int divCount = 0;
     public static int scoreIncrement = 50;
 
+    static Slider scoreSlider;
+
     void Start()
     {
         scoreObj = GameObject.FindGameObjectWithTag("Score");
         goalObj = GameObject.FindGameObjectWithTag("Goal");
         opObj = GameObject.FindGameObjectWithTag("Operation");
+        sliderObj = GameObject.Find("ScoreSlider");
+        if(sliderObj)
+            scoreSlider = sliderObj.GetComponent<Slider>();
+
         if (scoreObj)
         {
             Data.score = 0.0f;
             score = 0.0f;
+            scoreSlider.value = score;
             Data.fallSpeed = 0.4f;
             goal = Data.goal;
             //Data.goal = 50;
             scoreText = scoreObj.GetComponent<Text>();
-            scoreText.text = "SCORE:\n0.00";
+            scoreText.text = "SCORE: 0.00";
             goalText = goalObj.GetComponent<Text>();
-            goalText.text = "NEXT GOAL:\n" + goal.ToString();
+            goalText.text = goal.ToString();
             opText = opObj.GetComponent<Text>();
         }
             spawnerObj = GameObject.Find("Spawner");
@@ -322,8 +330,9 @@ public class Game : MonoBehaviour {
     {
         Data.score += res;
         score += res;
+        scoreSlider.value = score;
         //scoreText.text = "SCORE:\n" + Data.score.ToString("0.00");
-        scoreText.text = "SCORE:\n" + score.ToString("0.00");
+        scoreText.text = "SCORE: " + score.ToString("0.00");
         // When player reach the goal
         //if (Data.score >= Data.goal)
         if(score >= goal) 
@@ -335,7 +344,9 @@ public class Game : MonoBehaviour {
 
             // Change the goal and time
             goal += scoreIncrement;
-            goalText.text = "NEXT GOAL:\n" + goal.ToString();
+            goalText.text = goal.ToString();
+            scoreSlider.minValue = score;
+            scoreSlider.maxValue = goal;
             Timer.timeRemain += 90f;
         }
     }
