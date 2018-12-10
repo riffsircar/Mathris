@@ -338,7 +338,7 @@ public class Game : MonoBehaviour {
         if(score >= goal) 
         {
             // Change the speed
-            Data.fallSpeed /= 1.0125f;
+            Data.fallSpeed /= 1.025f;
             Debug.Log(Data.fallSpeed);
             Debug.Log("FASTER!");
 
@@ -347,7 +347,7 @@ public class Game : MonoBehaviour {
             goalText.text = goal.ToString();
             scoreSlider.minValue = score;
             scoreSlider.maxValue = goal;
-            Timer.timeRemain += 60f;
+            Timer.timeRemain += 30f;
         }
     }
 

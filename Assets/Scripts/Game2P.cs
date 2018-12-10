@@ -744,7 +744,7 @@ public class Game2P : MonoBehaviour {
         //Data.score = 0.0f;
         Data.fallSpeed = 0.4f;
         //scoreText.text = "SCORE:\n" + score.ToString("0.00");
-        Timer.timeRemain = 120f;
+        Timer.timeRemain = 60f;
         plusCountP1 = 0;
         subCountP1 = 0;
         mulCountP1 = 0;
