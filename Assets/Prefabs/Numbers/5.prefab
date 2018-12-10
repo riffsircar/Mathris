@@ -35,7 +35,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1477210446954186}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.3035736, y: 10.443018, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -54,6 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: number
   value: 5
+  particleEffect: {fileID: 0}
 --- !u!212 &212586023430527070
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -94,7 +95,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.87142855, y: 0.87142855}
+  m_Size: {x: 1.2, y: 1.21}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

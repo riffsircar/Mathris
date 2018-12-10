@@ -30,6 +30,8 @@ public class Game : MonoBehaviour {
     public static int divCount = 0;
     public static int scoreIncrement = 50;
 
+    public bool tutorial;
+
     static Slider scoreSlider;
 
     void Start()
