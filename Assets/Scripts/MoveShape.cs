@@ -41,8 +41,7 @@ public class MoveShape : MonoBehaviour {
         }
 
         if (Data.mode == 1)
-        {
-           
+        {  
             spawner = FindObjectOfType<Spawner>();
         }
         else
