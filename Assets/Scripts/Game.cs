@@ -660,6 +660,7 @@ public class Game : MonoBehaviour {
             number2.GetComponent<SpriteRenderer>().sprite = number2.constrast;
            
             yield return new WaitForSeconds(time);
+
             Destroy(grid[x, y].gameObject);
             DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
             grid[x, y] = null;
@@ -713,7 +714,6 @@ public class Game : MonoBehaviour {
             yield return new WaitForSeconds(time);
 
             Destroy(grid[x, y].gameObject);
-
             DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
             grid[x, y] = null;
 

@@ -12,6 +12,8 @@ public class ZoomController : MonoBehaviour {
     // Call the Spawner and timer in the game to pause them.
     GameObject spawner;
     GameObject timer;
+    // The Game game object is only for the tutorial purpose.
+    Game game;
 
 	// Use this for initialization
 	void Start () 
@@ -50,9 +52,11 @@ public class ZoomController : MonoBehaviour {
         spawner.GetComponent<Spawner>().isPause = true;
         timer.GetComponent<Timer>().isPause = true;
 
+        // Call the tutorial function here
+
         yield return new WaitForSeconds(secondToPause);
 
-        // Do the tutorial after this
+        // Enlarge the camera back to the original position and size.
         transform.position = originalCamaraPos;
         GetComponent<Camera>().orthographicSize = originalCamaraSize;
 
