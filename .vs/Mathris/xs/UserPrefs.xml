@@ -1,14 +1,13 @@
 ﻿<Properties StartupConfiguration="{A9D754CE-2A11-E231-B73C-10D453D6B1ED}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/DestroyVisualEffect.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Spawner.cs">
     <Files>
-      <File FileName="Assets/Scripts/MoveShape.cs" Line="83" Column="32" />
+      <File FileName="Assets/Scripts/MoveShape.cs" Line="85" Column="14" />
       <File FileName="Assets/Scripts/Timer.cs" Line="27" Column="1" />
       <File FileName="Assets/Scripts/Data.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Game.cs" Line="823" Column="10" />
+      <File FileName="Assets/Scripts/Game.cs" Line="695" Column="15" />
       <File FileName="Assets/Scripts/Spawner.cs" Line="11" Column="35" />
       <File FileName="Assets/Scripts/ZoomController.cs" Line="61" Column="82" />
-      <File FileName="Assets/Scripts/Tile.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/DestroyVisualEffect.cs" Line="16" Column="1" />
+      <File FileName="Assets/Scripts/Tile.cs" Line="10" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

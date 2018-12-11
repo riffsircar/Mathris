@@ -51,9 +51,14 @@ public class Game : MonoBehaviour {
     public static int timesFour = 0;
     public static int dividedFour = 0;
 
-    DestroyVisualEffect dve;
+    public static Game game; 
 
     static Slider scoreSlider;
+
+    private void Awake()
+    {
+        game = this;
+    }
 
     void Start()
     {
@@ -85,8 +90,6 @@ public class Game : MonoBehaviour {
         {
             spawner = spawnerObj.GetComponent<Spawner>();
         }
-       
-        dve = GetComponent<DestroyVisualEffect>();
 
         Reset();
     }
@@ -237,11 +240,11 @@ public class Game : MonoBehaviour {
                                     Game.ChangeFirstTimeCalculation(tile.value, "all"); 
                                 }
 
-                                SlowDestroyWithEffect(tile, x, y, "all");
+                                SlowDestroyWithEffect(tile, x, y, "all", t, result);
 
-                                AdjustRows(x, y);
-                                Fix(x, y, t);
-                                UpdateScore(result*2.0f);
+                                //AdjustRows(x, y);
+                                //Fix(x, y, t);
+                                //UpdateScore(result*2.0f);
                             }
                             else
                             {
@@ -285,12 +288,12 @@ public class Game : MonoBehaviour {
                                         Game.ChangeFirstTimeCalculation(tile.value, "lr");
                                     }
 
-                                    SlowDestroyWithEffect(tile, x, y, "lr");
+                                    SlowDestroyWithEffect(tile, x, y, "lr", t, result);
 
-                                    AdjustRows(x, y);
-                                    Fix(x, y, t);
-                                    //AdjustTest(x, y + 1);
-                                    UpdateScore(result);
+                                    //AdjustRows(x, y);
+                                    //Fix(x, y, t);
+                                    ////AdjustTest(x, y + 1);
+                                    //UpdateScore(result);
                                 }
                                 else
                                 {
@@ -335,11 +338,11 @@ public class Game : MonoBehaviour {
                                             ChangeFirstTimeCalculation(tile.value, "ud");
                                         }
 
-                                        SlowDestroyWithEffect(tile, x, y, "ud");
+                                        SlowDestroyWithEffect(tile, x, y, "ud", t, result);
 
                                         //AdjustTest(x, y + 2);
-                                        Fix(x, y, t);
-                                        UpdateScore(result);
+                                        //Fix(x, y, t);
+                                        //UpdateScore(result);
                                     }
                                     else
                                     {
@@ -440,7 +443,7 @@ public class Game : MonoBehaviour {
                 grid[col, y].position += new Vector3(0, -1, 0);
                 grid[col, y] = null;  
             }
-            if(grid[col+1,y] != null)
+            if(grid[col + 1,y] != null)
             { 
                 grid[col + 1, y-1] = grid[col+1, y];
                 grid[col + 1, y].position += new Vector3(0, -1, 0);
@@ -637,15 +640,97 @@ public class Game : MonoBehaviour {
                 > pause the timer               
     */
 
-    public void DelayEffect(string text, float time)
+    IEnumerator DelayForSecond(float time, Tile tile, int x, int y, string direction, Transform t, float result)
     {
-        Debug.Log(text);
-        StartCoroutine(DelayForSecond(time));
-    }
+        // handle the color change effects
+        Tile number1;
+        Tile op;
+        Tile number2;
+        Tile number3;
+        Tile number4;
 
-    IEnumerator DelayForSecond(float time)
-    {
-        yield return new WaitForSeconds(time);
+        if (direction == "lr")
+        {
+            number1 = grid[x - 1, y].gameObject.GetComponent<Tile>();
+            op = grid[x, y].gameObject.GetComponent<Tile>();
+            number2 = grid[x + 1, y].gameObject.GetComponent<Tile>();
+
+            number1.GetComponent<SpriteRenderer>().sprite = number1.constrast;
+            op.GetComponent<SpriteRenderer>().sprite = op.constrast;
+            number2.GetComponent<SpriteRenderer>().sprite = number2.constrast;
+           
+            yield return new WaitForSeconds(time);
+            Destroy(grid[x, y].gameObject);
+            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            grid[x, y] = null;
+            Destroy(grid[x - 1, y].gameObject);
+            grid[x - 1, y] = null;
+            Destroy(grid[x + 1, y].gameObject);
+            grid[x + 1, y] = null;
+
+            AdjustRows(x, y);
+            Fix(x, y, t);
+            UpdateScore(result);
+        }
+        else if (direction == "ud")
+        {
+            number1 = grid[x, y - 1].gameObject.GetComponent<Tile>();
+            op = grid[x, y].gameObject.GetComponent<Tile>();
+            number2 = grid[x, y + 1].gameObject.GetComponent<Tile>();
+
+            number1.GetComponent<SpriteRenderer>().sprite = number1.constrast;
+            op.GetComponent<SpriteRenderer>().sprite = op.constrast;
+            number2.GetComponent<SpriteRenderer>().sprite = number2.constrast;
+
+            yield return new WaitForSeconds(time);
+
+            Destroy(grid[x, y].gameObject);
+            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            grid[x, y] = null;
+            Destroy(grid[x, y - 1].gameObject);
+            grid[x, y - 1] = null;
+            Destroy(grid[x, y + 1].gameObject);
+            grid[x, y + 1] = null;
+
+            //AdjustRows(x, y + 2);
+            Fix(x, y, t);
+            UpdateScore(result);
+        }
+        else if (direction == "all")
+        {
+            number1 = grid[x - 1, y].gameObject.GetComponent<Tile>();
+            op = grid[x, y].gameObject.GetComponent<Tile>();
+            number2 = grid[x + 1, y].gameObject.GetComponent<Tile>();
+            number3 = grid[x, y - 1].gameObject.GetComponent<Tile>();
+            number4 = grid[x, y + 1].gameObject.GetComponent<Tile>();
+
+            number1.GetComponent<SpriteRenderer>().sprite = number1.constrast;
+            op.GetComponent<SpriteRenderer>().sprite = op.constrast;
+            number2.GetComponent<SpriteRenderer>().sprite = number2.constrast;
+            number3.GetComponent<SpriteRenderer>().sprite = number3.constrast;
+            number4.GetComponent<SpriteRenderer>().sprite = number4.constrast;
+
+            yield return new WaitForSeconds(time);
+
+            Destroy(grid[x, y].gameObject);
+
+            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            grid[x, y] = null;
+
+            Destroy(grid[x - 1, y].gameObject);
+            grid[x - 1, y] = null;
+            Destroy(grid[x + 1, y].gameObject);
+            grid[x + 1, y] = null;
+
+            Destroy(grid[x, y - 1].gameObject);
+            grid[x, y - 1] = null;
+            Destroy(grid[x, y + 1].gameObject);
+            grid[x, y + 1] = null;
+
+            AdjustRows(x, y);
+            Fix(x, y, t);
+            UpdateScore(result * 2.0f);
+        }
     }
 
     // Track all the fir time calculation that the player make in the game
@@ -787,45 +872,9 @@ public class Game : MonoBehaviour {
     }
 
     // Distroy the block after changing the color
-    static void SlowDestroyWithEffect(Tile tile, int x, int y, string direction)
+    static void SlowDestroyWithEffect(Tile tile, int x, int y, string direction, Transform t, float result)
     {
-        if (direction == "lr")
-        {
-            Destroy(grid[x, y].gameObject);
-            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
-            grid[x, y] = null;
-            Destroy(grid[x - 1, y].gameObject);
-            grid[x - 1, y] = null;
-            Destroy(grid[x + 1, y].gameObject);
-            grid[x + 1, y] = null;
-        }
-        else if (direction == "ud")
-        {
-            Destroy(grid[x, y].gameObject);
-            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
-            grid[x, y] = null;
-            Destroy(grid[x, y - 1].gameObject);
-            grid[x, y - 1] = null;
-            Destroy(grid[x, y + 1].gameObject);
-            grid[x, y + 1] = null;
-        }
-        else if (direction == "all")
-        {
-            Destroy(grid[x, y].gameObject);
-
-            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
-            grid[x, y] = null;
-
-            Destroy(grid[x - 1, y].gameObject);
-            grid[x - 1, y] = null;
-            Destroy(grid[x + 1, y].gameObject);
-            grid[x + 1, y] = null;
-
-            Destroy(grid[x, y - 1].gameObject);
-            grid[x, y - 1] = null;
-            Destroy(grid[x, y + 1].gameObject);
-            grid[x, y + 1] = null;
-        }
+       game.StartCoroutine(game.DelayForSecond(.5f, tile, x, y, direction, t, result)); 
     }
 
     public void Restart()

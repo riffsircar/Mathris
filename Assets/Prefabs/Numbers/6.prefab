@@ -55,6 +55,7 @@ MonoBehaviour:
   type: number
   value: 6
   particleEffect: {fileID: 0}
+  constrast: {fileID: 21300000, guid: 7ad41030b48e84419b0c833bf7c7535b, type: 3}
 --- !u!212 &212329819047189740
 SpriteRenderer:
   m_ObjectHideFlags: 1
