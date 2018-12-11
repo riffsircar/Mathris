@@ -11,6 +11,8 @@ public class Timer : MonoBehaviour {
     static GameObject time;
     static Text timeText;
 
+    public bool isPause = false;
+
     void Start()
     {
         time = GameObject.FindGameObjectWithTag("Time");

@@ -30,7 +30,28 @@ public class Game : MonoBehaviour {
     public static int divCount = 0;
     public static int scoreIncrement = 50;
 
-    public bool tutorial;
+    // player has freedom to choose if they need a tutorial
+    // call camera
+    public static ZoomController mainCamera;
+    // booleans for track the first time calculation directions 
+    // 0 = false, 1 = true
+    //  left to right
+    public static int addLeftRight = 0;
+    public static int minusLeftRight = 0;
+    public static int timesLeftRight = 0;
+    public static int dividedLeftRight = 0;
+    //  up to down
+    public static int addUpDown = 0; 
+    public static int minusUpDown = 0;
+    public static int timesUpDown = 0;
+    public static int dividedUpDown = 0;
+    //  four directions
+    public static int addFour = 0;
+    public static int minusFour = 0;
+    public static int timesFour = 0;
+    public static int dividedFour = 0;
+
+
 
     static Slider scoreSlider;
 
@@ -42,6 +63,8 @@ public class Game : MonoBehaviour {
         sliderObj = GameObject.Find("ScoreSlider");
         if(sliderObj)
             scoreSlider = sliderObj.GetComponent<Slider>();
+
+        mainCamera = GameObject.Find("Main Camera").GetComponent<ZoomController>();
 
         if (scoreObj)
         {
@@ -202,6 +225,15 @@ public class Game : MonoBehaviour {
                             {
                                 operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") + (" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ")\n = " + result.ToString("0.00") + "\nDOUBLE OP!";
                                 opText.text = "OPERATION: \n" + operationText;
+
+                                Debug.Log("+++:" + tile.value);
+
+                                if (TrackFirstTimeCalculation(tile.value, "all") == 0)
+                                {
+                                    mainCamera.ChangeCamera(new Vector3(x, y, -20f));
+                                    Game.ChangeFirstTimeCalculation(tile.value, "all"); 
+                                }
+
                                 //Debug.Log("OP: " + operationText);
                                 Destroy(grid[x, y].gameObject);
                                 DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
@@ -255,6 +287,15 @@ public class Game : MonoBehaviour {
                                     operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") = " + result.ToString("0.00");
                                     //Debug.Log("OP: " + operationText);
                                     opText.text = "OPERATION: \n" + operationText;
+
+                                    Debug.Log("+++:" + tile.value);
+
+                                    if (TrackFirstTimeCalculation(tile.value, "lr") == 0)
+                                    {
+                                        mainCamera.ChangeCamera(new Vector3(x, y, -20f));
+                                        Game.ChangeFirstTimeCalculation(tile.value, "lr");
+                                    }
+
                                     Destroy(grid[x, y].gameObject);
                                     DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
                                     grid[x, y] = null;
@@ -302,6 +343,15 @@ public class Game : MonoBehaviour {
                                         operationText = "(" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ") = " + result.ToString("0.00");
                                         //Debug.Log("OP: " + operationText);
                                         opText.text = "OPERATION: \n" + operationText;
+
+                                        Debug.Log("+++:" + tile.value);
+
+                                        if (TrackFirstTimeCalculation(tile.value, "ud") == 0)
+                                        {
+                                            mainCamera.ChangeCamera(new Vector3(x, y, -20f));
+                                            ChangeFirstTimeCalculation(tile.value, "ud");
+                                        }
+
                                         Destroy(grid[x, y].gameObject);
                                         DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
                                         grid[x, y] = null;
@@ -604,8 +654,10 @@ public class Game : MonoBehaviour {
     }
 
     /* 
-     >>> DelayEffect: delay any cancelation for certain seconds.
-     Issue remain: static does not accept non static inside.
+     >>> DelayEffect: delay following thing for certain seconds:
+                > cancelation (destroy)    
+                > pause the spawner
+                > pause the timer               
     */
 
     public void DelayEffect(string text, float time)
@@ -617,6 +669,144 @@ public class Game : MonoBehaviour {
     IEnumerator DelayForSecond(float time)
     {
         yield return new WaitForSeconds(time);
+    }
+
+    // Track all the fir time calculation that the player make in the game
+    // the directions strings are:
+    //      1. lr (left to right)
+    //      2. ud (up to down)
+    //      3. all (all four direction)
+    static int TrackFirstTimeCalculation(string op, string direction)
+    {
+        if (op == "+")
+        {
+            if (direction == "lr")
+            {
+                return addLeftRight;
+            }
+            else if (direction == "ud")
+            {
+                return addUpDown;
+            }
+            else if (direction == "all")
+            {
+                return addFour;
+            }
+        }
+        else if (op == "-")
+        {
+            if (direction == "lr")
+            {
+                return minusLeftRight;
+            }
+            else if (direction == "ud")
+            {
+                return minusUpDown;
+            }
+            else if (direction == "all")
+            {
+                return minusFour;
+            }
+        }
+        else if (op == "*")
+        {
+            if (direction == "lr")
+            {
+                return timesLeftRight;
+            }
+            else if (direction == "ud")
+            {
+                return timesUpDown;
+            }
+            else if (direction == "all")
+            {
+                return timesFour;
+            }
+        }
+        else if (op == "/")
+        {
+            if (direction == "lr")
+            {
+                return dividedLeftRight;
+            }
+            else if (direction == "ud")
+            {
+                return dividedUpDown;
+            }
+            else if (direction == "all")
+            {
+                return dividedFour;
+            }
+        }
+        return -1;
+    }
+
+    // Change corresponding bool value
+    static void ChangeFirstTimeCalculation(string op, string direction)
+    {
+        if (op == "+")
+        {
+            if(direction == "lr")
+            {
+                Debug.Log("Changed addLeftRight: " + addLeftRight);
+                addLeftRight++;
+            }
+            else if (direction == "ud")
+            {
+                Debug.Log("Changed addUpDown: " + addUpDown);
+                addUpDown++;
+
+            }
+            else if (direction == "all")
+            {
+                addFour++;
+            }
+        }
+        else if (op == "-")
+        {
+            if (direction == "lr")
+            {
+                minusLeftRight++;
+            }
+            else if (direction == "ud")
+            {
+                minusUpDown++;
+            }
+            else if (direction == "all")
+            {
+                minusFour++;
+            }
+        }
+        else if (op == "*")
+        {
+            if (direction == "lr")
+            {
+                timesLeftRight++;
+            }
+            else if (direction == "ud")
+            {
+                timesUpDown++;
+            }
+            else if (direction == "all")
+            {
+                timesFour++;
+            }
+        }
+        else if (op == "/")
+        {
+            if (direction == "lr")
+            {
+                dividedLeftRight++;
+            }
+            else if (direction == "ud")
+            {
+                dividedUpDown++;
+            }
+            else if (direction == "all")
+            {
+                dividedFour++;
+            }
+        }
     }
 
     public void Restart()
