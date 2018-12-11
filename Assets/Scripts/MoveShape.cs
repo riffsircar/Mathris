@@ -224,6 +224,7 @@ public class MoveShape : MonoBehaviour {
                 if (!Game.InsideBorder(pos))
                 {
                     Debug.Log("1st valid if");
+                    Debug.Log(pos);
                     return false;
                 }
 
@@ -233,21 +234,9 @@ public class MoveShape : MonoBehaviour {
                     Game.grid[(int)pos.x, (int)pos.y].parent != transform)
                 {
                     Debug.Log("2nd valid if");
+                    Debug.Log(pos);
                     return false;
                 }
-
-                /*
-                // Used in rotation: find the block that is in the position already.
-                // If there is a block that at the position, return false.
-                if (Game.grid[(int)pos.x, (int)pos.y] != null &&
-                    Game.grid[(int)pos.x, (int)pos.y].parent != transform)
-                {
-                    Debug.Log("2nd valid if");
-                    return false;
-                }
-                */
-
-                // Add if the 
             }
             //Debug.Log("Exiting isValidGridPos");
             return true;
@@ -262,6 +251,7 @@ public class MoveShape : MonoBehaviour {
                 if (!Game2P.InsideGridOneBorder(pos))
                 {
                     Debug.Log("1st valid if");
+                    Debug.Log(pos);
                     return false;
                 }
 
@@ -271,6 +261,7 @@ public class MoveShape : MonoBehaviour {
                     Game2P.grid1[(int)pos.x, (int)pos.y].parent != transform)
                 {
                     Debug.Log("2nd valid if");
+                    Debug.Log(pos);
                     return false;
                 }
 
@@ -310,7 +301,6 @@ public class MoveShape : MonoBehaviour {
 
             // Used in rotation: find the block that is in the position already.
             // If there is a block that at the position, return false.
-            Debug.Log(pos);
                 if (Game2P.grid1[(int)pos.x, (int)pos.y] != null &&
                     Game2P.grid1[(int)pos.x, (int)pos.y].parent != transform)
                 {

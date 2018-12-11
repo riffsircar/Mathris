@@ -30,6 +30,7 @@ public class Spawner : MonoBehaviour
     float NUM_PROB = 0.9f;
 
     static GameObject mult;
+    static GameObject timesEffect;
     static GameObject div;
     public static GameObject addCount;
     public static GameObject subCount;
@@ -67,6 +68,8 @@ public class Spawner : MonoBehaviour
         mult.active = false;
         div = GameObject.Find("Div");
         div.active = false;
+        //timesEffect = GameObject.Find("Times 1");
+        //timesEffect.active = false;
 
         addCount = GameObject.Find("AddCount");
         mulCount = GameObject.Find("MulCount");
@@ -74,8 +77,8 @@ public class Spawner : MonoBehaviour
         divCount = GameObject.Find("DivCount");
         mulCount.active = false;
         divCount.active = false;
-        addCount.GetComponent<Text>().text = "0";
-        subCount.GetComponent<Text>().text = "0";
+        addCount.GetComponent<Text>().text = "x0";
+        subCount.GetComponent<Text>().text = "x0";
 
         InitXY();
         SpawnNext();
@@ -83,13 +86,13 @@ public class Spawner : MonoBehaviour
 
     public static void UpdateUnlockedOperators()
     {
-        addCount.GetComponent<Text>().text = Game.plusCount.ToString();
-        subCount.GetComponent<Text>().text = Game.subCount.ToString();
+        addCount.GetComponent<Text>().text = "x" + Game.plusCount.ToString();
+        subCount.GetComponent<Text>().text = "x" + Game.subCount.ToString();
 
         if(divCount)
-            divCount.GetComponent<Text>().text = Game.divCount.ToString();
+            divCount.GetComponent<Text>().text = "x" + Game.divCount.ToString();
         if(mulCount)
-            mulCount.GetComponent<Text>().text = Game.mulCount.ToString();
+            mulCount.GetComponent<Text>().text = "x" + Game.mulCount.ToString();
 
         if (Game.plusCount == 5)
         {
@@ -98,8 +101,11 @@ public class Spawner : MonoBehaviour
                 Debug.Log("MULTIPLICATION UNLOCKED!");
                 unlocked.Add(opDict["multiply"]);
                 mult.active = true;
+                //Debug.Log(Camera.main.ScreenToWorldPoint(mult.GetComponent<RectTransform>().position));
+                //Game.DestroyWithParticleEffect(Camera.main.ScreenToWorldPoint(mult.GetComponent<RectTransform>().position), opDict["multiply"].GetComponent<Tile>().particleEffect);
+                //timesEffect.active = true;
                 mulCount.active = true;
-                mulCount.GetComponent<Text>().text = "0";
+                mulCount.GetComponent<Text>().text = "x0";
                 Game.scoreIncrement *= 2;
             }
         }
@@ -111,7 +117,7 @@ public class Spawner : MonoBehaviour
                 unlocked.Add(opDict["divide"]);
                 div.active = true;
                 divCount.active = true;
-                divCount.GetComponent<Text>().text = "0";
+                divCount.GetComponent<Text>().text = "x0";
             }
         }
     }

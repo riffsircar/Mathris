@@ -204,6 +204,7 @@ public class Game : MonoBehaviour {
                                 opText.text = "OPERATION: \n" + operationText;
                                 //Debug.Log("OP: " + operationText);
                                 Destroy(grid[x, y].gameObject);
+                                
                                 DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
                                 grid[x, y] = null;
                                 Destroy(grid[x - 1, y].gameObject);
@@ -388,7 +389,7 @@ public class Game : MonoBehaviour {
         return result;
     }
 
-    static void DestroyWithParticleEffect(Vector3 tilePosition, GameObject particleEffect)
+    public static void DestroyWithParticleEffect(Vector3 tilePosition, GameObject particleEffect)
     {
         //Destroy(tile.gameObject);
         Vector3 adjust = new Vector3(0, 0, -15);
