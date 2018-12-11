@@ -51,7 +51,7 @@ public class Game : MonoBehaviour {
     public static int timesFour = 0;
     public static int dividedFour = 0;
 
-
+    DestroyVisualEffect dve;
 
     static Slider scoreSlider;
 
@@ -85,6 +85,9 @@ public class Game : MonoBehaviour {
         {
             spawner = spawnerObj.GetComponent<Spawner>();
         }
+       
+        dve = GetComponent<DestroyVisualEffect>();
+
         Reset();
     }
 
@@ -234,22 +237,7 @@ public class Game : MonoBehaviour {
                                     Game.ChangeFirstTimeCalculation(tile.value, "all"); 
                                 }
 
-                                //Debug.Log("OP: " + operationText);
-                                Destroy(grid[x, y].gameObject);
-                                
-                                DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
-                                grid[x, y] = null;
-                                Destroy(grid[x - 1, y].gameObject);
-                                grid[x - 1, y] = null;
-                                Destroy(grid[x + 1, y].gameObject);
-                                grid[x + 1, y] = null;
-
-                                //Destroy(grid[x, y].gameObject);
-                                //grid[x, y] = null;
-                                Destroy(grid[x, y - 1].gameObject);
-                                grid[x, y - 1] = null;
-                                Destroy(grid[x, y + 1].gameObject);
-                                grid[x, y + 1] = null;
+                                SlowDestroyWithEffect(tile, x, y, "all");
 
                                 AdjustRows(x, y);
                                 Fix(x, y, t);
@@ -297,13 +285,7 @@ public class Game : MonoBehaviour {
                                         Game.ChangeFirstTimeCalculation(tile.value, "lr");
                                     }
 
-                                    Destroy(grid[x, y].gameObject);
-                                    DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
-                                    grid[x, y] = null;
-                                    Destroy(grid[x - 1, y].gameObject);
-                                    grid[x - 1, y] = null;
-                                    Destroy(grid[x + 1, y].gameObject);
-                                    grid[x + 1, y] = null;
+                                    SlowDestroyWithEffect(tile, x, y, "lr");
 
                                     AdjustRows(x, y);
                                     Fix(x, y, t);
@@ -353,13 +335,7 @@ public class Game : MonoBehaviour {
                                             ChangeFirstTimeCalculation(tile.value, "ud");
                                         }
 
-                                        Destroy(grid[x, y].gameObject);
-                                        DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
-                                        grid[x, y] = null;
-                                        Destroy(grid[x, y - 1].gameObject);
-                                        grid[x, y - 1] = null;
-                                        Destroy(grid[x, y + 1].gameObject);
-                                        grid[x, y + 1] = null;
+                                        SlowDestroyWithEffect(tile, x, y, "ud");
 
                                         //AdjustTest(x, y + 2);
                                         Fix(x, y, t);
@@ -807,6 +783,48 @@ public class Game : MonoBehaviour {
             {
                 dividedFour++;
             }
+        }
+    }
+
+    // Distroy the block after changing the color
+    static void SlowDestroyWithEffect(Tile tile, int x, int y, string direction)
+    {
+        if (direction == "lr")
+        {
+            Destroy(grid[x, y].gameObject);
+            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            grid[x, y] = null;
+            Destroy(grid[x - 1, y].gameObject);
+            grid[x - 1, y] = null;
+            Destroy(grid[x + 1, y].gameObject);
+            grid[x + 1, y] = null;
+        }
+        else if (direction == "ud")
+        {
+            Destroy(grid[x, y].gameObject);
+            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            grid[x, y] = null;
+            Destroy(grid[x, y - 1].gameObject);
+            grid[x, y - 1] = null;
+            Destroy(grid[x, y + 1].gameObject);
+            grid[x, y + 1] = null;
+        }
+        else if (direction == "all")
+        {
+            Destroy(grid[x, y].gameObject);
+
+            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            grid[x, y] = null;
+
+            Destroy(grid[x - 1, y].gameObject);
+            grid[x - 1, y] = null;
+            Destroy(grid[x + 1, y].gameObject);
+            grid[x + 1, y] = null;
+
+            Destroy(grid[x, y - 1].gameObject);
+            grid[x, y - 1] = null;
+            Destroy(grid[x, y + 1].gameObject);
+            grid[x, y + 1] = null;
         }
     }
 

@@ -152,21 +152,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114687622768374858, guid: 408138f4c2547004ea0f7661469e5abc,
-        type: 2}
-      propertyPath: test
-      value: 
-      objectReference: {fileID: 1888764826837720, guid: 06b1dfefbf8f9664a8fd34c3fae12d2c,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 408138f4c2547004ea0f7661469e5abc, type: 2}
   m_IsPrefabAsset: 0
---- !u!114 &6946031 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114687622768374858, guid: 408138f4c2547004ea0f7661469e5abc,
-    type: 2}
-  m_PrefabInternal: {fileID: 6946030}
-  m_Script: {fileID: 11500000, guid: 0adb5f68553774b929018d5aa5fd234b, type: 3}
 --- !u!1 &67461682
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,8 +373,6 @@ MonoBehaviour:
   originalCamaraPos: {x: 0, y: 0, z: 0}
   originalCamaraSize: 8
   secondToPause: 2
-  spawner: {fileID: 6946031}
-  timer: {fileID: 1995155588}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

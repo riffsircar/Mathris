@@ -9,6 +9,8 @@ public class Spawner : MonoBehaviour
     public GameObject[] shapes;
     public GameObject[] numbers;
     public GameObject[] operators;
+    public GameObject[] numberContrast;
+    public GameObject[] operatorsContrast;
     public GameObject emptyTile;
     string[] shape = { "I", "J", "L", "O", "S", "T", "Z" };
     static Dictionary<string, GameObject> opDict;

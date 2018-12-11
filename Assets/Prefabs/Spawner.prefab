@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1764559402294560}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 14.03, z: 0}
+  m_LocalPosition: {x: 5, y: 14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,7 +75,21 @@ MonoBehaviour:
   - {fileID: 1262555730794448, guid: 52ce1cd2184d1455399f68c1ea4afd07, type: 2}
   - {fileID: 1574953242912654, guid: 8e84a7d77131542888babe32b1b19183, type: 2}
   - {fileID: 1820274931802348, guid: 813b124163ad14983b2eb5bf8579f3e8, type: 2}
+  numberContrast:
+  - {fileID: 1375773689647208, guid: 90d4f35966d724b2c80eee87b235befc, type: 2}
+  - {fileID: 1814560811244512, guid: c95058379666448458797182a7a3e60a, type: 2}
+  - {fileID: 1568480881195770, guid: 9c7143157e03a432e86cd4e5b129b871, type: 2}
+  - {fileID: 1182653406237280, guid: 8e660917a809e4f1cad373d954e9dd6e, type: 2}
+  - {fileID: 1910609114449012, guid: 325fafb9d555b47fca88c5be69730cc2, type: 2}
+  - {fileID: 1364102626817080, guid: 3d4d862f58dec40618d4de313d45632b, type: 2}
+  - {fileID: 1697406794833792, guid: dac9ce3c63ea1432db82546835cf5966, type: 2}
+  - {fileID: 1048288536224832, guid: 248191f846ba4450f95b713421af80ef, type: 2}
+  - {fileID: 1938586635316244, guid: 8eb3cf5bf47b04fc485e0bfbbd4db9f0, type: 2}
+  - {fileID: 1920532591430194, guid: 41c03be666e5c4c289e1d2cecc4eb5c5, type: 2}
+  operatorsContrast:
+  - {fileID: 1797680062668478, guid: 7c97425bbb8a14f30af4c70c9bb6988d, type: 2}
+  - {fileID: 1137504287706346, guid: 44ec94bbf483c4c2fb0e12310497159e, type: 2}
+  - {fileID: 1813932068825510, guid: eacf194b50f044f3fb12312ec1e223a2, type: 2}
+  - {fileID: 1009959982854632, guid: 1b65c455b1bd04d9490f16a56d866af3, type: 2}
   emptyTile: {fileID: 1069721848906892, guid: 5a926bdb0901d43d8b7dfade7b93305a, type: 2}
-  OP_PROB: 0.9
-  FIRST_PROB: 0.5
-  NUM_PROB: 0.8
+  isPause: 0
