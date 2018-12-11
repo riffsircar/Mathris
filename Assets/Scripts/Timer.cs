@@ -22,9 +22,32 @@ public class Timer : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
+        if (isPause)
+        {
+            Debug.Log("Timer Paused");
+            timeText.text = "TIME: " + timeRemain.ToString("0");
+            if (timeRemain <= 10f)
+            {
+                timeText.color = Color.red;
+            }
+            else
+            {
+                timeText.color = Color.white;
+            }
+        }
+        else
+        {
+            TimerRun();
+        }
+
+            
+    }
+
+    private static void TimerRun()
+    {
         timeRemain -= Time.deltaTime;
         timeText.text = "TIME: " + timeRemain.ToString("0");
-        if(timeRemain <= 10f)
+        if (timeRemain <= 10f)
         {
             timeText.color = Color.red;
         }
@@ -53,5 +76,5 @@ public class Timer : MonoBehaviour {
                 SceneManager.LoadScene("Over2P");
             }
         }
-	}
+    }
 }

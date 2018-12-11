@@ -37,7 +37,7 @@ public class Spawner : MonoBehaviour
     public static GameObject divCount;
     public static GameObject mulCount;
 
-
+    public bool isPause = false;
 
     // Spawn the next blocks onto the game surface
     public void SpawnNext()
@@ -47,6 +47,7 @@ public class Spawner : MonoBehaviour
         string nextShape = shape[randomIndex];
 
         BuildNextShape(nextShape);
+
         //Instantiate(shapes[randomIndex], transform.position, Quaternion.identity);
         //   Instantiate(nextShapeObj, transform.position, Quaternion.identity);
     }
@@ -82,6 +83,7 @@ public class Spawner : MonoBehaviour
 
         InitXY();
         SpawnNext();
+
     }
 
     public static void UpdateUnlockedOperators()
@@ -155,7 +157,6 @@ public class Spawner : MonoBehaviour
         GameObject block = new GameObject(shape);
         block.transform.position = this.transform.position;
         block.AddComponent<MoveShape>();
-
         
         float op = Random.Range(0.0f, 1.0f);
         bool hasOp = false;

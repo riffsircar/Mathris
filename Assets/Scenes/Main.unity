@@ -161,6 +161,12 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 408138f4c2547004ea0f7661469e5abc, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &6946031 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114687622768374858, guid: 408138f4c2547004ea0f7661469e5abc,
+    type: 2}
+  m_PrefabInternal: {fileID: 6946030}
+  m_Script: {fileID: 11500000, guid: 0adb5f68553774b929018d5aa5fd234b, type: 3}
 --- !u!1 &67461682
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +268,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 14.100006, y: -220.80002}
+  m_AnchoredPosition: {x: 14.099976, y: -220.80002}
   m_SizeDelta: {x: 371.4, y: 217.5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &182445439
@@ -378,6 +384,9 @@ MonoBehaviour:
   zoomToSize: 5
   originalCamaraPos: {x: 0, y: 0, z: 0}
   originalCamaraSize: 8
+  secondToPause: 2
+  spawner: {fileID: 6946031}
+  timer: {fileID: 1995155588}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1182,7 +1191,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -15.259979, y: 148.04999}
+  m_AnchoredPosition: {x: -15.26001, y: 148.04999}
   m_SizeDelta: {x: 62.58, y: 39.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1091092868
@@ -2578,7 +2587,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -13.699982, y: 224.4}
+  m_AnchoredPosition: {x: -13.699951, y: 224.4}
   m_SizeDelta: {x: 65.7, y: 33.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2051563514

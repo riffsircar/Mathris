@@ -14,6 +14,8 @@ public class MoveShape : MonoBehaviour {
     public static bool isLandedP1 = false;
     public static bool isLandedP2 = false;
 
+    public bool isPause;
+
     /*
     void Awake()
     {
@@ -68,20 +70,23 @@ public class MoveShape : MonoBehaviour {
                 Rotation();
             }
 
-            if (Time.time - lastFall >= Data.fallSpeed)
+            if (!spawner.isPause) 
             {
-                Fall();
-            }
+                if (Time.time - lastFall >= Data.fallSpeed)
+                {
+                    Fall();
+                }
 
-            // The Fall function will be updated by time
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                FastFall();
+                // The Fall function will be updated by time
+                if (Input.GetKeyDown(KeyCode.S))
+                {   
+                    FastFall();
+                }
             }
-
+       
             if (isLanded)
             {
-            Debug.Log("P1 landed");
+                Debug.Log("P1 landed");
                 PerformCalAndSpawn(transform);
                 isLanded = false;
             }

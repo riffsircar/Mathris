@@ -8,11 +8,18 @@ public class ZoomController : MonoBehaviour {
     public float zoomToSize = 5f;
     public Vector3 originalCamaraPos;
     public float originalCamaraSize = 8f;
+    public int secondToPause = 5;
+    // Call the Spawner and timer in the game to pause them.
+    GameObject spawner;
+    GameObject timer;
 
 	// Use this for initialization
 	void Start () 
     {
         originalCamaraPos = new Vector3(4.5f, 7.5f, -20f);
+        spawner = GameObject.Find("Spawner");
+        timer = GameObject.Find("Time");
+
 	}
 
     // Update is called once per frame
@@ -34,12 +41,25 @@ public class ZoomController : MonoBehaviour {
         StartCoroutine(MoveAndZoomTo(pos));
     }
 
+    // This function is for tutorial purpose only
+    // all 'isPause'
     IEnumerator MoveAndZoomTo(Vector3 operationPosition)
     {
         transform.position = Vector3.Lerp(transform.position, operationPosition, 0.6f);
         GetComponent<Camera>().orthographicSize = zoomToSize;
-        yield return new WaitForSeconds(2);
+        spawner.GetComponent<Spawner>().isPause = true;
+        timer.GetComponent<Timer>().isPause = true;
+
+        yield return new WaitForSeconds(secondToPause);
+
+        // Do the tutorial after this
         transform.position = originalCamaraPos;
         GetComponent<Camera>().orthographicSize = originalCamaraSize;
+
+        // Enable the Spawner and Timer
+        spawner.GetComponent<Spawner>().isPause =false;
+        Debug.Log("Current spawner: " + spawner.GetComponent<Spawner>().isPause);
+        timer.GetComponent<Timer>().isPause = false;
+
     }
 }

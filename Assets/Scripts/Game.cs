@@ -749,12 +749,12 @@ public class Game : MonoBehaviour {
         {
             if(direction == "lr")
             {
-                Debug.Log("Changed addLeftRight: " + addLeftRight);
+                //Debug.Log("Changed addLeftRight: " + addLeftRight);
                 addLeftRight++;
             }
             else if (direction == "ud")
             {
-                Debug.Log("Changed addUpDown: " + addUpDown);
+                //Debug.Log("Changed addUpDown: " + addUpDown);
                 addUpDown++;
 
             }
