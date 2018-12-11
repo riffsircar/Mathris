@@ -21,7 +21,6 @@ public class MoveShape2P : MonoBehaviour {
 	void Start ()
     {
         Debug.Log("moveshape2p start");
-     //   Debug.Log("Inside MoveShape start");
         // If the default is not valid, that means the blocks have reached the top
         // Which means game over
         if (!isValidGridPos())
@@ -32,10 +31,6 @@ public class MoveShape2P : MonoBehaviour {
             SceneManager.LoadScene("Over2P");
         }
         spawner = GameObject.Find("SpawnerP2").GetComponent<Spawner2P>();
-        if (GameObject.Find("SpawnerP2"))
-            Debug.Log("SpawnerP2 found");
-        else
-            Debug.Log("SpawnerP2 not found");
         //Debug.Log("Exiting MoveShape start");
     }
 
@@ -69,11 +64,6 @@ public class MoveShape2P : MonoBehaviour {
 
         if (isLanded == true)
         {
-            Debug.Log("2P landed");
-            if (spawner)
-                Debug.Log("Spawner2P still around");
-            else
-                Debug.Log("lost spawner2p");
             PerformCalAndSpawn(transform);
             isLanded = false;
         }
