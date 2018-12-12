@@ -17,6 +17,10 @@ TagManager:
   - UnlockedP2
   - ClickSound
   - MainMusic
+  - AddSound
+  - SubSound
+  - MulSound
+  - DivSound
   layers:
   - Default
   - TransparentFX

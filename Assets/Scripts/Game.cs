@@ -67,6 +67,25 @@ public class Game : MonoBehaviour {
     static AudioClip audioClip;
     //PlayCalSounds sound;
 
+    static GameObject addSound;
+    static GameObject subSound;
+    static GameObject divSound;
+    static GameObject mulSound;
+    static GameObject subUpSound;
+    static GameObject subDownSound;
+    static GameObject replaySound;
+    static GameObject clickSound;
+
+    static AudioSource addSoundClip;
+    static AudioSource subSoundClip;
+    static AudioSource divSoundClip;
+    static AudioSource mulSoundClip;
+    static AudioSource replaySoundClip;
+    static AudioSource clickSoundClip;
+
+    static AudioSource subUpSoundClip;
+    static AudioSource subDownSoundClip;
+
     static Slider scoreSlider;
 
     private void Awake()
@@ -82,7 +101,7 @@ public class Game : MonoBehaviour {
         sliderObj = GameObject.Find("ScoreSlider");
         arrowLRSprite = GameObject.Find("Red Arrow");
         arrowUDSprite = GameObject.Find("Orange Arrow");
-        audioSource = GameObject.FindGameObjectWithTag("MainMusic").GetComponent<AudioSource>();
+        //audioSource = GameObject.FindGameObjectWithTag("MainMusic").GetComponent<AudioSource>();
 
         arrowLROriginPos = new Vector3(-25, 0, 0);
         arrowUDOriginPos = new Vector3(-25, 0, 0);
@@ -93,6 +112,36 @@ public class Game : MonoBehaviour {
         mainCamera = GameObject.Find("Main Camera").GetComponent<ZoomController>();
 
         //audioClips = GameObject.FindGameObjectsWithTag("MainMusic");
+
+        addSound = GameObject.FindGameObjectWithTag("AddSound");
+        subSound = GameObject.FindGameObjectWithTag("SubSound");
+        divSound = GameObject.FindGameObjectWithTag("DivSound");
+        mulSound = GameObject.FindGameObjectWithTag("MulSound");
+        subUpSound = GameObject.Find("SubUpSound");
+        subDownSound = GameObject.Find("SubDownSound");
+        replaySound = GameObject.Find("Replay Sound");
+        clickSound = GameObject.Find("Click Sound");
+
+        if (addSound)
+            addSoundClip = addSound.GetComponent<AudioSource>();
+
+        if (subSound)
+            subSoundClip = subSound.GetComponent<AudioSource>();
+        if (divSound)
+            divSoundClip = divSound.GetComponent<AudioSource>();
+        if (mulSound)
+            mulSoundClip = mulSound.GetComponent<AudioSource>();
+
+        if (replaySound)
+            replaySoundClip = replaySound.GetComponent<AudioSource>();
+
+        if (clickSound)
+            clickSoundClip = clickSound.GetComponent<AudioSource>();
+
+        if(subUpSound)
+            subUpSoundClip = subUpSound.GetComponent<AudioSource>();
+        if (subDownSound)
+            subDownSoundClip = subDownSound.GetComponent<AudioSource>();
 
         if (scoreObj)
         {
@@ -424,19 +473,27 @@ public class Game : MonoBehaviour {
         {
             plusCount++;
             result = (a + b);
-            audioClip = GameObject.Find("Adding Sound").GetComponent<AudioClip>();
+            addSoundClip.Play();
+            //audioClip = GameObject.Find("Adding Sound").GetComponent<AudioClip>();
+
         }
         else if(op == "-")
         {
             subCount++;
             result = (a - b);
-            audioClip = GameObject.Find("Subtraction Sound").GetComponent<AudioClip>();
+            if (result < 0)
+                subDownSoundClip.Play();
+            else
+                subUpSoundClip.Play();
+            //subSoundClip.Play();
+            //audioClip = GameObject.Find("Subtraction Sound").GetComponent<AudioClip>();
         }
         else if(op == "*")
         {
             mulCount++;
             result = (a * b);
-            audioClip = GameObject.Find("Multiplication Sound").GetComponent<AudioClip>();
+            mulSoundClip.Play();
+            //   audioClip = GameObject.Find("Multiplication Sound").GetComponent<AudioClip>();
         }
         else
         {
@@ -448,11 +505,12 @@ public class Game : MonoBehaviour {
             {
                 divCount++;
                 result = (a / (float)b);
-                audioClip = GameObject.Find("Division Sound").GetComponent<AudioClip>();
+                divSoundClip.Play();
+                //audioClip = GameObject.Find("Division Sound").GetComponent<AudioClip>();
             }
         }
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        //audioSource.clip = audioClip;
+        //audioSource.Play();
         Spawner.UpdateUnlockedOperators();
         return result;
     }
@@ -569,11 +627,13 @@ public class Game : MonoBehaviour {
 
             yield return new WaitForSeconds(time);
 
-            Destroy(grid[x, y].gameObject);
-            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            if (grid[x, y])
+            {
+                Destroy(grid[x, y].gameObject);
+                DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            }
             grid[x, y] = null;
-            Debug.Log("X: " + x + "\tY: " + y);
-            Debug.Log(grid[x - 1, y]);
+
             if (grid[x-1,y])
                 Destroy(grid[x - 1, y].gameObject);
             grid[x - 1, y] = null;
@@ -598,12 +658,19 @@ public class Game : MonoBehaviour {
 
             yield return new WaitForSeconds(time);
 
-            Destroy(grid[x, y].gameObject);
-            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            if (grid[x, y])
+            {
+                Destroy(grid[x, y].gameObject);
+                DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            }
             grid[x, y] = null;
-            Destroy(grid[x, y - 1].gameObject);
+
+            if(grid[x,y-1])
+                Destroy(grid[x, y - 1].gameObject);
             grid[x, y - 1] = null;
-            Destroy(grid[x, y + 1].gameObject);
+
+            if(grid[x,y+1])
+                Destroy(grid[x, y + 1].gameObject);
             grid[x, y + 1] = null;
 
             //AdjustRows(x, y + 2);
@@ -626,18 +693,30 @@ public class Game : MonoBehaviour {
 
             yield return new WaitForSeconds(time);
 
-            Destroy(grid[x, y].gameObject);
-            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            if (grid[x, y])
+            {
+                Destroy(grid[x, y].gameObject);
+                DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            }
             grid[x, y] = null;
 
-            Destroy(grid[x - 1, y].gameObject);
+            if(grid[x-1,y])
+                Destroy(grid[x - 1, y].gameObject);
             grid[x - 1, y] = null;
-            Destroy(grid[x + 1, y].gameObject);
+
+            if(grid[x+1,y])
+                Destroy(grid[x + 1, y].gameObject);
+
             grid[x + 1, y] = null;
 
-            Destroy(grid[x, y - 1].gameObject);
+            if(grid[x,y-1])
+                Destroy(grid[x, y - 1].gameObject);
+
             grid[x, y - 1] = null;
-            Destroy(grid[x, y + 1].gameObject);
+
+            if(grid[x,y+1])
+                Destroy(grid[x, y + 1].gameObject);
+
             grid[x, y + 1] = null;
 
             AdjustRows(x, y);
@@ -696,12 +775,20 @@ public class Game : MonoBehaviour {
 
             yield return new WaitForSeconds(time);
 
-            Destroy(grid[x, y].gameObject);
-            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            if (grid[x, y])
+            {
+                Destroy(grid[x, y].gameObject);
+                DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            }
+            
             grid[x, y] = null;
-            Destroy(grid[x - 1, y].gameObject);
+
+            if(grid[x-1,y])
+                Destroy(grid[x - 1, y].gameObject);
             grid[x - 1, y] = null;
-            Destroy(grid[x + 1, y].gameObject);
+
+            if(grid[x+1,y])
+                Destroy(grid[x + 1, y].gameObject);
             grid[x + 1, y] = null;
 
             AdjustRows(x, y);
@@ -740,12 +827,19 @@ public class Game : MonoBehaviour {
 
             yield return new WaitForSeconds(time);
 
-            Destroy(grid[x, y].gameObject);
-            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            if (grid[x, y])
+            {
+                Destroy(grid[x, y].gameObject);
+                DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            }
             grid[x, y] = null;
-            Destroy(grid[x, y - 1].gameObject);
+
+            if(grid[x,y-1])
+                Destroy(grid[x, y - 1].gameObject);
             grid[x, y - 1] = null;
-            Destroy(grid[x, y + 1].gameObject);
+
+            if(grid[x,y+1])
+                Destroy(grid[x, y + 1].gameObject);
             grid[x, y + 1] = null;
 
             //AdjustRows(x, y + 2);
@@ -788,18 +882,27 @@ public class Game : MonoBehaviour {
 
             yield return new WaitForSeconds(time);
 
-            Destroy(grid[x, y].gameObject);
-            DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            if (grid[x, y])
+            {
+                Destroy(grid[x, y].gameObject);
+                DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
+            }
             grid[x, y] = null;
 
-            Destroy(grid[x - 1, y].gameObject);
+            if(grid[x-1,y])
+                Destroy(grid[x - 1, y].gameObject);
             grid[x - 1, y] = null;
-            Destroy(grid[x + 1, y].gameObject);
+
+            if(grid[x+1,y])
+                Destroy(grid[x + 1, y].gameObject);
             grid[x + 1, y] = null;
 
-            Destroy(grid[x, y - 1].gameObject);
+            if(grid[x,y-1])
+                Destroy(grid[x, y - 1].gameObject);
             grid[x, y - 1] = null;
-            Destroy(grid[x, y + 1].gameObject);
+
+            if(grid[x,y+1])
+                Destroy(grid[x, y + 1].gameObject);
             grid[x, y + 1] = null;
 
             AdjustRows(x, y);
@@ -837,7 +940,9 @@ public class Game : MonoBehaviour {
 
     public void Restart()
     {
-        Reset();  
+
+        Reset();
+        replaySoundClip.Play();
         SceneManager.LoadScene("Main");
         //spawner.SpawnNext();
     }
@@ -845,6 +950,7 @@ public class Game : MonoBehaviour {
     public void Quit()
     {
         Reset();
+        clickSoundClip.Play();
         SceneManager.LoadScene("Start");
     }
 

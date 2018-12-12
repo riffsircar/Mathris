@@ -14,6 +14,7 @@ public class Menu : MonoBehaviour {
         GameObject winner = GameObject.Find("Winner");
         GameObject p1 = GameObject.Find("P1");
         GameObject p2 = GameObject.Find("P2");
+        GameObject mainSound = GameObject.Find("Tetris");
         if (finalScore)
         {
             finalScore.GetComponent<Text>().text = "Score: " + Data.score.ToString("0.00");
@@ -28,12 +29,18 @@ public class Menu : MonoBehaviour {
         if(winner)
         {
             string w = Game2P.winner == 1 ? "Player 1" : "Player 2";
-            winner.GetComponent<Text>().text = w + "wins!";
+            winner.GetComponent<Text>().text = w + " wins!";
         }
         if(p1 && p2)
         {
             p1.GetComponent<Text>().text = "Player 1: " + Game2P.score1;
             p2.GetComponent<Text>().text = "Player 2: " + Game2P.score2;
+        }
+        if (mainSound)
+        {
+            string scene = SceneManager.GetActiveScene().name;
+            if(scene == "Over" || scene == "Over2P")
+                mainSound.GetComponent<AudioSource>().Stop();
         }
         Game2P.Reset();
         //Debug.Log(Data.score + "\t" + Data.cod);
