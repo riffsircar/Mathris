@@ -51,6 +51,10 @@ public class Game : MonoBehaviour {
     public static int timesFour = 0;
     public static int dividedFour = 0;
 
+    public static int leftRight = 0;
+    public static int upDown = 0;
+    public static int all = 0;
+
     public static Game game; 
 
     static Slider scoreSlider;
@@ -511,7 +515,7 @@ public class Game : MonoBehaviour {
     // Distroy the block after changing the color
     static void SlowDestroyWithEffect(Tile tile, int x, int y, string direction, Transform t, float result)
     {
-        game.StartCoroutine(game.DelayForSecond(.25f, tile, x, y, direction, t, result));
+        game.StartCoroutine(game.DelayForSecond(0.25f, tile, x, y, direction, t, result));
     }
 
     IEnumerator DelayForSecond(float time, Tile tile, int x, int y, string direction, Transform t, float result)
@@ -614,7 +618,7 @@ public class Game : MonoBehaviour {
 
     static void Tutorial(Tile tile, int x, int y, string direction, Transform t, float result)
     {
-        game.StartCoroutine(game.TutorialHelper(1.2f, tile, x, y, direction, t, result));
+        game.StartCoroutine(game.TutorialHelper(1.0f, tile, x, y, direction, t, result));
     }
 
     IEnumerator TutorialHelper(float time, Tile tile, int x, int y, string direction, Transform t, float result)
@@ -757,6 +761,13 @@ public class Game : MonoBehaviour {
     //      3. all (all four direction)
     static int TrackFirstTimeCalculation(string op, string direction)
     {
+        if (direction == "lr")
+            return leftRight;
+        else if (direction == "ud")
+            return upDown;
+        else if (direction == "all")
+            return all;
+        /*
         if (op == "+")
         {
             if (direction == "lr")
@@ -817,12 +828,20 @@ public class Game : MonoBehaviour {
                 return dividedFour;
             }
         }
+        */
         return -1;
     }
 
     // Change corresponding bool value
     static void ChangeFirstTimeCalculation(string op, string direction)
     {
+        if (direction == "lr")
+            leftRight++;
+        else if (direction == "ud")
+            upDown++;
+        else if (direction == "all")
+            all++;
+        /*
         if (op == "+")
         {
             if(direction == "lr")
@@ -886,6 +905,7 @@ public class Game : MonoBehaviour {
                 dividedFour++;
             }
         }
+        */
     }
 
     public void Restart()

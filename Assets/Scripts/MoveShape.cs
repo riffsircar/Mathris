@@ -71,9 +71,8 @@ public class MoveShape : MonoBehaviour {
                 Rotation();
             }
 
-            if (!spawner.isPause) 
+            if (Data.mode == 2 || !spawner.isPause) 
             {
-            
                 if (Time.time - lastFall >= Data.fallSpeed)
                 {
                     Fall();

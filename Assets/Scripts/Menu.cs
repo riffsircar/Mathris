@@ -28,7 +28,7 @@ public class Menu : MonoBehaviour {
         if(winner)
         {
             string w = Game2P.winner == 1 ? "Player 1" : "Player 2";
-            winner.GetComponent<Text>().text = w + "  wins!";
+            winner.GetComponent<Text>().text = w + "wins!";
         }
         if(p1 && p2)
         {

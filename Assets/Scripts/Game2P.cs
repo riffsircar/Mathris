@@ -128,8 +128,8 @@ public class Game2P : MonoBehaviour {
             mulCountObjP1.active = false;
         if (divCountObjP1)
             divCountObjP1.active = false;
-        addCountObjP1.GetComponent<Text>().text = "0";
-        subCountObjP1.GetComponent<Text>().text = "0";
+        addCountObjP1.GetComponent<Text>().text = "x0";
+        subCountObjP1.GetComponent<Text>().text = "x0";
 
         addCountObjP2 = GameObject.Find("AddCountP2");
         mulCountObjP2 = GameObject.Find("MulCountP2");
@@ -139,8 +139,8 @@ public class Game2P : MonoBehaviour {
             mulCountObjP2.active = false;
         if (divCountObjP2)
             divCountObjP2.active = false;
-        addCountObjP2.GetComponent<Text>().text = "0";
-        subCountObjP2.GetComponent<Text>().text = "0";
+        addCountObjP2.GetComponent<Text>().text = "x0";
+        subCountObjP2.GetComponent<Text>().text = "x0";
 
         Reset();
     }
@@ -545,21 +545,21 @@ public class Game2P : MonoBehaviour {
     static void UpdateUnlockedOperators()
     {
         
-        addCountObjP1.GetComponent<Text>().text = plusCountP1.ToString();
-        subCountObjP1.GetComponent<Text>().text = subCountP1.ToString();
+        addCountObjP1.GetComponent<Text>().text = "x" + plusCountP1.ToString();
+        subCountObjP1.GetComponent<Text>().text = "x" + subCountP1.ToString();
 
-        addCountObjP2.GetComponent<Text>().text = plusCountP2.ToString();
-        subCountObjP2.GetComponent<Text>().text = subCountP2.ToString();
+        addCountObjP2.GetComponent<Text>().text = "x" + plusCountP2.ToString();
+        subCountObjP2.GetComponent<Text>().text = "x" + subCountP2.ToString();
 
         if (divCountObjP1)
-            divCountObjP1.GetComponent<Text>().text = divCountP1.ToString();
+            divCountObjP1.GetComponent<Text>().text = "x" + divCountP1.ToString();
         if(mulCountObjP1)
-            mulCountObjP1.GetComponent<Text>().text = mulCountP1.ToString();
+            mulCountObjP1.GetComponent<Text>().text = "x" + mulCountP1.ToString();
 
         if (divCountObjP2)
-            divCountObjP2.GetComponent<Text>().text = divCountP2.ToString();
+            divCountObjP2.GetComponent<Text>().text = "x" + divCountP2.ToString();
         if (mulCountObjP2)
-            mulCountObjP2.GetComponent<Text>().text = mulCountP2.ToString();
+            mulCountObjP2.GetComponent<Text>().text = "x" + mulCountP2.ToString();
 
         if (plusCountP1 == 5)
         {
@@ -570,7 +570,7 @@ public class Game2P : MonoBehaviour {
                 unlockedP1.Add(opDict["multiply"]);
                 mult1.active = true;
                 mulCountObjP1.active = true;
-                mulCountObjP1.GetComponent<Text>().text = "0";
+                mulCountObjP1.GetComponent<Text>().text = "x0";
             }
         }
         if (subCountP1 == 5)
@@ -582,7 +582,7 @@ public class Game2P : MonoBehaviour {
                 unlockedP1.Add(opDict["divide"]);
                 div1.active = true;
                 divCountObjP1.active = true;
-                divCountObjP1.GetComponent<Text>().text = "0";
+                divCountObjP1.GetComponent<Text>().text = "x0";
             }
         }
 
@@ -595,7 +595,7 @@ public class Game2P : MonoBehaviour {
                 unlockedP2.Add(opDict["multiply"]);
                 mult2.active = true;
                 mulCountObjP2.active = true;
-                mulCountObjP2.GetComponent<Text>().text = "0";
+                mulCountObjP2.GetComponent<Text>().text = "x0";
             }
         }
         if (subCountP2 == 5)
@@ -607,7 +607,7 @@ public class Game2P : MonoBehaviour {
                 unlockedP2.Add(opDict["divide"]);
                 div2.active = true;
                 divCountObjP2.active = true;
-                divCountObjP2.GetComponent<Text>().text = "0";
+                divCountObjP2.GetComponent<Text>().text = "x0";
             }
         }
     }
