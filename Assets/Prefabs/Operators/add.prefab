@@ -58,7 +58,9 @@ MonoBehaviour:
     type: 2}
   origin: {fileID: 21300000, guid: d31de57ada99b46b39d84031e72cacbb, type: 3}
   constrast: {fileID: 21300000, guid: b46faebee0b4d4608879bd67d3f6688a, type: 3}
-  arrows: []
+  arrows:
+  - {fileID: 21300000, guid: cfa0e8a2a15f248ec81c6966445d90b0, type: 3}
+  - {fileID: 21300000, guid: c856b10582afa413e9d3687e36ecd574, type: 3}
 --- !u!212 &212389975324243194
 SpriteRenderer:
   m_ObjectHideFlags: 1
