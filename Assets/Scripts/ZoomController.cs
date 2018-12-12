@@ -8,7 +8,7 @@ public class ZoomController : MonoBehaviour {
     public float zoomToSize = 5f;
     public Vector3 originalCamaraPos;
     public float originalCamaraSize = 8f;
-    public int secondToPause = 5;
+    public int secondToPause = 2;
     // Call the Spawner and timer in the game to pause them.
     GameObject spawner;
     GameObject timer;

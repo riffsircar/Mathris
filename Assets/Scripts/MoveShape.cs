@@ -43,8 +43,9 @@ public class MoveShape : MonoBehaviour {
         }
 
         if (Data.mode == 1)
-        {  
-            spawner = FindObjectOfType<Spawner>();
+        {
+            //spawner = FindObjectOfType<Spawner>();
+            spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
         }
         else
         {
@@ -72,6 +73,7 @@ public class MoveShape : MonoBehaviour {
 
             if (!spawner.isPause) 
             {
+            
                 if (Time.time - lastFall >= Data.fallSpeed)
                 {
                     Fall();
@@ -83,6 +85,10 @@ public class MoveShape : MonoBehaviour {
                     FastFall();
                 }
             }
+            else
+        {
+            Debug.Log("Spawner be paused");
+        }
        
             if (isLanded)
             {
@@ -229,7 +235,7 @@ public class MoveShape : MonoBehaviour {
                 if (!Game.InsideBorder(pos))
                 {
                     Debug.Log("1st valid if");
-                    Debug.Log(pos);
+                    //Debug.Log(pos);
                     return false;
                 }
 
@@ -239,7 +245,7 @@ public class MoveShape : MonoBehaviour {
                     Game.grid[(int)pos.x, (int)pos.y].parent != transform)
                 {
                     Debug.Log("2nd valid if");
-                    Debug.Log(pos);
+                 //   Debug.Log(pos);
                     return false;
                 }
             }

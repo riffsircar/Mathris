@@ -24,7 +24,7 @@ public class Timer : MonoBehaviour {
     {
         if (isPause)
         {
-            Debug.Log("Timer Paused");
+            //Debug.Log("Timer Paused");
             timeText.text = "TIME: " + timeRemain.ToString("0");
             if (timeRemain <= 10f)
             {

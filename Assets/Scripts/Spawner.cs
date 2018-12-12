@@ -153,6 +153,7 @@ public class Spawner : MonoBehaviour
 
     void BuildNextShape(string shape)
     {
+        Debug.Log("BuildNextShape");
         int[] x = X[shape];
         int[] y = Y[shape];
 
@@ -165,6 +166,7 @@ public class Spawner : MonoBehaviour
         int unlockedCount = unlocked.Count;
         for (int i = 0; i < 4; i++)
         {
+            
             int num = Random.Range(0, 10);
             GameObject tile;
             if ((i == 0 || i == 3) && !hasOp && op <= OP_PROB)
@@ -183,6 +185,7 @@ public class Spawner : MonoBehaviour
             
         tile.transform.parent = block.transform;
         tile.transform.localPosition = new Vector3(x[i], y[i], 0);
+           Debug.Log("X: " + x[i] + "\tY: " + y[i]);
         }
     }
 }
