@@ -511,7 +511,7 @@ public class Game : MonoBehaviour {
     // Distroy the block after changing the color
     static void SlowDestroyWithEffect(Tile tile, int x, int y, string direction, Transform t, float result)
     {
-        game.StartCoroutine(game.DelayForSecond(.5f, tile, x, y, direction, t, result));
+        game.StartCoroutine(game.DelayForSecond(.25f, tile, x, y, direction, t, result));
     }
 
     IEnumerator DelayForSecond(float time, Tile tile, int x, int y, string direction, Transform t, float result)
@@ -888,17 +888,6 @@ public class Game : MonoBehaviour {
         }
     }
 
-<<<<<<< HEAD
-=======
-    // Distroy the block after changing the color
-    static void SlowDestroyWithEffect(Tile tile, int x, int y, string direction, Transform t, float result)
-    {
-        //spawner.isPause = true;
-       game.StartCoroutine(game.DelayForSecond(0f, tile, x, y, direction, t, result));
-        //spawner.isPause = false;
-    }
-
->>>>>>> fe58276d217439de6051597a553f47ac7de1c8db
     public void Restart()
     {
         Reset();  
