@@ -55,7 +55,9 @@ MonoBehaviour:
   type: number
   value: 7
   particleEffect: {fileID: 0}
+  origin: {fileID: 21300000, guid: 307bd8c29bf4d4a4fbb2b547a8a49265, type: 3}
   constrast: {fileID: 21300000, guid: 76eeb9e70f5874a769dfd354fb1b9a86, type: 3}
+  arrows: []
 --- !u!212 &212837937177853568
 SpriteRenderer:
   m_ObjectHideFlags: 1
