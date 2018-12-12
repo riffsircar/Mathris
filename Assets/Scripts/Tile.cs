@@ -9,5 +9,5 @@ public class Tile : MonoBehaviour
     public GameObject particleEffect;
     public Sprite origin; // origin sprite
     public Sprite constrast;
-    public Sprite[] arrows; 
+    public Sprite[] arrows;
 }

@@ -646,14 +646,22 @@ public class Game : MonoBehaviour {
             op.GetComponent<SpriteRenderer>().sprite = op.constrast;
             number2.GetComponent<SpriteRenderer>().sprite = number2.constrast;
 
+            Vector3 arrowLRPos = new Vector3(x, y + 0.7f, -15);
+
             for (int j = 0; j < 3; j++)
             {
                 for (int i = 0; i < tiles.Length; i++)
                 {
+                    int arrorIndex = i % 2;
+                    Sprite arrowLR = Instantiate(
+                        op.arrows[arrorIndex],
+                        arrowLRPos,
+                        Quaternion.identity);
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].constrast;
                     yield return new WaitForSeconds(0.1f);
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].origin;
-                    //yield return new WaitForSeconds(0.2f);
+                    yield return new WaitForSeconds(0.1f);
+                    //Destroy(arrowLR);
                 }
             }
 
@@ -683,13 +691,22 @@ public class Game : MonoBehaviour {
             tiles[1] = number2;
             tiles[2] = op;
 
+            Vector3 arrowUDPos = new Vector3(x + 0.7f, y, -15);
+
             for (int j = 0; j < 3; j++)
             {
                 for (int i = 0; i < tiles.Length; i++)
                 {
+                    int arrorIndex = i % 2;
+                    Sprite arrowUD = Instantiate(
+                        op.arrows[arrorIndex],
+                        arrowUDPos,
+                        Quaternion.Euler(0,0,-90));
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].constrast;
                     yield return new WaitForSeconds(0.1f);
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].origin;
+                    yield return new WaitForSeconds(0.1f);
+                    //Destroy(arrowUD);
                 }
             }
             yield return new WaitForSeconds(time);
@@ -722,13 +739,30 @@ public class Game : MonoBehaviour {
             tiles[3] = number3;
             tiles[4] = number4;
 
+            Vector3 arrowLRPos = new Vector3(x, y + 1.6f, -15);
+            Vector3 arrowUDPos = new Vector3(x + 1.6f, y, -15);
+
             for (int j = 0; j < 3; j++)
             {
                 for (int i = 0; i < tiles.Length; i++)
                 {
+                    int arrorIndexLR = i % 2;
+                    int arrorIndexUD = (i + 1) % 2;
+                    Sprite arrowLR = Instantiate(
+                        op.arrows[arrorIndexLR],
+                        arrowLRPos,
+                        Quaternion.identity);
+                    Sprite arrowUD = Instantiate(
+                        op.arrows[arrorIndexUD],
+                        arrowUDPos,
+                        Quaternion.Euler(0, 0, -90));
+
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].constrast;
                     yield return new WaitForSeconds(0.1f);
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].origin;
+                    yield return new WaitForSeconds(0.1f);
+                    //Destroy(arrowLR);
+                    //Destroy(arrowUD);
                 }
             }
 
