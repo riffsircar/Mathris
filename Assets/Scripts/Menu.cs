@@ -39,7 +39,13 @@ public class Menu : MonoBehaviour {
         //Debug.Log(Data.score + "\t" + Data.cod);
     }
 
-	public void PlayGame()
+    public void PlayRule2P()
+    {
+        Data.mode = 2;
+        SceneManager.LoadScene("Instructions2P");
+    }
+
+    public void PlayGame()
     {
         Timer.timeRemain = 120f;
         SceneManager.LoadScene("Main");
@@ -60,7 +66,7 @@ public class Menu : MonoBehaviour {
     public void Start2P()
     {
         Data.mode = 2;
-        SceneManager.LoadScene("Instructions2P");
+        SceneManager.LoadScene("Instructions2P(0)");
     }
 
     public void QuitGame()

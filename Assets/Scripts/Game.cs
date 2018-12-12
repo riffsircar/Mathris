@@ -62,6 +62,11 @@ public class Game : MonoBehaviour {
     Vector3 arrowLROriginPos;
     Vector3 arrowUDOriginPos;
 
+    // Audio
+    static AudioSource audioSource;
+    static AudioClip audioClip;
+    //PlayCalSounds sound;
+
     static Slider scoreSlider;
 
     private void Awake()
@@ -77,14 +82,17 @@ public class Game : MonoBehaviour {
         sliderObj = GameObject.Find("ScoreSlider");
         arrowLRSprite = GameObject.Find("Red Arrow");
         arrowUDSprite = GameObject.Find("Orange Arrow");
+        audioSource = GameObject.FindGameObjectWithTag("MainMusic").GetComponent<AudioSource>();
 
-        arrowLROriginPos = new Vector3(-8, 0, 0);
-        arrowUDOriginPos = new Vector3(-8, 0, 0);
+        arrowLROriginPos = new Vector3(-25, 0, 0);
+        arrowUDOriginPos = new Vector3(-25, 0, 0);
 
         if (sliderObj)
             scoreSlider = sliderObj.GetComponent<Slider>();
 
         mainCamera = GameObject.Find("Main Camera").GetComponent<ZoomController>();
+
+        //audioClips = GameObject.FindGameObjectsWithTag("MainMusic");
 
         if (scoreObj)
         {
@@ -410,20 +418,25 @@ public class Game : MonoBehaviour {
     static float CalculateResult(int a, int b, string op)
     {
         float result;
-        if(op == "+")
+
+
+        if (op == "+")
         {
             plusCount++;
             result = (a + b);
+            audioClip = GameObject.Find("Adding Sound").GetComponent<AudioClip>();
         }
         else if(op == "-")
         {
             subCount++;
             result = (a - b);
+            audioClip = GameObject.Find("Subtraction Sound").GetComponent<AudioClip>();
         }
         else if(op == "*")
         {
             mulCount++;
             result = (a * b);
+            audioClip = GameObject.Find("Multiplication Sound").GetComponent<AudioClip>();
         }
         else
         {
@@ -435,11 +448,16 @@ public class Game : MonoBehaviour {
             {
                 divCount++;
                 result = (a / (float)b);
+                audioClip = GameObject.Find("Division Sound").GetComponent<AudioClip>();
             }
         }
+        audioSource.clip = audioClip;
+        audioSource.Play();
         Spawner.UpdateUnlockedOperators();
         return result;
     }
+
+
 
     public static void DestroyWithParticleEffect(Vector3 tilePosition, GameObject particleEffect)
     {
@@ -665,13 +683,7 @@ public class Game : MonoBehaviour {
             {
                 for (int i = 0; i < tiles.Length; i++)
                 {
-                    //int arrorIndex = i % 2;
-                    //arrowLRSprite.GetComponent<SpriteRenderer>().sprite = op.arrows[arrorIndex];
 
-                    //GameObject arrowLR = Instantiate(
-                        //arrowLRSprite,
-                        //arrowLRPos,
-                        //Quaternion.identity);
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].constrast;
                     yield return new WaitForSeconds(0.1f);
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].origin;
@@ -716,18 +728,11 @@ public class Game : MonoBehaviour {
             {
                 for (int i = 0; i < tiles.Length; i++)
                 {
-                    //int arrorIndex = i % 2;
-                    //arrowUDSprite.GetComponent<SpriteRenderer>().sprite = op.arrows[arrorIndex];
 
-                    //GameObject arrowUD = Instantiate(
-                        //arrowUDSprite,
-                        //arrowUDPos,
-                        //Quaternion.Euler(0,0,-90));
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].constrast;
                     yield return new WaitForSeconds(0.1f);
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].origin;
-                    //yield return new WaitForSeconds(0.1f);
-                    //Destroy(arrowUD);
+
                 }
             }
 
@@ -772,26 +777,9 @@ public class Game : MonoBehaviour {
             {
                 for (int i = 0; i < tiles.Length; i++)
                 {
-                    //int arrorIndexLR = i % 2;
-                    //int arrorIndexUD = (i + 1) % 2;
-                    //arrowLRSprite.GetComponent<SpriteRenderer>().sprite = op.arrows[arrorIndexLR];
-                    //arrowUDSprite.GetComponent<SpriteRenderer>().sprite = op.arrows[arrorIndexUD];
-
-                    //GameObject arrowLR = Instantiate(
-                    //    arrowLRSprite,
-                    //    arrowLRPos,
-                    //    Quaternion.identity);
-                    //GameObject arrowUD = Instantiate(
-                        //arrowUDSprite,
-                        //arrowUDPos,
-                        //Quaternion.Euler(0, 0, -90));
-
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].constrast;
                     yield return new WaitForSeconds(0.1f);
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].origin;
-                    //yield return new WaitForSeconds(0.1f);
-                    //Destroy(arrowLR);
-                    //Destroy(arrowUD);
                 }
             }
 

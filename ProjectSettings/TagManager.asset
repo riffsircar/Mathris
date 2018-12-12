@@ -15,6 +15,8 @@ TagManager:
   - ScoreP2
   - UnlockedP1
   - UnlockedP2
+  - ClickSound
+  - MainMusic
   layers:
   - Default
   - TransparentFX
