@@ -21,7 +21,7 @@ public class Game : MonoBehaviour {
     GameObject opObj;
     GameObject spawnerObj;
     GameObject sliderObj;
-    Spawner spawner;
+    static Spawner spawner;
     Spawner spawner2;
     static string operationText;
     public static int plusCount = 0;
@@ -141,6 +141,7 @@ public class Game : MonoBehaviour {
 
     public static void DeleteFullRows()
     {
+        Debug.Log("DeleteFullRows called");
         int lines = 0;
         for (int y = 0; y < height; ++y)
         {
@@ -379,8 +380,8 @@ public class Game : MonoBehaviour {
         {
             // Change the speed
             Data.fallSpeed /= 1.025f;
-            Debug.Log(Data.fallSpeed);
-            Debug.Log("FASTER!");
+            //Debug.Log(Data.fallSpeed);
+            //Debug.Log("FASTER!");
 
             // Change the goal and time
             goal += scoreIncrement;
@@ -421,7 +422,6 @@ public class Game : MonoBehaviour {
                 result = (a / (float)b);
             }
         }
-        Debug.Log(plusCount + "\t" + subCount + "\t" + mulCount + "\t" + divCount);
         Spawner.UpdateUnlockedOperators();
         return result;
     }
@@ -430,9 +430,8 @@ public class Game : MonoBehaviour {
     {
         //Destroy(tile.gameObject);
         Vector3 adjust = new Vector3(0, 0, -15);
-        GameObject particleSystem = Instantiate
-            (particleEffect, tilePosition + adjust, Quaternion.identity);
-        Destroy(particleSystem, 1f);
+        GameObject particleSystem = Instantiate(particleEffect, tilePosition + adjust, Quaternion.identity);
+        Destroy(particleSystem, 0.5f);
     }
 
     static void AdjustRows(int col, int row)
@@ -503,144 +502,6 @@ public class Game : MonoBehaviour {
     }
 
     /* 
-    >>> AdjustRow + AdjustColumn needs to be changed:
-        Modify how to adjust the tiles position above the calculation:
-        Decrease all the adjacent tiles above!
-
-       Propose Solution:
-       AdjustTest:
-       Use BFS or DFS to search through all the tiles that connected above the
-       calculation and decrease all tiles' row in the connected tiles above.
-
-       col, row: x,y coordinates of the root tile, the root tile is the tile right above the calculation.
-                col and row changed bases on the calculation happened:
-                - Horizontal (root.col = x, root.row = y + 1)
-                - Vertical  (root.col = x, root.row = y + 1)
-    */
-    static void AdjustTest (int col, int row)
-    {
-        // Track all the tiles that has been visited
-        Dictionary<Transform, bool> visited = new Dictionary<Transform, bool>();
-        // initiate dict
-        foreach (Transform child in grid)
-        {
-            Debug.Log("The new entry is: " + child.name);
-            visited[child] = false;
-        }
-
-        Debug.Log(visited);
-
-        Queue<Transform> queue = new Queue<Transform>();
-
-        queue.Enqueue(grid[col, row]);
-        visited[grid[col, row]] = true;
-
-        while (queue.Count != 0)
-        {
-            // pop the queue
-            Transform s = queue.Dequeue();
-            Debug.Log(s.position);
-
-            // check the adjacent tiles to four direction
-            Transform leftTile = grid[col - 1, row];
-            Transform rightTile = grid[col + 1, row];
-            Transform upperTile = grid[col, row + 1];
-            Transform lowerTile = grid[col, row - 1];
-
-            if (leftTile != null)
-            {
-                if (visited[leftTile] == false)
-                {
-                    queue.Enqueue(leftTile);
-                    visited[leftTile] = true;
-                }
-            }
-            if (rightTile != null)
-            {
-                if (visited[rightTile] == false)
-                {
-                    queue.Enqueue(rightTile);
-                    visited[rightTile] = true;
-                }
-            }
-            if (upperTile != null)
-            {
-                if (visited[upperTile] == false)
-                {
-                    queue.Enqueue(upperTile);
-                    visited[upperTile] = true;
-                }
-            }
-            if (lowerTile != null)
-            {
-                if (visited[lowerTile] == false)
-                {
-                    queue.Enqueue(lowerTile);
-                    visited[lowerTile] = true;
-                }
-            }
-        }
-
-        Debug.Log("-------------------------------------------------------");
-        Debug.Log(visited);
-        Debug.Log("=======================================================");
-        // The lowest tile in the adjacent tiles group
-        List<Transform> noBaseTile = new List<Transform>();
-
-         
-        // Find all tiles in visited that has no tile under it
-        foreach (Transform child in visited.Keys)
-        {
-            if (visited[child] == true)
-            {
-                Vector2 underChild = new Vector2(child.position.x, child.position.y - 1);
-                Transform underTile = grid[(int)underChild.x, (int)underChild.y];
-                if (underTile == null)
-                {
-                    noBaseTile.Add(child);
-                }
-            }
-        }
-
-        // After we find the tiles that don't have a tile under them. 
-        // Calculate the minimal distance that all tiles that need to fall
-        int lowestFallDistance = 999;
-
-        foreach (Transform child in noBaseTile)
-        {
-            int measureY = (int)child.position.y - 1;
-            int fallingDistance = 0;
-            while (!grid[(int)child.position.x, measureY])
-            {
-                measureY -= 1;
-                fallingDistance += 1;
-            }
-
-            if (lowestFallDistance > fallingDistance)
-            {
-                lowestFallDistance = fallingDistance;
-            }
-        }
-
-        // Performing fall
-        while (lowestFallDistance > 0) {
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; x < width; y++)
-                {
-                    if (visited.ContainsKey(grid[x,y]) && !grid[x,y-1]) // And if the gird could fall.
-                    {
-                        lowestFallDistance -= 1;
-                        grid[x, y - 1] = grid[x, y];
-                        grid[x, y].position += new Vector3(0, -1, 0);
-                        grid[x, y] = null;
-                    }
-                }
-            }
-        }
-    }
-
-    /* 
      >>> DelayEffect: delay following thing for certain seconds:
                 > cancelation (destroy)    
                 > pause the spawner
@@ -655,6 +516,7 @@ public class Game : MonoBehaviour {
 
     IEnumerator DelayForSecond(float time, Tile tile, int x, int y, string direction, Transform t, float result)
     {
+        Debug.Log("Delay for second");
         // handle the color change effects
         Tile number1;
         Tile op;
@@ -671,15 +533,19 @@ public class Game : MonoBehaviour {
             number1.GetComponent<SpriteRenderer>().sprite = number1.constrast;
             op.GetComponent<SpriteRenderer>().sprite = op.constrast;
             number2.GetComponent<SpriteRenderer>().sprite = number2.constrast;
-           
-            yield return new WaitForSeconds(time);
 
+            yield return new WaitForSeconds(time);
             Destroy(grid[x, y].gameObject);
             DestroyWithParticleEffect(grid[x, y].position, tile.particleEffect);
             grid[x, y] = null;
-            Destroy(grid[x - 1, y].gameObject);
+            Debug.Log("X: " + x + "\tY: " + y);
+            Debug.Log(grid[x - 1, y]);
+            if (grid[x-1,y])
+                Destroy(grid[x - 1, y].gameObject);
             grid[x - 1, y] = null;
-            Destroy(grid[x + 1, y].gameObject);
+
+            if(grid[x+1,y])
+                Destroy(grid[x + 1, y].gameObject);
             grid[x + 1, y] = null;
 
             AdjustRows(x, y);
@@ -1022,6 +888,17 @@ public class Game : MonoBehaviour {
         }
     }
 
+<<<<<<< HEAD
+=======
+    // Distroy the block after changing the color
+    static void SlowDestroyWithEffect(Tile tile, int x, int y, string direction, Transform t, float result)
+    {
+        //spawner.isPause = true;
+       game.StartCoroutine(game.DelayForSecond(0f, tile, x, y, direction, t, result));
+        //spawner.isPause = false;
+    }
+
+>>>>>>> fe58276d217439de6051597a553f47ac7de1c8db
     public void Restart()
     {
         Reset();  
