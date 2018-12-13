@@ -75,6 +75,7 @@ public class Game : MonoBehaviour {
     static GameObject subDownSound;
     static GameObject replaySound;
     static GameObject clickSound;
+    static GameObject mainSound;
 
     static AudioSource addSoundClip;
     static AudioSource subSoundClip;
@@ -82,6 +83,7 @@ public class Game : MonoBehaviour {
     static AudioSource mulSoundClip;
     static AudioSource replaySoundClip;
     static AudioSource clickSoundClip;
+    static AudioSource mainSoundClip;
 
     static AudioSource subUpSoundClip;
     static AudioSource subDownSoundClip;
@@ -117,10 +119,12 @@ public class Game : MonoBehaviour {
         subSound = GameObject.FindGameObjectWithTag("SubSound");
         divSound = GameObject.FindGameObjectWithTag("DivSound");
         mulSound = GameObject.FindGameObjectWithTag("MulSound");
+
         subUpSound = GameObject.Find("SubUpSound");
         subDownSound = GameObject.Find("SubDownSound");
         replaySound = GameObject.Find("Replay Sound");
         clickSound = GameObject.Find("Click Sound");
+        mainSound = GameObject.Find("Tetris");
 
         if (addSound)
             addSoundClip = addSound.GetComponent<AudioSource>();
@@ -142,6 +146,14 @@ public class Game : MonoBehaviour {
             subUpSoundClip = subUpSound.GetComponent<AudioSource>();
         if (subDownSound)
             subDownSoundClip = subDownSound.GetComponent<AudioSource>();
+
+        if (mainSound)
+            mainSoundClip = mainSound.GetComponent<AudioSource>();
+
+        String scene = SceneManager.GetActiveScene().name;
+
+        if (!mainSoundClip.isPlaying && scene != "Over" && scene != "Over2P")
+            mainSoundClip.Play();
 
         if (scoreObj)
         {
