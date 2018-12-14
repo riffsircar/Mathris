@@ -148,12 +148,17 @@ public class Game : MonoBehaviour {
             subDownSoundClip = subDownSound.GetComponent<AudioSource>();
 
         if (mainSound)
+        {
             mainSoundClip = mainSound.GetComponent<AudioSource>();
 
-        String scene = SceneManager.GetActiveScene().name;
+            String scene = SceneManager.GetActiveScene().name;
 
-        if (!mainSoundClip.isPlaying && scene != "Over" && scene != "Over2P")
-            mainSoundClip.Play();
+            if (mainSoundClip)
+            {
+                if (!mainSoundClip.isPlaying && scene != "Over" && scene != "Over2P")
+                    mainSoundClip.Play();
+            }
+        }
 
         if (scoreObj)
         {

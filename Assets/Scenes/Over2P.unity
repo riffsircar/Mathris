@@ -407,7 +407,6 @@ GameObject:
   m_Component:
   - component: {fileID: 246540117}
   - component: {fileID: 246540116}
-  - component: {fileID: 246540115}
   m_Layer: 5
   m_Name: Replay Sound
   m_TagString: ClickSound
@@ -415,17 +414,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &246540115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 246540114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b8b2c0366ad342a78cf1b4f9ad85d87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &246540116
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1714,7 +1702,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1916880600}
   - component: {fileID: 1916880599}
-  - component: {fileID: 1916880598}
   m_Layer: 5
   m_Name: Click Sound
   m_TagString: ClickSound
@@ -1722,17 +1709,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1916880598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1916880597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b8b2c0366ad342a78cf1b4f9ad85d87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &1916880599
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1744,7 +1720,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2538e42e641e04aba9a5bc9c867a6c80, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.25
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1873,7 +1849,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d2981e9381da2428ba38cc0b51a9f97e, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.25
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

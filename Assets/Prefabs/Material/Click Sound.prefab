@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224053943571634064}
   - component: {fileID: 82925687489583828}
-  - component: {fileID: 114739065864547928}
+  - component: {fileID: 114892418116550600}
   m_Layer: 5
   m_Name: Click Sound
   m_TagString: ClickSound
@@ -39,7 +39,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2538e42e641e04aba9a5bc9c867a6c80, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -123,7 +123,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &114739065864547928
+--- !u!114 &114892418116550600
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
