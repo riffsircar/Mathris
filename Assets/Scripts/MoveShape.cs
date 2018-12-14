@@ -25,13 +25,11 @@ public class MoveShape : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        Debug.Log("moveshape start");
-        //   Debug.Log("Inside MoveShape start");
         // If the default is not valid, that means the blocks have reached the top
         // Which means game over
         if (!isValidGridPos())
         {
-            Debug.Log("Game Over");
+            //Debug.Log("Game Over");
             Data.cod = "OVERFLOW!";
             if(Data.mode == 1)
                 SceneManager.LoadScene("Over");
@@ -42,16 +40,31 @@ public class MoveShape : MonoBehaviour {
             }
         }
 
+        foreach (Transform child in transform)
+        {
+            Vector2 pos = Game.RoundPosition(child.position);
+             if (pos.y < 14)
+                {
+                    //Debug.Log("Game Over");
+                    Data.cod = "OVERFLOW!";
+                    if (Data.mode == 1)
+                        SceneManager.LoadScene("Over");
+                    else
+                    {
+                        Game2P.winner = 2;
+                        SceneManager.LoadScene("Over2P");
+                    }
+                }
+        }
+
         if (Data.mode == 1)
         {
-            //spawner = FindObjectOfType<Spawner>();
             spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
         }
         else
         {
             spawner2P = GameObject.Find("SpawnerP1").GetComponent<Spawner2P>();
         }
-        //Debug.Log("Exiting MoveShape start");
     }
 
 	void Update ()
@@ -84,14 +97,9 @@ public class MoveShape : MonoBehaviour {
                     FastFall();
                 }
             }
-            else
-        {
-            Debug.Log("Spawner be paused");
-        }
        
             if (isLanded)
             {
-                Debug.Log("P1 landed");
                 PerformCalAndSpawn(transform);
                 isLanded = false;
             }
@@ -207,7 +215,6 @@ public class MoveShape : MonoBehaviour {
             Game.DeleteFullRows();
 
             // Spawn next shape
-            //FindObjectOfType<Spawner>().SpawnNext();
             spawner.SpawnNext();
 
             // Disable the script of the obj, since it needs to be stop from controlling
@@ -225,7 +232,6 @@ public class MoveShape : MonoBehaviour {
     {
         if (Data.mode == 1)
         {
-            //Debug.Log("Inside isValidGridPos");
             foreach (Transform child in transform)
             {
                 Vector2 pos = Game.RoundPosition(child.position);
@@ -233,8 +239,6 @@ public class MoveShape : MonoBehaviour {
                 // detect if the block is inside border or not
                 if (!Game.InsideBorder(pos))
                 {
-                    Debug.Log("1st valid if");
-                    //Debug.Log(pos);
                     return false;
                 }
 
@@ -243,12 +247,9 @@ public class MoveShape : MonoBehaviour {
                 if (Game.grid[(int)pos.x, (int)pos.y] != null &&
                     Game.grid[(int)pos.x, (int)pos.y].parent != transform)
                 {
-                    Debug.Log("2nd valid if");
-                 //   Debug.Log(pos);
                     return false;
                 }
             }
-            //Debug.Log("Exiting isValidGridPos");
             return true;
         }
         else
@@ -260,8 +261,6 @@ public class MoveShape : MonoBehaviour {
                 // detect if the block is inside border or not
                 if (!Game2P.InsideGridOneBorder(pos))
                 {
-                    Debug.Log("1st valid if");
-                    Debug.Log(pos);
                     return false;
                 }
 
@@ -270,25 +269,9 @@ public class MoveShape : MonoBehaviour {
                 if (Game2P.grid1[(int)pos.x, (int)pos.y] != null &&
                     Game2P.grid1[(int)pos.x, (int)pos.y].parent != transform)
                 {
-                    Debug.Log("2nd valid if");
-                    Debug.Log(pos);
                     return false;
                 }
-
-                /*
-                // Used in rotation: find the block that is in the position already.
-                // If there is a block that at the position, return false.
-                if (Game.grid[(int)pos.x, (int)pos.y] != null &&
-                    Game.grid[(int)pos.x, (int)pos.y].parent != transform)
-                {
-                    Debug.Log("2nd valid if");
-                    return false;
-                }
-                */
-
-                // Add if the 
             }
-            //Debug.Log("Exiting isValidGridPos");
             return true;
         }
         return true;
@@ -296,8 +279,6 @@ public class MoveShape : MonoBehaviour {
 
     public bool isValidGridOnePos()
     {
-        
-            Debug.Log("Inside isValidGridOnePos");
             foreach (Transform child in transform)
             {
                 Vector2 pos = Game2P.RoundPosition(child.position);
@@ -305,7 +286,6 @@ public class MoveShape : MonoBehaviour {
                 // detect if the block is inside border or not
                 if (!Game2P.InsideGridOneBorder(pos))
                 {
-                    Debug.Log("1st valid if");
                     return false;
                 }
 
@@ -314,24 +294,9 @@ public class MoveShape : MonoBehaviour {
                 if (Game2P.grid1[(int)pos.x, (int)pos.y] != null &&
                     Game2P.grid1[(int)pos.x, (int)pos.y].parent != transform)
                 {
-                    Debug.Log("2nd valid if");
                     return false;
-                }
-
-                /*
-                // Used in rotation: find the block that is in the position already.
-                // If there is a block that at the position, return false.
-                if (Game.grid[(int)pos.x, (int)pos.y] != null &&
-                    Game.grid[(int)pos.x, (int)pos.y].parent != transform)
-                {
-                    Debug.Log("2nd valid if");
-                    return false;
-                }
-                */
-
-                // Add if the 
+                }   
             }
-            //Debug.Log("Exiting isValidGridPos");
             return true;
     }
 
@@ -384,7 +349,6 @@ public class MoveShape : MonoBehaviour {
             {
                 Vector2 pos = Game2P.RoundPosition(child.position);
                 Game2P.grid1[(int)pos.x, (int)pos.y] = child;
-
             }
         }
     }

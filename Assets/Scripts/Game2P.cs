@@ -58,9 +58,28 @@ public class Game2P : MonoBehaviour {
     public static GameObject divCountObjP2;
     public static GameObject mulCountObjP2;
 
-    
+    static GameObject addSound;
+    static GameObject subSound;
+    static GameObject divSound;
+    static GameObject mulSound;
+    static GameObject subUpSound;
+    static GameObject subDownSound;
+    static GameObject replaySound;
+    static GameObject clickSound;
+    static GameObject mainSound;
 
-    
+    static AudioSource addSoundClip;
+    static AudioSource subSoundClip;
+    static AudioSource divSoundClip;
+    static AudioSource mulSoundClip;
+    static AudioSource replaySoundClip;
+    static AudioSource clickSoundClip;
+    static AudioSource mainSoundClip;
+
+    static AudioSource subUpSoundClip;
+    static AudioSource subDownSoundClip;
+
+
 
     // grid: tracks all position of the grid
     public static Transform[,] grid = new Transform[width, height];
@@ -75,6 +94,52 @@ public class Game2P : MonoBehaviour {
         opObj2 = GameObject.FindGameObjectWithTag("OperationP2");
         unlockedP1 = new List<GameObject>();
         unlockedP2 = new List<GameObject>();
+
+        addSound = GameObject.FindGameObjectWithTag("AddSound");
+        subSound = GameObject.FindGameObjectWithTag("SubSound");
+        divSound = GameObject.FindGameObjectWithTag("DivSound");
+        mulSound = GameObject.FindGameObjectWithTag("MulSound");
+
+        subUpSound = GameObject.Find("SubUpSound");
+        subDownSound = GameObject.Find("SubDownSound");
+        replaySound = GameObject.Find("Replay Sound");
+        clickSound = GameObject.Find("Click Sound");
+        mainSound = GameObject.Find("Tetris");
+
+        if (addSound)
+            addSoundClip = addSound.GetComponent<AudioSource>();
+
+        if (subSound)
+            subSoundClip = subSound.GetComponent<AudioSource>();
+        if (divSound)
+            divSoundClip = divSound.GetComponent<AudioSource>();
+        if (mulSound)
+            mulSoundClip = mulSound.GetComponent<AudioSource>();
+
+        if (replaySound)
+            replaySoundClip = replaySound.GetComponent<AudioSource>();
+
+        if (clickSound)
+            clickSoundClip = clickSound.GetComponent<AudioSource>();
+
+        if (subUpSound)
+            subUpSoundClip = subUpSound.GetComponent<AudioSource>();
+        if (subDownSound)
+            subDownSoundClip = subDownSound.GetComponent<AudioSource>();
+
+        if (mainSound)
+        {
+            mainSoundClip = mainSound.GetComponent<AudioSource>();
+
+            String scene = SceneManager.GetActiveScene().name;
+
+            if (mainSoundClip)
+            {
+                if (!mainSoundClip.isPlaying && scene != "Over" && scene != "Over2P")
+                    mainSoundClip.Play();
+            }
+        }
+
         if (scoreObj1 && scoreObj2)
         {
             Data.fallSpeed = 0.4f;
@@ -419,7 +484,6 @@ public class Game2P : MonoBehaviour {
                             else
                             {
                                 //Up and Down calculation
-                                
                                 if (y != 0 && y != height - 1)
                                 {
                                     if (grid[x, y - 1] != null && grid[x, y + 1] != null)
@@ -435,8 +499,6 @@ public class Game2P : MonoBehaviour {
                                 }
                                 if (val_u != -1 && val_d != -1)
                                 {
-                                    
-                                    //float result = CalculateResult(Math.Max(val1, val2), Math.Min(val1, val2), tile.value);
                                     float result = CalculateResult(val_u, val_d, tile.value, player);
                                     if (result != float.PositiveInfinity)
                                     {
@@ -505,6 +567,7 @@ public class Game2P : MonoBehaviour {
                 plusCountP1++;
             else
                 plusCountP2++;
+            addSoundClip.Play();
             result = (a + b);
         }
         else if(op == "-")
@@ -514,6 +577,10 @@ public class Game2P : MonoBehaviour {
             else
                 subCountP2++;
             result = (a - b);
+            if (result < 0)
+                subDownSoundClip.Play();
+            else
+                subUpSoundClip.Play();
         }
         else if(op == "*")
         {
@@ -521,6 +588,7 @@ public class Game2P : MonoBehaviour {
                 mulCountP1++;
             else
                 mulCountP2++;
+            mulSoundClip.Play();
             result = (a * b);
         }
         else
@@ -535,6 +603,7 @@ public class Game2P : MonoBehaviour {
                     divCountP1++;
                 else
                     divCountP2++;
+                divSoundClip.Play();
                 result = (a / (float)b);
             }
         }
@@ -566,7 +635,7 @@ public class Game2P : MonoBehaviour {
             if (!mult1.active)
             {
                 unlockedP1Count++;
-                Debug.Log("MULTIPLICATION UNLOCKED!");
+                //Debug.Log("MULTIPLICATION UNLOCKED!");
                 unlockedP1.Add(opDict["multiply"]);
                 mult1.active = true;
                 mulCountObjP1.active = true;
@@ -578,7 +647,7 @@ public class Game2P : MonoBehaviour {
             if (!div1.active)
             {
                 unlockedP1Count++;
-                Debug.Log("DIVISION UNLOCKED!");
+                //Debug.Log("DIVISION UNLOCKED!");
                 unlockedP1.Add(opDict["divide"]);
                 div1.active = true;
                 divCountObjP1.active = true;
@@ -591,7 +660,7 @@ public class Game2P : MonoBehaviour {
             if (!mult2.active)
             {
                 unlockedP2Count++;
-                Debug.Log("MULTIPLICATION UNLOCKED!");
+                //Debug.Log("MULTIPLICATION UNLOCKED!");
                 unlockedP2.Add(opDict["multiply"]);
                 mult2.active = true;
                 mulCountObjP2.active = true;
@@ -603,7 +672,7 @@ public class Game2P : MonoBehaviour {
             if (!div2.active)
             {
                 unlockedP2Count++;
-                Debug.Log("DIVISION UNLOCKED!");
+                //Debug.Log("DIVISION UNLOCKED!");
                 unlockedP2.Add(opDict["divide"]);
                 div2.active = true;
                 divCountObjP2.active = true;
@@ -615,10 +684,8 @@ public class Game2P : MonoBehaviour {
 
     static void DestroyWithParticleEffect(Vector3 tilePosition, GameObject particleEffect)
     {
-        //Destroy(tile.gameObject);
         Vector3 adjust = new Vector3(0, 0, -15);
-        GameObject particleSystem = Instantiate
-            (particleEffect, tilePosition + adjust, Quaternion.identity);
+        GameObject particleSystem = Instantiate(particleEffect, tilePosition + adjust, Quaternion.identity);
         Destroy(particleSystem, 1f);
     }
 
@@ -659,24 +726,19 @@ public class Game2P : MonoBehaviour {
             
             int x = (int)Math.Round(child.position.x);
             int y = (int)Math.Round(child.position.y);
-            //Debug.Log("X: " + child.position.x + "\t" + "Y: " + child.position.y);
             if (player == 2)
                 x -= 14;
             xs.Add(x);
             ys.Add(y);
         }
         // Sort y in order to let tiles fall at bottom first.
-        //Debug.Log("count: " + ys.Count);
         ys.Sort();
         int r = ys[0];
         int r_max = ys[ys.Count - 1];
-        //Debug.Log("R: " + r);
         foreach(int x in xs)
         {
-            //Debug.Log("X: " + x);
             for (int j = r; j <= r_max; j++)
             {
-                //Debug.Log("J: " + j);
                 if (grid[x, j] != null)
                 {
                     int temp_j = j;
@@ -712,7 +774,6 @@ public class Game2P : MonoBehaviour {
     {
         Reset();  
         SceneManager.LoadScene("TwoPlayer");
-        //spawner.SpawnNext();
     }
 
     public void Quit()
@@ -723,7 +784,6 @@ public class Game2P : MonoBehaviour {
 
     public static void Reset()
     {
-        //Debug.Log("Resetting");
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -741,9 +801,7 @@ public class Game2P : MonoBehaviour {
                 }
             }
         }
-        //Data.score = 0.0f;
         Data.fallSpeed = 0.4f;
-        //scoreText.text = "SCORE:\n" + score.ToString("0.00");
         Timer.timeRemain = 60f;
         plusCountP1 = 0;
         subCountP1 = 0;
@@ -757,7 +815,6 @@ public class Game2P : MonoBehaviour {
 
         score1 = 0f;
         score2 = 0f;
-        //Debug.Log(plusCount + "\t" + subCount + "\t" + mulCount + "\t" + divCount);
-        //   Spawner.unlocked.GetRange(0, 2);
+        
     }
 }

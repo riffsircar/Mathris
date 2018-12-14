@@ -37,24 +37,22 @@ public class Spawner : MonoBehaviour
     public static GameObject divCount;
     public static GameObject mulCount;
 
+
+    static AudioSource divSoundClip;
+    static AudioSource mulSoundClip;
+
     public bool isPause = false;
 
     // Spawn the next blocks onto the game surface
     public void SpawnNext()
     {
         int randomIndex = Random.Range(0, shape.Length);
-
         string nextShape = shape[randomIndex];
-
         BuildNextShape(nextShape);
-
-        //Instantiate(shapes[randomIndex], transform.position, Quaternion.identity);
-        //   Instantiate(nextShapeObj, transform.position, Quaternion.identity);
     }
 
     void Start()
     {
-        //Instantiate(test, transform.position, Quaternion.identity);
         unlocked = new List<GameObject>();
         opDict = new Dictionary<string, GameObject>();
         foreach (GameObject go in operators)
@@ -69,8 +67,6 @@ public class Spawner : MonoBehaviour
         mult.active = false;
         div = GameObject.Find("Div");
         div.active = false;
-        //timesEffect = GameObject.Find("Times 1");
-        //timesEffect.active = false;
 
         addCount = GameObject.Find("AddCount");
         mulCount = GameObject.Find("MulCount");
@@ -81,9 +77,11 @@ public class Spawner : MonoBehaviour
         addCount.GetComponent<Text>().text = "x0";
         subCount.GetComponent<Text>().text = "x0";
 
+        divSoundClip = GameObject.FindGameObjectWithTag("DivSound").GetComponent<AudioSource>();
+        mulSoundClip = GameObject.FindGameObjectWithTag("MulSound").GetComponent<AudioSource>();
+
         InitXY();
         SpawnNext();
-
     }
 
     public static void UpdateUnlockedOperators()
@@ -100,12 +98,10 @@ public class Spawner : MonoBehaviour
         {
             if (!mult.active)
             {
-                Debug.Log("MULTIPLICATION UNLOCKED!");
+                //Debug.Log("MULTIPLICATION UNLOCKED!");
+                mulSoundClip.Play();
                 unlocked.Add(opDict["multiply"]);
                 mult.active = true;
-                //Debug.Log(Camera.main.ScreenToWorldPoint(mult.GetComponent<RectTransform>().position));
-                //Game.DestroyWithParticleEffect(Camera.main.ScreenToWorldPoint(mult.GetComponent<RectTransform>().position), opDict["multiply"].GetComponent<Tile>().particleEffect);
-                //timesEffect.active = true;
                 mulCount.active = true;
                 mulCount.GetComponent<Text>().text = "x0";
                 Game.scoreIncrement *= 2;
@@ -115,7 +111,8 @@ public class Spawner : MonoBehaviour
         {
             if (!div.active)
             {
-                Debug.Log("DIVISION UNLOCKED!");
+                //Debug.Log("DIVISION UNLOCKED!");
+                divSoundClip.Play();
                 unlocked.Add(opDict["divide"]);
                 div.active = true;
                 divCount.active = true;
@@ -123,6 +120,16 @@ public class Spawner : MonoBehaviour
             }
         }
     }
+
+    /*
+    static IEnumerator FlashMessage(string message, float delay)
+    {
+        Game.multUnlockedText.text = message;
+        Game.multUnlockedObj.SetActive(true);
+        yield return new WaitForSeconds(delay);
+        Game.multUnlockedObj.SetActive(false);
+    }
+    */
 
     static void InitXY()
     {
@@ -143,15 +150,10 @@ public class Spawner : MonoBehaviour
         Y.Add("O", new int[] { 1, 1, 0, 0 });
         Y.Add("T", new int[] { 1, 1, 0, 1 });
         Y.Add("Z", new int[] { 1, 1, 0, 0 });
-
-        // test shape Y: for testing 4 direction calculation
-        //X.Add("Y", new int[] { 0, 1, 1, 2 });
-        //Y.Add("Y", new int[] { 2, 0, 1, 2 });
     }
 
     void BuildNextShape(string shape)
     {
-        Debug.Log("BuildNextShape");
         int[] x = X[shape];
         int[] y = Y[shape];
 
@@ -183,7 +185,6 @@ public class Spawner : MonoBehaviour
             
         tile.transform.parent = block.transform;
         tile.transform.localPosition = new Vector3(x[i], y[i], 0);
-           Debug.Log("X: " + x[i] + "\tY: " + y[i]);
         }
     }
 }

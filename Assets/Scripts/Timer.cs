@@ -24,7 +24,6 @@ public class Timer : MonoBehaviour {
     {
         if (isPause)
         {
-            //Debug.Log("Timer Paused");
             timeText.text = "TIME: " + timeRemain.ToString("0");
             if (timeRemain <= 10f)
             {
@@ -38,9 +37,7 @@ public class Timer : MonoBehaviour {
         else
         {
             TimerRun();
-        }
-
-            
+        }   
     }
 
     private static void TimerRun()
@@ -60,7 +57,6 @@ public class Timer : MonoBehaviour {
             if (Data.mode == 1)
             {
                 timeRemain = 0;
-                // Debug.Log("Time!");
                 Data.cod = "RAN OUT OF TIME!";
                 SceneManager.LoadScene("Over");
             }

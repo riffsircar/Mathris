@@ -43,7 +43,6 @@ public class Menu : MonoBehaviour {
                 mainSound.GetComponent<AudioSource>().Stop();
         }
         Game2P.Reset();
-        //Debug.Log(Data.score + "\t" + Data.cod);
     }
 
     public void PlayRule2P()

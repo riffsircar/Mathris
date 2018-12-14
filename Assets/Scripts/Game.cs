@@ -90,6 +90,11 @@ public class Game : MonoBehaviour {
 
     static Slider scoreSlider;
 
+    /*
+    public static GameObject multUnlockedObj;
+    public static Text multUnlockedText;
+    */
+
     private void Awake()
     {
         game = this;
@@ -125,6 +130,12 @@ public class Game : MonoBehaviour {
         replaySound = GameObject.Find("Replay Sound");
         clickSound = GameObject.Find("Click Sound");
         mainSound = GameObject.Find("Tetris");
+
+        /*
+        multUnlockedObj = GameObject.Find("MultUnlocked");
+        multUnlockedText = multUnlockedObj.GetComponent<Text>();
+        multUnlockedObj.SetActive(false);
+        */
 
         if (addSound)
             addSoundClip = addSound.GetComponent<AudioSource>();
@@ -230,7 +241,6 @@ public class Game : MonoBehaviour {
 
     public static void DeleteFullRows()
     {
-        Debug.Log("DeleteFullRows called");
         int lines = 0;
         for (int y = 0; y < height; ++y)
         {
@@ -275,7 +285,6 @@ public class Game : MonoBehaviour {
         {
             for(int x = 0; x < width; x++)
             {
-                //Debug.Log("X: " + x + "\tY: " + y + "\t" + grid[x, y]);
                 if (grid[x,y] != null)
                 {
 
@@ -293,7 +302,6 @@ public class Game : MonoBehaviour {
                             if (grid[x - 1, y] != null && grid[x + 1, y] != null &&
                                 grid[x, y - 1] != null && grid[x, y + 1] != null)
                             {
-                                //Debug.Log("BOTH DIRS");
                                 Tile left = grid[x - 1, y].gameObject.GetComponent<Tile>();
                                 Tile right = grid[x + 1, y].gameObject.GetComponent<Tile>();
                                 Tile up = grid[x, y + 1].gameObject.GetComponent<Tile>();
@@ -322,7 +330,7 @@ public class Game : MonoBehaviour {
                                 operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") + (" + val_u.ToString() + " " + tile.value + " " + val_d.ToString() + ")\n = " + result.ToString("0.00") + "\nDOUBLE OP!";
                                 opText.text = "OPERATION: \n" + operationText;
 
-                                Debug.Log("+++:" + tile.value);
+                                //Debug.Log("+++:" + tile.value);
 
                                 if (TrackFirstTimeCalculation(tile.value, "all") == 0)
                                 {
@@ -370,10 +378,9 @@ public class Game : MonoBehaviour {
                                 if (result != float.PositiveInfinity)
                                 {
                                     operationText = "(" + val_l.ToString() + " " + tile.value + " " + val_r.ToString() + ") = " + result.ToString("0.00");
-                                    //Debug.Log("OP: " + operationText);
                                     opText.text = "OPERATION: \n" + operationText;
 
-                                    Debug.Log("+++:" + tile.value);
+                                    //Debug.Log("+++:" + tile.value);
 
                                     if (TrackFirstTimeCalculation(tile.value, "lr") == 0)
                                     {
@@ -425,7 +432,7 @@ public class Game : MonoBehaviour {
                                         //Debug.Log("OP: " + operationText);
                                         opText.text = "OPERATION: \n" + operationText;
 
-                                        Debug.Log("+++:" + tile.value);
+                                        //Debug.Log("+++:" + tile.value);
 
                                         if (TrackFirstTimeCalculation(tile.value, "ud") == 0)
                                         {
@@ -461,16 +468,12 @@ public class Game : MonoBehaviour {
         Data.score += res;
         score += res;
         scoreSlider.value = score;
-        //scoreText.text = "SCORE:\n" + Data.score.ToString("0.00");
         scoreText.text = "SCORE: " + score.ToString("0.00");
         // When player reach the goal
-        //if (Data.score >= Data.goal)
         if(score >= goal) 
         {
             // Change the speed
             Data.fallSpeed /= 1.025f;
-            //Debug.Log(Data.fallSpeed);
-            //Debug.Log("FASTER!");
 
             // Change the goal and time
             goal += scoreIncrement;
@@ -491,7 +494,6 @@ public class Game : MonoBehaviour {
             plusCount++;
             result = (a + b);
             addSoundClip.Play();
-            //audioClip = GameObject.Find("Adding Sound").GetComponent<AudioClip>();
 
         }
         else if(op == "-")
@@ -502,15 +504,12 @@ public class Game : MonoBehaviour {
                 subDownSoundClip.Play();
             else
                 subUpSoundClip.Play();
-            //subSoundClip.Play();
-            //audioClip = GameObject.Find("Subtraction Sound").GetComponent<AudioClip>();
         }
         else if(op == "*")
         {
             mulCount++;
             result = (a * b);
             mulSoundClip.Play();
-            //   audioClip = GameObject.Find("Multiplication Sound").GetComponent<AudioClip>();
         }
         else
         {
@@ -523,11 +522,8 @@ public class Game : MonoBehaviour {
                 divCount++;
                 result = (a / (float)b);
                 divSoundClip.Play();
-                //audioClip = GameObject.Find("Division Sound").GetComponent<AudioClip>();
             }
         }
-        //audioSource.clip = audioClip;
-        //audioSource.Play();
         Spawner.UpdateUnlockedOperators();
         return result;
     }
@@ -536,7 +532,6 @@ public class Game : MonoBehaviour {
 
     public static void DestroyWithParticleEffect(Vector3 tilePosition, GameObject particleEffect)
     {
-        //Destroy(tile.gameObject);
         Vector3 adjust = new Vector3(0, 0, -15);
         GameObject particleSystem = Instantiate(particleEffect, tilePosition + adjust, Quaternion.identity);
         Destroy(particleSystem, 0.5f);
@@ -575,25 +570,19 @@ public class Game : MonoBehaviour {
 
         foreach(Transform child in t)
         {
-            
             int x = (int)Math.Round(child.position.x);
             int y = (int)Math.Round(child.position.y);
-            //Debug.Log("X: " + child.position.x + "\t" + "Y: " + child.position.y);
                 xs.Add(x);
                 ys.Add(y);
         }
         // Sort y in order to let tiles fall at bottom first.
-        //Debug.Log("count: " + ys.Count);
         ys.Sort();
         int r = ys[0];
         int r_max = ys[ys.Count - 1];
-        //Debug.Log("R: " + r);
         foreach(int x in xs)
         {
-            //Debug.Log("X: " + x);
             for (int j = r; j <= r_max; j++)
             {
-                //Debug.Log("J: " + j);
                 if (grid[x, j] != null)
                 {
                     int temp_j = j;
@@ -783,8 +772,6 @@ public class Game : MonoBehaviour {
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].constrast;
                     yield return new WaitForSeconds(0.1f);
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].origin;
-                    //yield return new WaitForSeconds(0.1f);
-                    //Destroy(arrowLR);
                 }
             }
 
@@ -826,17 +813,14 @@ public class Game : MonoBehaviour {
 
             Vector3 arrowUDPos = new Vector3(x + 0.8f, y, -15);
             arrowUDSprite.transform.position = arrowUDPos;
-
-
+            
             for (int j = 0; j < 3; j++)
             {
                 for (int i = 0; i < tiles.Length; i++)
                 {
-
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].constrast;
                     yield return new WaitForSeconds(0.1f);
                     tiles[i].GetComponent<SpriteRenderer>().sprite = tiles[i].origin;
-
                 }
             }
 
@@ -957,11 +941,9 @@ public class Game : MonoBehaviour {
 
     public void Restart()
     {
-
         Reset();
         replaySoundClip.Play();
         SceneManager.LoadScene("Main");
-        //spawner.SpawnNext();
     }
 
     public void Quit()
@@ -973,7 +955,6 @@ public class Game : MonoBehaviour {
 
     public static void Reset()
     {
-        Debug.Log("Resetting");
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -985,16 +966,13 @@ public class Game : MonoBehaviour {
                 }
             }
         }
-        //Data.score = 0.0f;
         Data.fallSpeed = 0.4f;
         goal = Data.goal;
-        //scoreText.text = "SCORE:\n" + score.ToString("0.00");
         Timer.timeRemain = Data.initTime;
         plusCount = 0;
         subCount = 0;
         mulCount = 0;
         divCount = 0;
-        //Debug.Log(plusCount + "\t" + subCount + "\t" + mulCount + "\t" + divCount);
-     //   Spawner.unlocked.GetRange(0, 2);
+        
     }
 }

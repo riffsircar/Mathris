@@ -21,7 +21,6 @@ public class ZoomController : MonoBehaviour {
         originalCamaraPos = new Vector3(4.5f, 7.5f, -20f);
         spawner = GameObject.Find("Spawner");
         timer = GameObject.Find("Time");
-
 	}
 
     // Update is called once per frame
@@ -62,7 +61,7 @@ public class ZoomController : MonoBehaviour {
 
         // Enable the Spawner and Timer
         spawner.GetComponent<Spawner>().isPause =false;
-        Debug.Log("Current spawner: " + spawner.GetComponent<Spawner>().isPause);
+        //Debug.Log("Current spawner: " + spawner.GetComponent<Spawner>().isPause);
         timer.GetComponent<Timer>().isPause = false;
 
     }
