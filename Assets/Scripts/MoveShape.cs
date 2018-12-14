@@ -43,18 +43,23 @@ public class MoveShape : MonoBehaviour {
         foreach (Transform child in transform)
         {
             Vector2 pos = Game.RoundPosition(child.position);
-             if (pos.y < 14)
+
+            if(Data.mode == 1)
+            {
+                if(pos.y < 14)
                 {
-                    //Debug.Log("Game Over");
                     Data.cod = "OVERFLOW!";
-                    if (Data.mode == 1)
-                        SceneManager.LoadScene("Over");
-                    else
+                    SceneManager.LoadScene("Over");
+                }
+            }
+            else
+            {
+                if(pos.y < 16)
                     {
-                        Game2P.winner = 2;
+                        Data.cod = "OVERFLOW!";
                         SceneManager.LoadScene("Over2P");
                     }
-                }
+            }
         }
 
         if (Data.mode == 1)

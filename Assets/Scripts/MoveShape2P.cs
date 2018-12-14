@@ -34,7 +34,7 @@ public class MoveShape2P : MonoBehaviour {
         foreach(Transform child in transform)
         {
             Vector2 pos = Game.RoundPosition(child.position);
-            if (pos.y < 14)
+            if (pos.y < 16)
             {
                 Data.cod = "OVERFLOW!";
                 Game2P.winner = 1;

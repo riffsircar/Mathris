@@ -129,10 +129,6 @@ public class Spawner2P : MonoBehaviour
                 unlockedText1 = unlockedObj1.GetComponent<Text>();
                 unlockedObj1.SetActive(false);
             }
-            else
-            {
-                Debug.Log("NOT FOUND");
-            }
         }
 
         if (!unlockedObj2)
