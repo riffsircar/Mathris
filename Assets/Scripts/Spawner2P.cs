@@ -43,6 +43,11 @@ public class Spawner2P : MonoBehaviour
     public static GameObject divCountP2;
     public static GameObject mulCountP2;
 
+    public static GameObject unlockedObj1;
+    public static Text unlockedText1;
+
+    public static GameObject unlockedObj2;
+    public static Text unlockedText2;
 
 
     // Spawn the next blocks onto the game surface
@@ -56,6 +61,7 @@ public class Spawner2P : MonoBehaviour
         //Instantiate(shapes[randomIndex], transform.position, Quaternion.identity);
         //   Instantiate(nextShapeObj, transform.position, Quaternion.identity);
     }
+    
 
     void Start()
     {
@@ -115,6 +121,30 @@ public class Spawner2P : MonoBehaviour
         addCountP2.GetComponent<Text>().text = "0";
         subCountP2.GetComponent<Text>().text = "0";
         */
+        if (!unlockedObj1)
+        {
+            unlockedObj1 = GameObject.Find("UnlockedTextP1");
+            if (unlockedObj1)
+            {
+                unlockedText1 = unlockedObj1.GetComponent<Text>();
+                unlockedObj1.SetActive(false);
+            }
+            else
+            {
+                Debug.Log("NOT FOUND");
+            }
+        }
+
+        if (!unlockedObj2)
+        {
+            unlockedObj2 = GameObject.Find("UnlockedTextP2");
+            if (unlockedObj2)
+            {
+                unlockedText2 = unlockedObj2.GetComponent<Text>();
+                unlockedObj2.SetActive(false);
+            }
+        }
+
         InitXY();
         SpawnNext();
     }
@@ -190,6 +220,29 @@ public class Spawner2P : MonoBehaviour
             
         tile.transform.parent = block.transform;
         tile.transform.localPosition = new Vector3(x[i], y[i], 0);
+        }
+    }
+
+    public void UnlockedMessage(string message, int player, float delay)
+    {
+        StartCoroutine(FlashMessage(message, player, delay));
+    }
+
+    IEnumerator FlashMessage(string message, int player, float delay)
+    {
+        if (player == 1)
+        {
+            unlockedText1.text = message;
+            unlockedObj1.SetActive(true);
+            yield return new WaitForSeconds(delay);
+            unlockedObj1.SetActive(false);
+        }
+        else
+        {
+            unlockedText2.text = message;
+            unlockedObj2.SetActive(true);
+            yield return new WaitForSeconds(delay);
+            unlockedObj2.SetActive(false);
         }
     }
 }

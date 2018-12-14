@@ -23,8 +23,8 @@ public class Game2P : MonoBehaviour {
     GameObject opObj2;
     GameObject spawnerObj1;
     GameObject spawnerObj2;
-    Spawner2P spawner1;
-    Spawner2P spawner2;
+    static Spawner2P spawner1;
+    static Spawner2P spawner2;
     static string operationText1;
     static string operationText2;
     public static int plusCountP1 = 0;
@@ -79,7 +79,13 @@ public class Game2P : MonoBehaviour {
     static AudioSource subUpSoundClip;
     static AudioSource subDownSoundClip;
 
+    public static GameObject unlockedObj1;
+    public static Text unlockedText1;
 
+    /*
+    public static GameObject unlockedObj2;
+    public static Text unlockedText2;
+    */
 
     // grid: tracks all position of the grid
     public static Transform[,] grid = new Transform[width, height];
@@ -105,6 +111,16 @@ public class Game2P : MonoBehaviour {
         replaySound = GameObject.Find("Replay Sound");
         clickSound = GameObject.Find("Click Sound");
         mainSound = GameObject.Find("Tetris");
+
+        /*
+        unlockedObj1 = GameObject.Find("UnlockedTextP1");
+        unlockedText1 = unlockedObj1.GetComponent<Text>();
+        unlockedObj1.SetActive(false);
+
+        unlockedObj2 = GameObject.Find("UnlockedTextP2");
+        unlockedText2 = unlockedObj2.GetComponent<Text>();
+        unlockedObj2.SetActive(false);
+        */
 
         if (addSound)
             addSoundClip = addSound.GetComponent<AudioSource>();
@@ -635,6 +651,8 @@ public class Game2P : MonoBehaviour {
             if (!mult1.active)
             {
                 unlockedP1Count++;
+                spawner1.UnlockedMessage("MULTIPLICATION UNLOCKED!", 1, 2);
+                //StartCoroutine(FlashMessage("MULTIPLICATION UNLOCKED!", 1, 2));
                 //Debug.Log("MULTIPLICATION UNLOCKED!");
                 unlockedP1.Add(opDict["multiply"]);
                 mult1.active = true;
@@ -647,6 +665,7 @@ public class Game2P : MonoBehaviour {
             if (!div1.active)
             {
                 unlockedP1Count++;
+                spawner1.UnlockedMessage("DIVISION UNLOCKED!", 1, 2);
                 //Debug.Log("DIVISION UNLOCKED!");
                 unlockedP1.Add(opDict["divide"]);
                 div1.active = true;
@@ -660,6 +679,7 @@ public class Game2P : MonoBehaviour {
             if (!mult2.active)
             {
                 unlockedP2Count++;
+                spawner1.UnlockedMessage("MULTIPLICATION UNLOCKED!", 2, 2);
                 //Debug.Log("MULTIPLICATION UNLOCKED!");
                 unlockedP2.Add(opDict["multiply"]);
                 mult2.active = true;
@@ -672,6 +692,7 @@ public class Game2P : MonoBehaviour {
             if (!div2.active)
             {
                 unlockedP2Count++;
+                spawner1.UnlockedMessage("DIVISION UNLOCKED!", 2, 2);
                 //Debug.Log("DIVISION UNLOCKED!");
                 unlockedP2.Add(opDict["divide"]);
                 div2.active = true;
@@ -680,6 +701,8 @@ public class Game2P : MonoBehaviour {
             }
         }
     }
+
+    
 
 
     static void DestroyWithParticleEffect(Vector3 tilePosition, GameObject particleEffect)

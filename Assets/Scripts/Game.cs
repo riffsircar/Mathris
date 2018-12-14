@@ -89,11 +89,9 @@ public class Game : MonoBehaviour {
     static AudioSource subDownSoundClip;
 
     static Slider scoreSlider;
-
-    /*
-    public static GameObject multUnlockedObj;
-    public static Text multUnlockedText;
-    */
+    
+    public static GameObject unlockedObj;
+    public static Text unlockedText;
 
     private void Awake()
     {
@@ -130,12 +128,13 @@ public class Game : MonoBehaviour {
         replaySound = GameObject.Find("Replay Sound");
         clickSound = GameObject.Find("Click Sound");
         mainSound = GameObject.Find("Tetris");
-
-        /*
-        multUnlockedObj = GameObject.Find("MultUnlocked");
-        multUnlockedText = multUnlockedObj.GetComponent<Text>();
-        multUnlockedObj.SetActive(false);
-        */
+        
+        unlockedObj = GameObject.Find("UnlockedText");
+        if (unlockedObj)
+        {
+            unlockedText = unlockedObj.GetComponent<Text>();
+            unlockedObj.SetActive(false);
+        }
 
         if (addSound)
             addSoundClip = addSound.GetComponent<AudioSource>();
@@ -524,7 +523,7 @@ public class Game : MonoBehaviour {
                 divSoundClip.Play();
             }
         }
-        Spawner.UpdateUnlockedOperators();
+        spawner.UpdateUnlockedOperators();
         return result;
     }
 

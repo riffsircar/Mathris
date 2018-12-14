@@ -84,7 +84,7 @@ public class Spawner : MonoBehaviour
         SpawnNext();
     }
 
-    public static void UpdateUnlockedOperators()
+    public void UpdateUnlockedOperators()
     {
         addCount.GetComponent<Text>().text = "x" + Game.plusCount.ToString();
         subCount.GetComponent<Text>().text = "x" + Game.subCount.ToString();
@@ -99,6 +99,7 @@ public class Spawner : MonoBehaviour
             if (!mult.active)
             {
                 //Debug.Log("MULTIPLICATION UNLOCKED!");
+                StartCoroutine(FlashMessage("MULTIPLICATION UNLOCKED!", 2));
                 mulSoundClip.Play();
                 unlocked.Add(opDict["multiply"]);
                 mult.active = true;
@@ -112,6 +113,7 @@ public class Spawner : MonoBehaviour
             if (!div.active)
             {
                 //Debug.Log("DIVISION UNLOCKED!");
+                StartCoroutine(FlashMessage("DIVISION UNLOCKED!", 2));
                 divSoundClip.Play();
                 unlocked.Add(opDict["divide"]);
                 div.active = true;
@@ -120,16 +122,14 @@ public class Spawner : MonoBehaviour
             }
         }
     }
-
-    /*
-    static IEnumerator FlashMessage(string message, float delay)
+    
+    IEnumerator FlashMessage(string message, float delay)
     {
-        Game.multUnlockedText.text = message;
-        Game.multUnlockedObj.SetActive(true);
+        Game.unlockedText.text = message;
+        Game.unlockedObj.SetActive(true);
         yield return new WaitForSeconds(delay);
-        Game.multUnlockedObj.SetActive(false);
+        Game.unlockedObj.SetActive(false);
     }
-    */
 
     static void InitXY()
     {
