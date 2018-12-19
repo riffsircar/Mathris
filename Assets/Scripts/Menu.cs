@@ -75,6 +75,11 @@ public class Menu : MonoBehaviour {
         SceneManager.LoadScene("Instructions2P(0)");
     }
 
+    public void Credits()
+    {
+        SceneManager.LoadScene("Credits");
+    }
+
     public void QuitGame()
     {
         Application.Quit();
