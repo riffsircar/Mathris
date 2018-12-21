@@ -968,6 +968,7 @@ public class Game : MonoBehaviour {
         Data.fallSpeed = 0.4f;
         goal = Data.goal;
         Timer.timeRemain = Data.initTime;
+        scoreIncrement = 50;
         plusCount = 0;
         subCount = 0;
         mulCount = 0;
